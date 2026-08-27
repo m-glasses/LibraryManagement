@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\.net project\\EmptyTest\\LibraryManagement\\LibraryManagement.csproj": {}
+    "D:\\.net project\\LibraryManagement\\LibraryManagement\\LibraryManagement.csproj": {}
   },
   "projects": {
-    "D:\\.net project\\EmptyTest\\LibraryManagement\\LibraryManagement.csproj": {
+    "D:\\.net project\\LibraryManagement\\LibraryManagement\\LibraryManagement.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\.net project\\EmptyTest\\LibraryManagement\\LibraryManagement.csproj",
+        "projectUniqueName": "D:\\.net project\\LibraryManagement\\LibraryManagement\\LibraryManagement.csproj",
         "projectName": "LibraryManagement",
-        "projectPath": "D:\\.net project\\EmptyTest\\LibraryManagement\\LibraryManagement.csproj",
+        "projectPath": "D:\\.net project\\LibraryManagement\\LibraryManagement\\LibraryManagement.csproj",
         "packagesPath": "C:\\Users\\m-m-farzanegan84\\.nuget\\packages\\",
-        "outputPath": "D:\\.net project\\EmptyTest\\LibraryManagement\\obj\\",
+        "outputPath": "D:\\.net project\\LibraryManagement\\LibraryManagement\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

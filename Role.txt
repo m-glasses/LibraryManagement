@@ -1,0 +1,90 @@
+LibraryManagement
+│
+├── Controllers
+│   ├── AccountController.cs
+│   ├── HomeController.cs
+│   ├── BooksController.cs
+│   ├── LoansController.cs
+│   ├── ReservationsController.cs
+│   ├── WalletController.cs
+│   └── AdminController.cs
+│
+├── Models
+│   ├── User.cs
+│   ├── Book.cs
+│   ├── BookCopy.cs
+│   ├── Loan.cs
+│   ├── Reservation.cs
+│   ├── Wallet.cs
+│   ├── WalletTransaction.cs
+│   └── LibrarySettings.cs
+│
+├── Data
+│   ├── LibraryDbContext.cs
+│   └── SeedData.cs
+│
+├── ViewModels
+│   ├── Account
+│   │   ├── LoginViewModel.cs
+│   │   └── RegisterViewModel.cs
+│   │
+│   ├── Books
+│   │   ├── BookCreateViewModel.cs
+│   │   ├── BookEditViewModel.cs
+│   │   └── BookDetailsViewModel.cs
+│   │
+│   ├── Loans
+│   │   ├── LoanCreateViewModel.cs
+│   │   └── LoanDetailsViewModel.cs
+│   │
+│   ├── Reservations
+│   │   └── ReservationCreateViewModel.cs
+│   │
+│   └── Admin
+│       ├── UserEditViewModel.cs
+│       └── LibrarySettingsViewModel.cs
+│
+├── Services
+│   ├── LoanService.cs
+│   ├── ReservationService.cs
+│   ├── WalletService.cs
+│   └── AccountService.cs
+│
+├── Areas
+│   └── Admin
+│       ├── Controllers
+│       │   ├── DashboardController.cs
+│       │   ├── UsersController.cs
+│       │   ├── BooksController.cs
+│       │   ├── LoansController.cs
+│       │   ├── ReservationsController.cs
+│       │   └── WalletController.cs
+│       │
+│       └── Views
+│           ├── Dashboard
+│           ├── Users
+│           ├── Books
+│           ├── Loans
+│           ├── Reservations
+│           └── Wallet
+│
+├── Views
+│   ├── Account
+│   ├── Home
+│   ├── Books
+│   ├── Loans
+│   ├── Reservations
+│   ├── Wallet
+│   └── Shared
+│       ├── _Layout.cshtml
+│       ├── _ValidationScriptsPartial.cshtml
+│       └── Error.cshtml
+│
+├── wwwroot
+│   ├── css
+│   ├── js
+│   └── images
+│
+├── appsettings.json
+├── Program.cs
+└── LibraryManagement.csproj
