@@ -88,3 +88,29 @@ LibraryManagement
 ├── appsettings.json
 ├── Program.cs
 └── LibraryManagement.csproj
+
+
+LibraryManagement
+│
+├── Models
+│   ├── User.cs
+│   ├── Book.cs
+│   ├── BookCopy.cs
+│   ├── Loan.cs
+│   ├── Reservation.cs
+│   ├── Wallet.cs
+│   ├── WalletTransaction.cs
+│   └── LibrarySettings.cs
+│
+├── Data
+│   ├── LibraryDbContext.cs
+│   │
+│   └── Configurations
+│       ├── UserConfiguration.cs
+│       ├── BookConfiguration.cs
+│       ├── BookCopyConfiguration.cs
+│       ├── LoanConfiguration.cs
+│       ├── ReservationConfiguration.cs
+│       ├── WalletConfiguration.cs
+│       ├── WalletTransactionConfiguration.cs
+│       └── LibrarySettingsConfiguration.cs

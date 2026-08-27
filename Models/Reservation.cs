@@ -7,6 +7,10 @@
         public DateTime ReservedAt { get; set; }
         public DateTime ExpiresAt { get; set; }
         public ReservationStatus ReservationStatus { get; set; }
+
+        //Navigation Property
+        public virtual User User { get; set; }
+        public virtual Book Book { get; set; }
     }
     public enum ReservationStatus
     {
