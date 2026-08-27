@@ -3,84 +3,20 @@
   "WorkspaceRootPath": "D:\\.net project\\LibraryManagement\\LibraryManagement\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\loan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\loan.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\services\\bookcopyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:services\\bookcopyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\bookcopy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\bookcopy.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\services\\interfaces\\ibookcopyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:services\\interfaces\\ibookcopyservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\book.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\services\\interfaces\\ibookservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:services\\interfaces\\ibookservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\librarysettingsconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\librarysettingsconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\wallettransactionconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\wallettransactionconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\walletconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\walletconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\reservationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\reservationconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\loanconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\loanconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\bookcopyconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\bookcopyconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\bookconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\bookconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\configurations\\userconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\configurations\\userconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\role.txt||{8B382828-6202-11D1-8870-0000F87579D2}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:role.txt||{8B382828-6202-11D1-8870-0000F87579D2}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\data\\librarydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:data\\librarydbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\wallettransaction.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\wallet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\wallet.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\librarysettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\librarysettings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:.gitignore||{3B902123-F8A7-4915-9F01-361F908088D0}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\models\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:models\\baseentity.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|d:\\.net project\\librarymanagement\\librarymanagement\\services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{5249F780-3F6D-0704-DBC0-BE088973AFD9}|LibraryManagement.csproj|solutionrelative:services\\userservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -90,175 +26,58 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "LibrarySettingsConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\LibrarySettingsConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\LibrarySettingsConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\LibrarySettingsConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\LibrarySettingsConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 0,
+              "Title": "BookCopyService.cs",
+              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\BookCopyService.cs",
+              "RelativeDocumentMoniker": "Services\\BookCopyService.cs",
+              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\BookCopyService.cs*",
+              "RelativeToolTip": "Services\\BookCopyService.cs*",
+              "ViewState": "AgIAACcAAAAAAAAAAAAmwBsAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:54:43.777Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "User.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\User.cs",
-              "RelativeDocumentMoniker": "Models\\User.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\User.cs",
-              "RelativeToolTip": "Models\\User.cs",
-              "ViewState": "AgIAACQAAAAAAAAAAAAiwCoAAAAGAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T11:09:45.264Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "Book.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Book.cs",
-              "RelativeDocumentMoniker": "Models\\Book.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Book.cs",
-              "RelativeToolTip": "Models\\Book.cs",
-              "ViewState": "AgIAABoAAAAAAAAAAAAAwDMAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T11:29:52.926Z",
+              "WhenOpened": "2026-08-27T15:42:16.338Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "BookCopy.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\BookCopy.cs",
-              "RelativeDocumentMoniker": "Models\\BookCopy.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\BookCopy.cs",
-              "RelativeToolTip": "Models\\BookCopy.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
+              "Title": "IBookCopyService.cs",
+              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\Interfaces\\IBookCopyService.cs",
+              "RelativeDocumentMoniker": "Services\\Interfaces\\IBookCopyService.cs",
+              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\Interfaces\\IBookCopyService.cs*",
+              "RelativeToolTip": "Services\\Interfaces\\IBookCopyService.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T11:41:34.582Z",
+              "WhenOpened": "2026-08-27T15:37:12.907Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "Loan.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Loan.cs",
-              "RelativeDocumentMoniker": "Models\\Loan.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Loan.cs",
-              "RelativeToolTip": "Models\\Loan.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAaAAAAAAAAAA==",
+              "DocumentIndex": 2,
+              "Title": "IBookService.cs",
+              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\Interfaces\\IBookService.cs",
+              "RelativeDocumentMoniker": "Services\\Interfaces\\IBookService.cs",
+              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\Interfaces\\IBookService.cs*",
+              "RelativeToolTip": "Services\\Interfaces\\IBookService.cs*",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAgAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T12:00:01.38Z",
+              "WhenOpened": "2026-08-27T15:30:20.789Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "WalletTransactionConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\WalletTransactionConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\WalletTransactionConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\WalletTransactionConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\WalletTransactionConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\UserService.cs",
+              "RelativeDocumentMoniker": "Services\\UserService.cs",
+              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Services\\UserService.cs*",
+              "RelativeToolTip": "Services\\UserService.cs*",
+              "ViewState": "AgIAAC0AAAAAAAAAAAAIwEMAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:54:35.594Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "WalletConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\WalletConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\WalletConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\WalletConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\WalletConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:54:01.001Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "ReservationConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\ReservationConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\ReservationConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\ReservationConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\ReservationConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:53:49.027Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "LoanConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\LoanConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\LoanConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\LoanConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\LoanConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:53:26.361Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "BookCopyConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\BookCopyConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\BookCopyConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\BookCopyConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\BookCopyConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:53:11.304Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "BookConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\BookConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\BookConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\BookConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\BookConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:52:53.982Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "UserConfiguration.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\UserConfiguration.cs",
-              "RelativeDocumentMoniker": "Data\\Configurations\\UserConfiguration.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\Configurations\\UserConfiguration.cs",
-              "RelativeToolTip": "Data\\Configurations\\UserConfiguration.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:52:43.383Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "Role.txt",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Role.txt",
-              "RelativeDocumentMoniker": "Role.txt",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Role.txt",
-              "RelativeToolTip": "Role.txt",
-              "ViewState": "AgIAAFkAAAAAAAAAAAAkwGsAAAAWAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003109|",
-              "WhenOpened": "2026-08-27T09:04:24.379Z",
+              "WhenOpened": "2026-08-27T15:03:52.563Z",
               "EditorCaption": ""
             },
             {
@@ -268,97 +87,6 @@
             {
               "$type": "Bookmark",
               "Name": "ST:128:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "LibraryDbContext.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\LibraryDbContext.cs",
-              "RelativeDocumentMoniker": "Data\\LibraryDbContext.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Data\\LibraryDbContext.cs",
-              "RelativeToolTip": "Data\\LibraryDbContext.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAABDAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T09:07:35.993Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "Reservation.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Reservation.cs",
-              "RelativeDocumentMoniker": "Models\\Reservation.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Reservation.cs",
-              "RelativeToolTip": "Models\\Reservation.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABYAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T07:49:21.009Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "Wallet.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Wallet.cs",
-              "RelativeDocumentMoniker": "Models\\Wallet.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\Wallet.cs",
-              "RelativeToolTip": "Models\\Wallet.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T13:22:27.221Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "WalletTransaction.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\WalletTransaction.cs",
-              "RelativeDocumentMoniker": "Models\\WalletTransaction.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\WalletTransaction.cs",
-              "RelativeToolTip": "Models\\WalletTransaction.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-25T13:42:00.189Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "LibrarySettings.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\LibrarySettings.cs",
-              "RelativeDocumentMoniker": "Models\\LibrarySettings.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\LibrarySettings.cs",
-              "RelativeToolTip": "Models\\LibrarySettings.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAmAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T08:16:40.192Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": ".gitignore",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\.gitignore",
-              "RelativeDocumentMoniker": ".gitignore",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\.gitignore",
-              "RelativeToolTip": ".gitignore",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
-              "WhenOpened": "2026-08-27T08:07:43.844Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "BaseEntity.cs",
-              "DocumentMoniker": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\BaseEntity.cs",
-              "RelativeDocumentMoniker": "Models\\BaseEntity.cs",
-              "ToolTip": "D:\\.net project\\LibraryManagement\\LibraryManagement\\Models\\BaseEntity.cs",
-              "RelativeToolTip": "Models\\BaseEntity.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAQAAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-27T07:48:18.016Z",
-              "EditorCaption": ""
             }
           ]
         }

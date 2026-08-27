@@ -7,7 +7,7 @@ namespace LibraryManagement.Data.Configurations
     {
         public void Configure(Microsoft.EntityFrameworkCore.Metadata.Builders.EntityTypeBuilder<Book> builder)
         {
-            throw new NotImplementedException();
+    
         }
     }
 }

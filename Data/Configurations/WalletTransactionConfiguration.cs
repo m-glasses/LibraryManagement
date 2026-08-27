@@ -13,6 +13,7 @@ namespace LibraryManagement.Data.Configurations
                 .HasOne(wt => wt.Wallet)
                 .WithMany(w => w.WalletTransactions)
                 .HasForeignKey(wt => wt.WalletId)
+                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
 
             builder

@@ -41,7 +41,7 @@ namespace LibraryManagement.Models
         public string PhoneNumber { get; set; }
 
         [StringLength(300)]
-        public string Address { get; set; }
+        public string? Address { get; set; }
 
         public Gender Gender { get; set; }
 

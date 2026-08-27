@@ -15,7 +15,13 @@ namespace LibraryManagement.Data.Configurations
             builder
                 .HasOne(u => u.User)
                 .WithOne(u => u.Wallet)
-                .HasForeignKey<Wallet>(u => u.UserId);
+                .HasForeignKey<Wallet>(u => u.UserId)
+                .OnDelete(DeleteBehavior.Restrict)
+                .IsRequired();
+
+            builder
+                .Property(w => w.Balance)
+                .HasPrecision(18, 0);
         }
     }
 }

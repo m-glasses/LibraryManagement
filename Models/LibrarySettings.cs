@@ -9,4 +9,5 @@
         public int RenewalDurationDays { get; set; }
         public int ReservationDurationDays { get; set; }
     }
+
 }

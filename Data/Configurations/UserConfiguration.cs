@@ -14,6 +14,11 @@ namespace LibraryManagement.Data.Configurations
             builder
                 .HasIndex(x => x.UserName)
                 .IsUnique();
+
+            builder
+                .Property(u => u.PhoneNumber)
+                .HasMaxLength(20)
+                .IsUnicode();
         }
     }
 }

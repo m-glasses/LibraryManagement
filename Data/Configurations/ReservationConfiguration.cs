@@ -12,12 +12,14 @@ namespace LibraryManagement.Data.Configurations
                 .HasOne(r => r.User)
                 .WithMany(u => u.Reservations)
                 .HasForeignKey(r => r.UserId)
+                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
 
             builder
                 .HasOne(r => r.Book)
                 .WithMany(b => b.Reservations)
                 .HasForeignKey(r => r.BookId)
+                 .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
         }
     }
