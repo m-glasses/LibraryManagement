@@ -2,7 +2,7 @@
 
 namespace LibraryManagement.Services.Interfaces
 {
-    public interface IBookCopyService : IGenericService<IBookService>
+    public interface IBookCopyService : IGenericService<BookCopy>
     {
 
     }
