@@ -16,7 +16,9 @@ namespace LibraryManagement.Models
         public int RenewalCount { get; set; }
         public decimal DailyRate { get; set; }
         public decimal LateFeePerDay { get; set; }
+        public int LateDays { get; set; }
         public decimal CalculatedAmount { get; set; }
+        public decimal LateFee { get; set; }
         public decimal FinalAmount { get; set; }
 
         [StringLength(500)]
