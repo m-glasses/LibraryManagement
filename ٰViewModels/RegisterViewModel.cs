@@ -1,7 +1,7 @@
 ﻿using LibraryManagement.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement._ٰViewModels
+namespace LibraryManagement.ViewModels
 {
     public class RegisterViewModel
     {
@@ -29,7 +29,6 @@ namespace LibraryManagement._ٰViewModels
         public Gender? Gender { get; set; }
 
         [Required]
-        [StringLength(50)]
         public string UserName { get; set; }
 
         [Required]
