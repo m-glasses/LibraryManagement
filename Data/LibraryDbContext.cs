@@ -1,15 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
-using LibraryManagement.Models;
+﻿using LibraryManagement.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Data
 {
-    public class LibraryDbContext : DbContext
+    public class LibraryDbContext : IdentityDbContext<User, IdentityRole<int>, int>
     {
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
             
         }
-        public DbSet<User> Users {  get; set; }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookCopy> BookCopies { get; set; }
         public DbSet<Loan> Loans { get; set; }

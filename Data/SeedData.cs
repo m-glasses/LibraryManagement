@@ -1,9 +1,10 @@
 ﻿using LibraryManagement.Models;
+using Microsoft.AspNetCore.Identity;
 namespace LibraryManagement.Data
 {
     public class SeedData
     {
-        public static void Initialize(LibraryDbContext context)
+        public static async Task Initialize(LibraryDbContext context , UserManager<User> userManager , RoleManager<IdentityRole<int>> roleManager)
         {
             if (!context.LibrarySettings.Any())
             {
@@ -17,12 +18,25 @@ namespace LibraryManagement.Data
                     ReservationDurationDays = 7
                 };
                 context.LibrarySettings.Add(librarySetting);
+                await context.SaveChangesAsync();
                
             }
 
-            if (!context.Users.Any(u=> u.Role == UserRole.Admin))
+            if (!await roleManager.RoleExistsAsync("Admin"))
             {
-                User user = new User()
+                await roleManager.CreateAsync(new IdentityRole<int>("Admin"));
+            }
+
+            if(! await roleManager.RoleExistsAsync("User"))
+            {
+                await roleManager.CreateAsync(new IdentityRole<int>("User"));
+            }
+
+            var admin = await userManager.FindByNameAsync("Admin");
+
+            if (admin == null)
+            {
+                admin = new User()
                 {
                     Name = "Admin",
                     Family = "Admin",
@@ -30,15 +44,26 @@ namespace LibraryManagement.Data
                     FatherName = "Admin",
                     Education = EducationLevel.Diploma,
                     UserName = "Admin",
-                    Password = "1234",
                     PhoneNumber = "09121010101",
-                    Gender = Gender.Male,
-                    Role = UserRole.Admin,
-
+                    Gender = Gender.Male
                 };
-                context.Users.Add(user);
+
+                var result = await userManager.CreateAsync(
+                    admin,
+                    "1234");
+                if (!result.Succeeded)
+                {
+                    throw new Exception(
+                        string.Join(", ", result.Errors.Select(e =>e.Description)));
+                }
             }
-            context.SaveChanges();
+
+            if(!await userManager.IsInRoleAsync(admin, "Admin"))
+            {
+                await userManager.AddToRoleAsync(admin, "Admin");
+            }
+
+            
         }
     }
 }

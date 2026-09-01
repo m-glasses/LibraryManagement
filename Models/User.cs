@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.Models
 {
-    public class User : BaseEntity
+    public class User : IdentityUser<int>
     {
         public User() 
         {
@@ -28,35 +29,17 @@ namespace LibraryManagement.Models
 
         public EducationLevel Education { get; set; }
 
-        [Required]
-        [StringLength(50)]
-        public string UserName { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        public string Password { get; set; }
-
-        [Required]
-        [Phone]
-        public string PhoneNumber { get; set; }
-
+       
         [StringLength(300)]
         public string? Address { get; set; }
 
         public Gender Gender { get; set; }
-
-        public UserRole Role { get; set; }
 
         //Navigation Property
 
         public virtual List<Loan> Loans { get; set; }
         public virtual List<Reservation> Reservations { get; set; }
         public Wallet Wallet { get; set; }
-    }
-    public enum UserRole
-    {
-        User ,
-        Admin
     }
     public enum Gender
     {

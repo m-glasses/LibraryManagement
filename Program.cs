@@ -1,4 +1,9 @@
 using LibraryManagement.Data;
+using LibraryManagement.Models;
+using LibraryManagement.Services;
+using LibraryManagement.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,12 +12,26 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<LibraryDbContext>
     (options => options.UseSqlServer( builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddIdentity<User, IdentityRole<int>>()
+    .AddEntityFrameworkStores<LibraryDbContext>()
+    .AddDefaultTokenProviders();
 
+builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IBookService, BookService>();
+builder.Services.AddScoped<IBookCopyService, BookCopyService>();
+builder.Services.AddScoped<ILoanService, LoanService>();
+builder.Services.AddScoped<IReservationService, ReservationService>();
+builder.Services.AddScoped<IWalletService, WalletService>();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
-    var context = scope.ServiceProvider.GetRequiredService<LibraryDbContext>();
-    SeedData.Initialize(context);
+    var services = scope.ServiceProvider;
+
+    var context = services.GetRequiredService<LibraryDbContext>();
+    var userManager = services.GetRequiredService<UserManager<User>>();
+    var roleManager = services.GetRequiredService<RoleManager<IdentityRole<int>>>();
+
+    await SeedData.Initialize(context, userManager, roleManager);
 }
 
     // Configure the HTTP request pipeline.
@@ -27,7 +46,7 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
-
+app.UseAuthorization();
 app.MapStaticAssets();
 
 app.MapControllerRoute(
