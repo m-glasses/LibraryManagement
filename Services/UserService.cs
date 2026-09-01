@@ -4,7 +4,7 @@ using LibraryManagement.Services.Interfaces;
 
 namespace LibraryManagement.Services
 {
-    public class UserService : IUserService , GenericService<User>
+    public class UserService :  GenericService<User> , IUserService
     {
         private readonly LibraryDbContext _context;
         public UserService(LibraryDbContext context) : base(context) 

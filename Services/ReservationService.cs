@@ -4,10 +4,10 @@ using LibraryManagement.Services.Interfaces;
 
 namespace LibraryManagement.Services
 {
-    public class ReservationServices : GenericService<Reservation> , IReservationService 
+    public class ReservationService : GenericService<Reservation> , IReservationService 
     {
         private readonly LibraryDbContext _context;
-        public ReservationServices(LibraryDbContext context) : base(context) 
+        public ReservationService(LibraryDbContext context) : base(context) 
         {
             _context = context;
         }
