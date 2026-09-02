@@ -5,7 +5,7 @@ namespace LibraryManagement.Models
 {
     public class User : IdentityUser<int>
     {
-        public User() 
+        public User()
         {
             Loans = new List<Loan>();
             Reservations = new List<Reservation>();
@@ -17,7 +17,7 @@ namespace LibraryManagement.Models
 
         [Required]
         [StringLength(50)]
-        public string  Family { get; set; }
+        public string Family { get; set; }
 
         [Required]
         public DateTime DateOfBirth { get; set; }
@@ -29,7 +29,7 @@ namespace LibraryManagement.Models
 
         public EducationLevel Education { get; set; }
 
-       
+
         [StringLength(300)]
         public string? Address { get; set; }
 
@@ -43,18 +43,34 @@ namespace LibraryManagement.Models
     }
     public enum Gender
     {
-        Male , 
+        [Display(Name = "مرد")]
+        Male,
+
+        [Display(Name = "زن")]
         Female
     }
 
     public enum EducationLevel
     {
+        [Display(Name = "راهنمایی")]
         MiddleSchool,
+
+        [Display(Name = "دبیرستان")]
         HighSchool,
+
+        [Display(Name = "دیپلم")]
         Diploma,
+
+        [Display(Name = "کاردانی")]
         Associate,
+
+        [Display(Name = "کارشناسی")]
         Bachelor,
+
+        [Display(Name = "کارشناسی ارشد")]
         Master,
+
+        [Display(Name = "دکتری")]
         PhD
     }
 }

@@ -50,7 +50,7 @@ namespace LibraryManagement.Data
 
                 var result = await userManager.CreateAsync(
                     admin,
-                    "1234");
+                    "Admin@1234");
                 if (!result.Succeeded)
                 {
                     throw new Exception(

@@ -1,5 +1,174 @@
-﻿@model RegisterViewModel
+﻿```cshtml
+@model RegisterViewModel
 
 @{
-    ViewData["Title"] = "ورود";
+    ViewData["Title"] = "ثبت نام";
 }
+
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8 col-xl-7">
+
+            <div class="card shadow-sm border-0 rounded-4 overflow-hidden">
+
+                <!-- Header -->
+                <div class="card-header bg-primary text-white text-center py-4 border-0">
+                    <h3 class="mb-1">ثبت نام</h3>
+                    <p class="mb-0 opacity-75">
+                        برای ایجاد حساب کاربری اطلاعات خود را وارد کنید
+                    </p>
+                </div>
+
+                <!-- Body -->
+                <div class="card-body p-4 p-md-5">
+
+                    <form asp-controller="Account"
+                          asp-action="Register"
+                          method="post">
+
+                        <div asp-validation-summary="ModelOnly"
+                             class="alert alert-danger"
+                             role="alert"></div>
+
+                        <!-- Personal Information -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-1">اطلاعات شخصی</h5>
+                            <p class="text-muted small mb-0">
+                                اطلاعات فردی خود را وارد کنید
+                            </p>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="Name"></label>
+                                <input class="form-control" asp-for="Name" />
+                                <span class="text-danger small"
+                                      asp-validation-for="Name"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="Family"></label>
+                                <input class="form-control" asp-for="Family" />
+                                <span class="text-danger small"
+                                      asp-validation-for="Family"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="FatherName"></label>
+                                <input class="form-control" asp-for="FatherName" />
+                                <span class="text-danger small"
+                                      asp-validation-for="FatherName"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="DateOfBirth"></label>
+                                <input class="form-control" asp-for="DateOfBirth" />
+                                <span class="text-danger small"
+                                      asp-validation-for="DateOfBirth"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="Education"></label>
+                                <select class="form-select"
+                                        asp-for="Education"
+                                        asp-items="Html.GetEnumSelectList<EducationLevel>()">
+                                    <option value="">انتخاب کنید</option>
+                                </select>
+                                <span class="text-danger small"
+                                      asp-validation-for="Education"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="Gender"></label>
+                                <select class="form-select"
+                                        asp-for="Gender"
+                                        asp-items="Html.GetEnumSelectList<Gender>()">
+                                    <option value="">انتخاب کنید</option>
+                                </select>
+                                <span class="text-danger small"
+                                      asp-validation-for="Gender"></span>
+                            </div>
+
+                            <div class="col-12 mb-3">
+                                <label class="form-label" asp-for="Address"></label>
+                                <textarea class="form-control"
+                                          asp-for="Address"
+                                          rows="3"
+                                          placeholder="آدرس خود را وارد کنید..."></textarea>
+                                <span class="text-danger small"
+                                      asp-validation-for="Address"></span>
+                            </div>
+
+                        </div>
+
+                        <hr class="my-4">
+
+                        <!-- Account Information -->
+                        <div class="mb-4">
+                            <h5 class="fw-bold mb-1">اطلاعات حساب</h5>
+                            <p class="text-muted small mb-0">
+                                اطلاعات ورود به حساب کاربری را مشخص کنید
+                            </p>
+                        </div>
+
+                        <div class="row">
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="UserName"></label>
+                                <input class="form-control" asp-for="UserName" />
+                                <span class="text-danger small"
+                                      asp-validation-for="UserName"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="Email"></label>
+                                <input class="form-control" asp-for="Email" />
+                                <span class="text-danger small"
+                                      asp-validation-for="Email"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="PhoneNumber"></label>
+                                <input class="form-control" asp-for="PhoneNumber" />
+                                <span class="text-danger small"
+                                      asp-validation-for="PhoneNumber"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="Password"></label>
+                                <input class="form-control" asp-for="Password" />
+                                <span class="text-danger small"
+                                      asp-validation-for="Password"></span>
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label" asp-for="ConfirmPassword"></label>
+                                <input class="form-control" asp-for="ConfirmPassword" />
+                                <span class="text-danger small"
+                                      asp-validation-for="ConfirmPassword"></span>
+                            </div>
+
+                        </div>
+
+                        <!-- Submit -->
+                        <div class="d-flex justify-content-start mt-4">
+                            <button class="btn btn-primary px-4 py-2"
+                                    type="submit">
+                                ثبت‌نام
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
+```
