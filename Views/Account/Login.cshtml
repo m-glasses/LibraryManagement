@@ -1,0 +1,76 @@
+﻿@model LoginViewModel
+
+@{
+    ViewData["Title"] = "ورود";
+}
+
+<link rel="stylesheet"
+      href="~/css/pages/account/register.css"
+      asp-append-version="true" />
+
+<div class="auth-page">
+    <div class="auth-card">
+
+        <div class="auth-header">
+            <h1>ورود</h1>
+            <p>برای ورود اطلاعات خود را وارد کنید.</p>
+        </div>
+
+        <form asp-controller="Account"
+              asp-action="Login"
+              method="post">
+
+            <div asp-validation-summary="ModelOnly"
+                 class="auth-validation"
+                 role="alert"></div>
+
+            <div class="auth-form-grid">
+
+                <div class="auth-field">
+                    <label asp-for="UserName"></label>
+                    <input asp-for="UserName"
+                           class="form-control"
+                           autocomplete="username" />
+                    <span class="text-danger" asp-validation-for="UserName"></span>
+                </div>
+
+                <div class="auth-field">
+                    <label asp-for="Password"></label>
+                    <input asp-for="Password"
+                           class="form-control"
+                           autocomplete="currect-password" />
+                    <span class="text-danger" asp-validation-for="Password"></span>
+                </div>
+
+                <div class="auth-field">
+                    <label asp-for="RememberMe"></label>
+                    <input asp-for="RememberMe"
+                           class="form-check-input"
+                           />
+                    <span class="text-danger" asp-validation-for="RememberMe"></span>
+                </div>
+
+            </div>
+
+            <div class="auth-actions">
+                <button type="submit" class="auth-submit">
+                    ورود
+                </button>
+            </div>
+
+            <div class="auth-footer">
+                <span> حساب کاربری ندارید؟</span>
+                <a asp-controller="Account"
+                   asp-action="Register">
+                    ثبت‌نام
+                </a>
+            </div>
+
+        </form>
+
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

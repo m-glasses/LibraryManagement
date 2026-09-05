@@ -9,14 +9,16 @@
    ---------------------------------------- */
 
 .page-wrapper {
-    width: calc(100% - var(--lm-sidebar-width));
+    min-width: 0;
     min-height: calc(100vh - var(--lm-navbar-height));
-    margin-right: var(--lm-sidebar-width);
     margin-top: var(--lm-navbar-height);
     display: flex;
     flex-direction: column;
-    min-width: 0;
 }
+
+    .page-wrapper.has-sidebar {
+        margin-right: var(--lm-sidebar-width);
+    }
 
 
 /* ----------------------------------------

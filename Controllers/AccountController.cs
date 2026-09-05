@@ -1,5 +1,6 @@
-﻿using LibraryManagement.ViewModels;
-using LibraryManagement.Models;
+﻿using LibraryManagement.Models;
+using LibraryManagement.Services;
+using LibraryManagement.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,11 +9,13 @@ namespace LibraryManagement.Controllers
     public class AccountController : Controller
     {
         private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager; 
-        public AccountController(UserManager<User> userManage , SignInManager<User> signInManager)
+        private readonly SignInManager<User> _signInManager;
+        private readonly IdentityErrorLocalizer _identityErrorLocalizer;
+        public AccountController(UserManager<User> userManage , SignInManager<User> signInManager , IdentityErrorLocalizer identityErrorLocalizer)
         {
             _userManager = userManage;
             _signInManager = signInManager;
+            _identityErrorLocalizer = identityErrorLocalizer;
         }
 
         [HttpGet]
@@ -50,7 +53,8 @@ namespace LibraryManagement.Controllers
             {
                 foreach (var error in result.Errors)
                 {
-                    ModelState.AddModelError("", error.Description);
+                    var massage = _identityErrorLocalizer.Localizer(error.Code);
+                    ModelState.AddModelError("", massage);
                 }
 
                 return View(register);
@@ -96,5 +100,16 @@ namespace LibraryManagement.Controllers
         {
             return View();
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction("Login");
+
+        }
+
+
     }
 }

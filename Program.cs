@@ -22,6 +22,7 @@ builder.Services.AddScoped<IBookCopyService, BookCopyService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
+builder.Services.AddScoped<IdentityErrorLocalizer>();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {

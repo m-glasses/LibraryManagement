@@ -14,12 +14,22 @@
     <link rel="stylesheet" href="~/css/layout/sidebar.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout/layout.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/layout/footer.css" asp-append-version="true" />
-
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link href="~/css/vendor/jalalidatepicker.css" rel="stylesheet" />
+    <link href="~/css/vendor/jalalidatepicker.min.css" rel="stylesheet" />
+    <script src="~/js/vendor/jalalidatepicker.js"></script>
+    <script src="~/js/vendor/jalalidatepicker.min.js"></script>
+
+
 </head>
 <body>
+
+    @{
+        bool isAuthenticated = User.Identity?.IsAuthenticated == true;
+    }
+
     <header class="navbar">
-         <div class="container-fluid">
+        <div class="container-fluid">
             <button type="button"
                     class="navbar-menu-toggle"
                     id="sidebar-toggle"
@@ -35,9 +45,19 @@
             </a>
 
             <div class="navbar-user">
-                @if (User.Identity?.IsAuthenticated == true)
+                @if (isAuthenticated)
                 {
+                    <div class="navbar-auth">
+                        <span class="text-primary">
+                            کاربر @User.Identity.Name خوش آمدید
+                        </span>
+                    </div>
                     <div class="dropdown">
+                        <button class="btn dropdown-toggle"
+                                type="button"
+                                data-bs-toggle="dropdown">
+                            حساب کاربری
+                        </button>
                         <ul class="dropdown-menu">
                             <li>
                                 <a asp-controller="Account"
@@ -85,9 +105,12 @@
         </div>
     </header>
 
-    <aside class="sidebar "
-           id="app-sidebar"
-           aria-label="منوی اصلی">
+    @if (isAuthenticated)
+    {
+
+        <aside class="sidebar "
+               id="app-sidebar"
+               aria-label="منوی اصلی">
 
             <nav>
                 <ul class="sidebar-nav">
@@ -136,20 +159,22 @@
                     </li>
                 </ul>
             </nav>
-    </aside>
+        </aside>
+    }
+    
 
-    <div class="page-wrapper">
+    <div class="page-wrapper @(isAuthenticated ? "has-sidebar" : "")">
         <main role="main" class="page-content">
             @RenderBody()
         </main>
 
         <footer class="footer">
-                <span>© 2026 - کتابخانه من</span>
+            <span>© 2026 - کتابخانه من</span>
 
-                <a asp-controller="Home"
-                   asp-action="Privacy">
-                    حریم خصوصی
-                </a>
+            <a asp-controller="Home"
+               asp-action="Privacy">
+                حریم خصوصی
+            </a>
         </footer>
     </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
