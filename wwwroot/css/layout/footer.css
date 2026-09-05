@@ -1,0 +1,39 @@
+﻿/* ========================================
+   LibraryManagement
+   Footer
+   ======================================== */
+
+.footer {
+    flex: 0 0 auto;
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--lm-space-4) var(--lm-space-6);
+    background-color: var(--lm-surface);
+    border-top: 1px solid var(--lm-border);
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+}
+
+    .footer a {
+        color: var(--lm-text-muted);
+        transition: color var(--lm-transition-fast);
+    }
+
+        .footer a:hover {
+            color: var(--lm-primary);
+        }
+
+@media (max-width: 767.98px) {
+
+    .footer {
+        flex-direction: column;
+        justify-content: center;
+        gap: var(--lm-space-2);
+        padding: var(--lm-space-4);
+        text-align: center;
+    }
+}

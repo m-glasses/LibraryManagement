@@ -1,0 +1,90 @@
+﻿.sidebar {
+    width: var(--lm-sidebar-width);
+    min-height: calc(100vh - var(--lm-navbar-height));
+    position: fixed;
+    top: var(--lm-navbar-height);
+    right: 0;
+    bottom: 0;
+    background-color: var(--lm-surface);
+    border-left: 1px solid var(--lm-border);
+    box-shadow: var(--lm-shadow-sm);
+    z-index: 1020;
+    overflow-y: auto;
+}
+
+.sidebar-nav {
+    list-style: none;
+    margin: 0;
+    padding: var(--lm-space-4) var(--lm-space-3);
+}
+
+.sidebar-nav-item {
+    margin-bottom: var(--lm-space-1);
+}
+
+.sidebar-nav-link {
+    display: flex;
+    align-items: center;
+    gap: var(--lm-space-3);
+    width: 100%;
+    min-height: 40px;
+    padding: var(--lm-space-2) var(--lm-space-3);
+    border-radius: var(--lm-radius);
+    color: var(--lm-text);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-medium);
+    transition: background-color var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+    .sidebar-nav-link:hover {
+        background-color: var(--lm-background);
+        color: var(--lm-primary);
+    }
+
+    .sidebar-nav-link.active {
+        background-color: var(--lm-primary-light);
+        color: var(--lm-primary);
+        font-weight: var(--lm-font-weight-semibold);
+    }
+
+.sidebar-nav-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    object-fit: contain;
+}
+
+.sidebar-nav-title {
+    flex: 1;
+}
+
+.sidebar-section {
+    margin-top: var(--lm-space-6);
+}
+
+.sidebar-section-title {
+    margin: 0 0 var(--lm-space-2);
+    padding: 0 var(--lm-space-3);
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-xs);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+@media (max-width: 767.98px) {
+
+    .sidebar {
+        width: min(var(--lm-sidebar-width), 85vw);
+        top: var(--lm-navbar-height);
+        right: 0;
+        bottom: 0;
+        min-height: calc(100vh - var(--lm-navbar-height));
+        z-index: 1045;
+        transform: translateX(100%);
+        transition: transform var(--lm-transition-slow);
+        box-shadow: var(--lm-shadow-lg);
+    }
+
+        .sidebar.show {
+            transform: translateX(0);
+        }
+}

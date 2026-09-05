@@ -6,43 +6,152 @@
     <title>@ViewData["Title"] - LibraryManagement</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" />
-    <link rel="stylesheet" href="~/css/library-theme.css" />
+
+    <link rel="stylesheet" href="~/css/base/variables.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/base/base.css" asp-append-version="true" />
+
+    <link rel="stylesheet" href="~/css/layout/navbar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout/sidebar.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout/footer.css" asp-append-version="true" />
+
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/LibraryManagement.styles.css" asp-append-version="true" />
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">LibraryManagement</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+    <header class="navbar">
+         <div class="container-fluid">
+            <button type="button"
+                    class="navbar-menu-toggle"
+                    id="sidebar-toggle"
+                    aria-controls="app-sidebar"
+                    aria-expanded="false"
+                    aria-label="باز کردن منو">
+                <img src="~/images/icons/menu.svg" alt="" />
+            </button>
+
+            <a asp-controller="Home" asp-action="Index" class="navbar-brand">
+                <img src="~/images/logo.svg" alt="کتابخانه من" />
+                <span>کتابخانه من</span>
+            </a>
+
+            <div class="navbar-user">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <div class="dropdown">
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a asp-controller="Account"
+                                   asp-action="Index"
+                                   class="dropdown-item">
+                                    پروفایل
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#" class="dropdown-item">
+                                    تنظیمات
+                                </a>
+                            </li>
+                            <li>
+                                <hr class="dropdown-divider" />
+                            </li>
+                            <li>
+                                <form asp-controller="Account"
+                                      asp-action="Logout"
+                                      method="post">
+                                    <button type="submit" class="dropdown-item">
+                                        خروج
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <div class="navbar-auth">
+                        <a asp-controller="Account"
+                           asp-action="Login"
+                           class="nav-link">
+                            ورود
+                        </a>
+                        <a asp-controller="Account"
+                           asp-action="Register"
+                           class="nav-link">
+                            ثبت‌نام
+                        </a>
+                    </div>
+                }
             </div>
-        </nav>
+        </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
+
+    <aside class="sidebar "
+           id="app-sidebar"
+           aria-label="منوی اصلی">
+
+            <nav>
+                <ul class="sidebar-nav">
+                    <li class="sidebar-nav-item">
+                        <a asp-controller="Home"
+                           asp-action="Index"
+                           class="sidebar-nav-link active">
+                            <img src="~/images/icons/home.svg"
+                                 class="sidebar-nav-icon"
+                                 alt="" />
+                            <span class="sidebar-nav-title">داشبورد</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-nav-item">
+                        <a asp-controller="Book"
+                           asp-action="Index"
+                           class="sidebar-nav-link">
+                            <img src="~/images/icons/book.svg"
+                                 class="sidebar-nav-icon"
+                                 alt="" />
+                            <span class="sidebar-nav-title">کتاب‌ها</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-nav-item">
+                        <a asp-controller="Loan"
+                           asp-action="Index"
+                           class="sidebar-nav-link">
+                            <img src="~/images/icons/book.svg"
+                                 class="sidebar-nav-icon"
+                                 alt="" />
+                            <span class="sidebar-nav-title">امانت‌ها</span>
+                        </a>
+                    </li>
+
+                    <li class="sidebar-nav-item">
+                        <a asp-controller="Reservation"
+                           asp-action="Index"
+                           class="sidebar-nav-link">
+                            <img src="~/images/icons/calendar-event.svg"
+                                 class="sidebar-nav-icon"
+                                 alt="" />
+                            <span class="sidebar-nav-title">رزروها</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+    </aside>
+
+    <div class="page-wrapper">
+        <main role="main" class="page-content">
             @RenderBody()
         </main>
-    </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - LibraryManagement - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+        <footer class="footer">
+                <span>© 2026 - کتابخانه من</span>
+
+                <a asp-controller="Home"
+                   asp-action="Privacy">
+                    حریم خصوصی
+                </a>
+        </footer>
+    </div>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

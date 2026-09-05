@@ -1,0 +1,160 @@
+﻿/* ========================================
+   LibraryManagement
+   Base Styles
+   ======================================== */
+
+
+/* ----------------------------------------
+   Font
+   ---------------------------------------- */
+
+@font-face {
+    font-family: "Vazirmatn";
+    src: url("/fonts/Vazirmatn-Regular.woff2") format("woff2");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Vazirmatn";
+    src: url("/fonts/Vazirmatn-Medium.woff2") format("woff2");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Vazirmatn";
+    src: url("/fonts/Vazirmatn-Bold.woff2") format("woff2");
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
+
+/* ----------------------------------------
+   Box Sizing
+   ---------------------------------------- */
+
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+
+/* ----------------------------------------
+   HTML & Body
+   ---------------------------------------- */
+
+html {
+    font-size: 16px;
+}
+
+html,
+body {
+    min-height: 100%;
+    overflow-x: hidden;
+}
+
+body {
+    margin: 0;
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-normal);
+    line-height: var(--lm-line-height);
+    color: var(--lm-text);
+    background-color: var(--lm-background);
+    direction: rtl;
+}
+
+
+/* ----------------------------------------
+   Typography
+   ---------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-top: 0;
+    margin-bottom: var(--lm-space-4);
+    font-weight: var(--lm-font-weight-semibold);
+    line-height: var(--lm-line-height-tight);
+    color: var(--lm-text);
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: var(--lm-space-4);
+}
+
+
+/* ----------------------------------------
+   Links
+   ---------------------------------------- */
+
+a {
+    color: var(--lm-primary);
+    text-decoration: none;
+}
+
+    a:hover {
+        color: var(--lm-primary-hover);
+    }
+
+
+/* ----------------------------------------
+   Images & SVG
+   ---------------------------------------- */
+
+img,
+svg {
+    max-width: 100%;
+}
+
+
+/* ----------------------------------------
+   Form Elements
+   ---------------------------------------- */
+
+button,
+input,
+select,
+textarea {
+    font-family: inherit;
+}
+
+
+/* ----------------------------------------
+   Lists
+   ---------------------------------------- */
+
+ul,
+ol {
+    margin-top: 0;
+}
+
+
+/* ----------------------------------------
+   Text Selection
+   ---------------------------------------- */
+
+::selection {
+    background-color: var(--lm-primary);
+    color: #ffffff;
+}
+
+
+/* ----------------------------------------
+   Keyboard Focus
+   ---------------------------------------- */
+
+:focus-visible {
+    outline: 2px solid var(--lm-primary);
+    outline-offset: 2px;
+}
+
