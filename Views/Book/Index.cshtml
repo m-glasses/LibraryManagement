@@ -1,0 +1,140 @@
+@model IEnumerable<LibraryManagement.ViewModels.BookListViewModel>
+
+@{
+    ViewData["Title"] = "کتاب‌ها";
+}
+
+<div class="book-page">
+
+    <div class="book-page-header">
+        <div>
+            <h1 class="book-page-title">کتاب‌ها</h1>
+            <p class="book-page-subtitle">
+                فهرست کتاب‌های موجود در کتابخانه
+            </p>
+        </div>
+    </div>
+
+    <div class="book-list-card">
+
+        <div class="table-responsive">
+            <table class="table book-table mb-0">
+
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Title)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Author)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Publisher)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.PublicationYear)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.TotalCopies)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.AvailableCopies)
+                        </th>
+                        <th>
+                            وضعیت
+                        </th>
+                        <th class="book-table-actions">
+                            عملیات
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    @if (Model.Any())
+                    {
+                        foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="book-title">
+                                    @item.Title
+                                </td>
+
+                                <td>
+                                    @item.Author
+                                </td>
+
+                                <td>
+                                    @item.Publisher
+                                </td>
+
+                                <td>
+                                    @item.PublicationYear
+                                </td>
+
+                                <td>
+                                    @item.TotalCopies
+                                </td>
+
+                                <td>
+                                    @item.AvailableCopies
+                                </td>
+                                <td>
+                                    @if (item.AvailableCopies > 0)
+                                    {
+                                        <span class="book-status book-status-available">
+                                            موجود
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="book-status book-status-unavailable">
+                                            ناموجود
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="book-table-actions">
+                                    <a asp-action="Details"
+                                       asp-route-id="@item.Id"
+                                       class="book-details-link">
+                                        مشاهده
+                                    </a>
+                                </td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>
+                            <td colspan="7">
+                                <div class="book-empty-state">
+                                    <div class="book-empty-icon">
+                                        <img src="~/images/icons/book.svg"
+                                             alt=""
+                                             width="32"
+                                             height="32" />
+                                    </div>
+
+                                    <h3>کتابی یافت نشد</h3>
+
+                                    <p>
+                                        در حال حاضر هیچ کتابی در کتابخانه ثبت نشده است.
+                                    </p>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+
+            </table>
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/pages/book/index.css" asp-append-version="true" />
+}
+
+

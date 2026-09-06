@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Data;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
+using LibraryManagement.ViewModels;
 
 namespace LibraryManagement.Services
 {
@@ -11,6 +12,26 @@ namespace LibraryManagement.Services
         {
             _context = context;
         }
-       
+
+        public BookListViewModel GetBookDetails(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<BookListViewModel> GetBookList()
+        {
+            return _context.Books
+                .Select(book => new BookListViewModel
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    PublicationYear = book.PublicationYear,
+                    Publisher = book.Publisher,
+                    TotalCopies = book.BookCopies.Count(),
+                    AvailableCopies = book.BookCopies.Count(bc => !bc.Loans.Any(l => l.LoanStatus == LoanStatus.Active))
+                })
+                .ToList();
+        }
     }
 }

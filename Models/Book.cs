@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LibraryManagement.ViewModels.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.Models
 {
@@ -22,7 +23,7 @@ namespace LibraryManagement.Models
         [StringLength(100)]
         public string Publisher { get; set; }
 
-        [Range(1000, 1500)]
+        [PublicationYearRange]
         public int PublicationYear { get; set; }
 
         public PublicationSeason? PublicationSeason { get; set; }

@@ -14,7 +14,7 @@ namespace LibraryManagement.Controllers
         // GET: BookController
         public IActionResult Index()
         {
-            var books = _bookService.GetAll();
+            var books = _bookService.GetBookList();
             return View(books);
         }
 
