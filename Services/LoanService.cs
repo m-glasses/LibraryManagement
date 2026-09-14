@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Data;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services
 {
@@ -169,6 +170,14 @@ namespace LibraryManagement.Services
             _context.SaveChanges();
             return true;
 
+        }
+
+        public Loan? GetDetailsById(int id)
+        {
+            return _context.Loans
+                .Include(l => l.BookCopy)
+                .ThenInclude(bc => bc.Book)
+                .FirstOrDefault(l => l.Id == id);
         }
     }
 }

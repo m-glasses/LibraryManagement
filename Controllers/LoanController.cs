@@ -14,7 +14,7 @@ namespace LibraryManagement.Controllers
         private readonly IBookCopyService _bookCopyService;
         private readonly UserManager<User> _userManager;
 
-        public LoanController(ILoanService loanService , UserManager<User> userManager , IBookCopyService bookCopyService)
+        public LoanController(ILoanService loanService, UserManager<User> userManager, IBookCopyService bookCopyService)
         {
             _loanService = loanService;
             _userManager = userManager;
@@ -35,20 +35,39 @@ namespace LibraryManagement.Controllers
             return View(loans);
         }
 
+
+        private LoanDetailsViewModel MapToDetailsViewModel(Loan loan)
+        {
+            return new LoanDetailsViewModel
+            {
+                Id = loan.Id,
+                BookTitle = loan.BookCopy.Book.Title,
+                Author = loan.BookCopy.Book.Author,
+                InventoryNumber = loan.BookCopy.InventoryNumber,
+                StartDate = loan.StartDate,
+                DueDate = loan.DueDate,
+                LoanStatus = loan.LoanStatus
+            };
+        }
+
         // GET: LoanController/Details/5
         public IActionResult Details(int id)
         {
-            var loan = _loanService.GetById(id);
+            var loan = _loanService.GetDetailsById(id);
+
             if (loan == null)
             {
                 return NotFound();
             }
-            return View(loan);
+
+            var viewModel = MapToDetailsViewModel(loan);
+
+            return View(viewModel);
         }
 
         public IActionResult Borrow()
         {
-           
+
             return View();
         }
 

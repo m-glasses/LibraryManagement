@@ -1,0 +1,111 @@
+﻿.loan-details-page {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+.loan-details-header {
+    margin-bottom: 24px;
+}
+
+    .loan-details-header h1 {
+        margin: 0 0 8px;
+        font-size: 28px;
+    }
+
+    .loan-details-header p {
+        margin: 0;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+.loan-details-card {
+    background-color: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+    .loan-details-card section + section {
+        margin-top: 32px;
+        padding-top: 28px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .loan-details-card h2 {
+        margin: 0 0 20px;
+        font-size: 18px;
+    }
+
+.loan-info-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+}
+
+.loan-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.loan-info-label {
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.loan-info-value {
+    font-size: 15px;
+    font-weight: 500;
+    color: #1f2937;
+}
+
+.loan-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    background-color: #dcfce7;
+    color: #166534;
+}
+
+.loan-details-actions {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 28px;
+}
+
+.loan-back-button {
+    display: inline-block;
+    padding: 9px 18px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    color: #374151;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+    .loan-back-button:hover {
+        background-color: #f9fafb;
+        border-color: #9ca3af;
+    }
+
+@media (max-width: 640px) {
+    .loan-details-page {
+        margin: 24px auto;
+        padding: 0 14px;
+    }
+
+    .loan-details-card {
+        padding: 20px;
+    }
+
+    .loan-info-grid {
+        grid-template-columns: 1fr;
+    }
+}
