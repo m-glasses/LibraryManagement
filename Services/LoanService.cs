@@ -12,6 +12,27 @@ namespace LibraryManagement.Services
             _context = context;
         }
 
+        public BookCopy FindAvailableBookCopy(int bookId)
+        {
+            if (!_context.Books.Any(b => b.Id == bookId))
+            {
+                throw new InvalidOperationException("Book not found");
+            }
+
+            var bookCopy = _context.BookCopies
+                .FirstOrDefault(bc =>
+                    bc.BookId == bookId &&
+                    !bc.Loans.Any(l => l.LoanStatus == LoanStatus.Active));
+
+            if (bookCopy == null)
+            {
+                throw new InvalidOperationException("Book not Available");
+            }
+
+            return bookCopy;
+        }
+
+
         public Loan Borrow(int userId, int bookCopyId)
         {
             var settings = _context.LibrarySettings.SingleOrDefault();

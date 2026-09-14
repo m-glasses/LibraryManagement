@@ -1,15 +1,22 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using LibraryManagement.Models;
+﻿using LibraryManagement.Models;
+using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Controllers
 {
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
-        public BookController(IBookService bookService)
+        private readonly ILoanService _loanService;
+        private readonly UserManager<User> _userManager;
+        public BookController(IBookService bookService, ILoanService loanService, UserManager<User> userManager)
         {
             _bookService = bookService;
+            _loanService = loanService;
+            _userManager = userManager;
         }
         // GET: BookController
         public IActionResult Index()
@@ -21,7 +28,7 @@ namespace LibraryManagement.Controllers
         // GET: BookController/Details/5
         public IActionResult Details(int id)
         {
-            var book = _bookService.GetById(id);
+            var book = _bookService.GetBookDetails(id);
             if (book == null)
             {
                 return NotFound();
@@ -34,6 +41,9 @@ namespace LibraryManagement.Controllers
         {
             return View();
         }
+
+
+        
 
         // POST: BookController/Create
         [HttpPost]

@@ -5,17 +5,35 @@ using LibraryManagement.ViewModels;
 
 namespace LibraryManagement.Services
 {
-    public class BookService : GenericService<Book> , IBookService
+    public class BookService : GenericService<Book>, IBookService
     {
         private readonly LibraryDbContext _context;
-        public BookService(LibraryDbContext context): base(context)
+        public BookService(LibraryDbContext context) : base(context)
         {
             _context = context;
         }
 
-        public BookListViewModel GetBookDetails(int id)
+        public BookDetailsViewModel GetBookDetails(int id)
         {
-            throw new NotImplementedException();
+            return _context.Books
+                .Where(b => b.Id == id)
+                .Select(book => new BookDetailsViewModel
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Publisher = book.Publisher,
+                    PublicationYear = book.PublicationYear,
+                    PublicationSeason = book.PublicationSeason,
+                    PageCount = book.PageCount,
+                    Edition = book.Edition,
+                    Volume = book.Volume,
+                    TotalCopies = book.BookCopies.Count(),
+                    AvailableCopies = book.BookCopies.Count(
+                        bc => !bc.Loans.Any(
+                            l => l.LoanStatus == LoanStatus.Active))
+                })
+                .SingleOrDefault();
         }
 
         public List<BookListViewModel> GetBookList()

@@ -1,6 +1,9 @@
-﻿using LibraryManagement.ViewModels;
+﻿using LibraryManagement.Models;
 using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
+using LibraryManagement.ViewModels;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Controllers
@@ -8,13 +11,15 @@ namespace LibraryManagement.Controllers
     public class LoanController : Controller
     {
         private readonly ILoanService _loanService;
-        private readonly IUserService _userService;
         private readonly IBookCopyService _bookCopyService;
-        public LoanController(ILoanService loanService , IUserService userService , IBookCopyService bookCopyService)
+        private readonly UserManager<User> _userManager;
+
+        public LoanController(ILoanService loanService , UserManager<User> userManager , IBookCopyService bookCopyService)
         {
             _loanService = loanService;
-            _userService = userService;
+            _userManager = userManager;
             _bookCopyService = bookCopyService;
+
         }
 
         // GET: LoanController
@@ -47,27 +52,25 @@ namespace LibraryManagement.Controllers
             return View();
         }
 
+        [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Borrow(int userId, int bookCopyId)
+        public async Task<IActionResult> Borrow(int bookId)
         {
-            if (ModelState.IsValid)
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
             {
-                return View();
+                return Unauthorized();
             }
 
-            try
-            {
-                var loan = _loanService.Borrow(userId, bookCopyId);
-                return View(loan);
+            var bookCopy = _loanService.FindAvailableBookCopy(bookId);
 
-            }
-            catch (InvalidOperationException ex)
-            {
-                ModelState.AddModelError(string.Empty, ex.Message);
-                return View();
-            }
+            var loan = _loanService.Borrow(user.Id, bookCopy.Id);
 
+            return RedirectToAction(nameof(Details), "Loan", new { id = bookId });
         }
+
+
     }
 }

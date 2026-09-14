@@ -5,8 +5,8 @@ namespace LibraryManagement.Services.Interfaces
 {
     public interface IBookService : IGenericService<Book>
     {
-        public List<BookListViewModel> GetBookList(); 
-        public BookListViewModel GetBookDetails(int id);
+        List<BookListViewModel> GetBookList();
+        BookDetailsViewModel? GetBookDetails(int id);
         
     }
 }

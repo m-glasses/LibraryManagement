@@ -1,0 +1,207 @@
+﻿@model BookDetailsViewModel
+
+@{
+    ViewData["Title"] = "اطلاعات کتاب";
+}
+
+<div class="book-details-page">
+
+    <div class="book-page-header">
+        <div>
+            <h1 class="book-page-title">اطلاعات کتاب</h1>
+            <p class="book-page-subtitle">
+                جزئیات و وضعیت موجودی کتاب
+            </p>
+        </div>
+    </div>
+
+    <div class="book-details-card">
+
+        <section class="book-details-section">
+
+            <div class="book-details-section-header">
+                <h2>مشخصات کتاب</h2>
+            </div>
+
+            <div class="book-details-grid">
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.Title)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.Title
+                    </span>
+                </div>
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.Author)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.Author
+                    </span>
+                </div>
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.Publisher)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.Publisher
+                    </span>
+                </div>
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.PublicationYear)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.PublicationYear
+                    </span>
+                </div>
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.PublicationSeason)
+                    </span>
+                    <span class="book-details-value">
+                        @switch (Model.PublicationSeason)
+                        {
+                            case PublicationSeason.Spring:
+                                @:بهار
+                                break;
+
+                            case PublicationSeason.Summer:
+                                @:تابستان
+                                break;
+
+                            case PublicationSeason.Autumn:
+                                @:پاییز
+                                break;
+
+                            case PublicationSeason.Winter:
+                                @:زمستان
+                                break;
+
+                            default:
+                                @:ثبت نشده
+                                break;
+                        }
+                    </span>
+                </div>
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.PageCount)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.PageCount
+                    </span>
+                </div>
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.Edition)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.Edition
+                    </span>
+                </div>
+
+                <div class="book-details-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.Volume)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.Volume
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+        <section class="book-details-section book-inventory-section">
+
+            <div class="book-details-section-header">
+                <h2>وضعیت موجودی</h2>
+            </div>
+
+            <div class="book-inventory-grid">
+
+                <div class="book-inventory-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.TotalCopies)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.TotalCopies
+                    </span>
+                </div>
+
+                <div class="book-inventory-item">
+                    <span class="book-details-label">
+                        @Html.DisplayNameFor(model => model.AvailableCopies)
+                    </span>
+                    <span class="book-details-value">
+                        @Model.AvailableCopies
+                    </span>
+                </div>
+
+                <div class="book-inventory-item">
+                    <span class="book-details-label">
+                        وضعیت
+                    </span>
+
+                    <span class="book-details-value">
+                        @if (Model.AvailableCopies > 0)
+                        {
+                            <span class="book-status book-status-available">
+                                موجود
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="book-status book-status-unavailable">
+                                ناموجود
+                            </span>
+                        }
+                    </span>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    @if (Model.AvailableCopies > 0)
+    {
+        <form asp-controller="Loan"
+              asp-action="Borrow"
+              method="post"
+              class="book-borrow-form">
+
+            <input type="hidden" name="bookId" value="@Model.Id" />
+
+            <button type="submit" class="book-borrow-button">
+                امانت گرفتن کتاب
+            </button>
+        </form>
+    }
+
+    <div class="book-details-actions">
+        <a asp-action="Index" class="book-back-link">
+            بازگشت به فهرست کتاب‌ها
+        </a>
+    </div>
+
+   
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/book/details.css"
+          asp-append-version="true" />
+}
