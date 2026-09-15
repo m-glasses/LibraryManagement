@@ -7,7 +7,7 @@ namespace LibraryManagement.Services.Interfaces
     {
         BookCopy FindAvailableBookCopy(int bookId);
         Loan Borrow(int userId, int bookCopyId);
-        bool RequestReturn(int loanId);
+        bool RequestReturn(int loanId , int userId );
         bool ConfirmReturn(int loanId, DateTime returnDate);
         bool Renew(int loanId);
         Loan? GetDetailsById(int loanId, int userId);

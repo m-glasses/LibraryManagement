@@ -230,3 +230,41 @@
 }
 
 
+.loan-table-actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--lm-space-2);
+}
+
+.loan-return-form {
+    margin: 0;
+}
+
+.loan-return-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 32px;
+    padding: var(--lm-space-1) var(--lm-space-3);
+    border: 1px solid var(--lm-primary);
+    border-radius: var(--lm-button-radius);
+    background-color: var(--lm-primary);
+    color: #ffffff;
+    font-family: inherit;
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast);
+}
+
+    .loan-return-button:hover {
+        border-color: var(--lm-primary-hover);
+        background-color: var(--lm-primary-hover);
+    }
+
+    .loan-return-button:focus-visible {
+        outline: 2px solid var(--lm-primary);
+        outline-offset: 2px;
+    }

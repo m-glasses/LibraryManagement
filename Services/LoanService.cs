@@ -77,23 +77,20 @@ namespace LibraryManagement.Services
             return loan;
         }
 
-        public bool RequestReturn(int loanId)
+        public bool RequestReturn(int loanId, int userId)
         {
-            var loan = _context.Loans.FirstOrDefault(l => l.Id == loanId);
+            var loan = _context.Loans
+                .FirstOrDefault(l => l.Id == loanId && l.UserId == userId);
 
-            if (loan == null)
+            if (loan is null || loan.LoanStatus != LoanStatus.Active)
             {
                 return false;
-            }
-
-            if (loan.LoanStatus != LoanStatus.Active)
-            {
-                return false;
-
             }
 
             loan.LoanStatus = LoanStatus.ReturnPending;
+
             _context.SaveChanges();
+
             return true;
         }
 

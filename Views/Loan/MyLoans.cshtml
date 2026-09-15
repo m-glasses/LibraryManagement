@@ -59,26 +59,16 @@
                     </thead>
 
                     <tbody>
-
                         @foreach (var loan in Model)
                         {
                             <tr>
+                                <td>@loan.BookTitle</td>
 
-                                <td>
-                                    @loan.BookTitle
-                                </td>
+                                <td>@loan.Author</td>
 
-                                <td>
-                                    @loan.Author
-                                </td>
+                                <td>@loan.StartDate.ToPersianDate()</td>
 
-                                <td>
-                                    @loan.StartDate.ToPersianDate()
-                                </td>
-
-                                <td>
-                                    @loan.DueDate.ToPersianDate()
-                                </td>
+                                <td>@loan.DueDate.ToPersianDate()</td>
 
                                 <td>
                                     <span class="loan-status
@@ -89,36 +79,49 @@
                                               LoanStatus.ReturnPending => "loan-status-pending",
                                               _ => "loan-status-unknown"
                                           })">
-
                                         @(loan.LoanStatus switch
                                         {
                                             LoanStatus.Active => "فعال",
                                             LoanStatus.Completed => "خاتمه یافته",
-                                            LoanStatus.ReturnPending => "در انتظار تایید",
+                                            LoanStatus.ReturnPending => "در انتظار تأیید",
                                             _ => "نامشخص"
                                         })
-
                                     </span>
                                 </td>
 
-                                <td>
+                                <td class="loan-table-actions">
+
                                     <a asp-controller="Loan"
                                        asp-action="Details"
                                        asp-route-id="@loan.Id"
                                        class="loan-details-link">
                                         جزئیات
                                     </a>
-                                </td>
 
+                                    @if (loan.LoanStatus == LoanStatus.Active)
+                                    {
+                                        <form asp-controller="Loan"
+                                              asp-action="RequestReturn"
+                                              asp-route-loanId="@loan.Id"
+                                              method="post"
+                                              class="loan-return-form">
+
+                                            <button type="submit"
+                                                    class="loan-return-button">
+                                                درخواست بازگشت
+                                            </button>
+
+                                        </form>
+                                    }
+
+                                </td>
                             </tr>
                         }
-
                     </tbody>
 
                 </table>
 
             </div>
-
         </div>
     }
 
@@ -126,6 +129,7 @@
 
 @section Styles {
     <link rel="stylesheet"
-          href="~/css/pages/loan/myloans.css"
+          href="~/css/pages/loan/Myloans.css"
           asp-append-version="true" />
 }
+

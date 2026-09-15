@@ -128,5 +128,25 @@ namespace LibraryManagement.Controllers
             return View(viewModels);
         }
 
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> RequestReturn(int loanId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user is null)
+            {
+                return Unauthorized();
+            }
+
+            if (!_loanService.RequestReturn(loanId, user.Id))
+            {
+                return NotFound();
+            }
+
+            return RedirectToAction(nameof(MyLoans));
+        }
+
     }
 }
