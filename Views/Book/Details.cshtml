@@ -1,4 +1,5 @@
-﻿@model BookDetailsViewModel
+﻿
+@model BookDetailsViewModel
 
 @{
     ViewData["Title"] = "اطلاعات کتاب";
@@ -65,6 +66,7 @@
                     <span class="book-details-label">
                         @Html.DisplayNameFor(model => model.PublicationSeason)
                     </span>
+
                     <span class="book-details-value">
                         @switch (Model.PublicationSeason)
                         {
@@ -175,28 +177,33 @@
 
     </div>
 
-    @if (Model.AvailableCopies > 0)
-    {
-        <form asp-controller="Loan"
-              asp-action="Borrow"
-              method="post"
-              class="book-borrow-form">
-
-            <input type="hidden" name="bookId" value="@Model.Id" />
-
-            <button type="submit" class="book-borrow-button">
-                امانت گرفتن کتاب
-            </button>
-        </form>
-    }
-
     <div class="book-details-actions">
-        <a asp-action="Index" class="book-back-link">
+
+        @if (Model.AvailableCopies > 0)
+        {
+            <form asp-controller="Loan"
+                  asp-action="Borrow"
+                  method="post"
+                  class="book-borrow-form">
+
+                <input type="hidden"
+                       name="bookId"
+                       value="@Model.Id" />
+
+                <button type="submit"
+                        class="book-borrow-button">
+                    امانت گرفتن کتاب
+                </button>
+
+            </form>
+        }
+
+        <a asp-action="Index"
+           class="book-back-link">
             بازگشت به فهرست کتاب‌ها
         </a>
-    </div>
 
-   
+    </div>
 
 </div>
 
@@ -205,3 +212,4 @@
           href="~/css/pages/book/details.css"
           asp-append-version="true" />
 }
+

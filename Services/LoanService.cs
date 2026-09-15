@@ -172,12 +172,22 @@ namespace LibraryManagement.Services
 
         }
 
-        public Loan? GetDetailsById(int id)
+        public Loan? GetDetailsById(int loanId , int userId)
         {
             return _context.Loans
                 .Include(l => l.BookCopy)
                 .ThenInclude(bc => bc.Book)
-                .FirstOrDefault(l => l.Id == id);
+                .FirstOrDefault(l => l.Id == loanId && l.UserId == userId);
+        }
+
+        public List<Loan> GetUserLoans(int userId)
+        {
+            return _context.Loans
+                .AsNoTracking()
+                .Where(loan => loan.UserId == userId)
+                .Include(loan => loan.BookCopy)
+                    .ThenInclude(bookCopy => bookCopy.Book)
+                .ToList();
         }
     }
 }

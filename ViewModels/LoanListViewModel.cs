@@ -3,7 +3,7 @@ using LibraryManagement.Models;
 
 namespace LibraryManagement.ViewModels
 {
-    public class LoanDetailsViewModel
+    public class LoanListViewModel
     {
         public int Id { get; set; }
 
@@ -12,9 +12,6 @@ namespace LibraryManagement.ViewModels
 
         [Display(Name = "نویسنده")]
         public string Author { get; set; }
-
-        [Display(Name = "شماره نسخه")]
-        public string InventoryNumber { get; set; }
 
         [Display(Name = "تاریخ امانت")]
         public DateTime StartDate { get; set; }

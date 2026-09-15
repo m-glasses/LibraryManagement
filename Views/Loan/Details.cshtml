@@ -1,4 +1,5 @@
-﻿@model LibraryManagement.ViewModels.LoanDetailsViewModel
+﻿
+@model LibraryManagement.ViewModels.LoanDetailsViewModel
 
 @{
     ViewData["Title"] = "جزئیات امانت";
@@ -6,60 +7,102 @@
 
 <div class="loan-details-page">
 
-    <div class="loan-details-header">
+    <div class="loan-page-header">
         <div>
-            <h1>جزئیات امانت</h1>
-            <p>اطلاعات کتاب و وضعیت امانت شما</p>
+            <h1 class="loan-page-title">جزئیات امانت</h1>
+
+            <p class="loan-page-subtitle">
+                اطلاعات کتاب و وضعیت امانت شما
+            </p>
         </div>
     </div>
 
     <div class="loan-details-card">
 
-        <section class="loan-book-section">
-            <h2>اطلاعات کتاب</h2>
+        <section class="loan-details-section">
+
+            <div class="loan-details-section-header">
+                <h2>اطلاعات کتاب</h2>
+            </div>
 
             <div class="loan-info-grid">
 
                 <div class="loan-info-item">
-                    <span class="loan-info-label">عنوان کتاب</span>
-                    <span class="loan-info-value">@Model.BookTitle</span>
+                    <span class="loan-info-label">
+                        @Html.DisplayNameFor(model => model.BookTitle)
+                    </span>
+
+                    <span class="loan-info-value">
+                        @Model.BookTitle
+                    </span>
                 </div>
 
                 <div class="loan-info-item">
-                    <span class="loan-info-label">نویسنده</span>
-                    <span class="loan-info-value">@Model.Author</span>
+                    <span class="loan-info-label">
+                        @Html.DisplayNameFor(model => model.Author)
+                    </span>
+
+                    <span class="loan-info-value">
+                        @Model.Author
+                    </span>
                 </div>
 
                 <div class="loan-info-item">
-                    <span class="loan-info-label">شماره نسخه</span>
-                    <span class="loan-info-value">@Model.InventoryNumber</span>
+                    <span class="loan-info-label">
+                        @Html.DisplayNameFor(model => model.InventoryNumber)
+                    </span>
+
+                    <span class="loan-info-value">
+                        @Model.InventoryNumber
+                    </span>
                 </div>
 
             </div>
+
         </section>
 
-        <section class="loan-period-section">
-            <h2>اطلاعات امانت</h2>
+        <section class="loan-details-section">
+
+            <div class="loan-details-section-header">
+                <h2>اطلاعات امانت</h2>
+            </div>
 
             <div class="loan-info-grid">
 
                 <div class="loan-info-item">
-                    <span class="loan-info-label">تاریخ امانت</span>
+                    <span class="loan-info-label">
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </span>
+
                     <span class="loan-info-value">
-                        @Model.StartDate.ToString("yyyy/MM/dd")
+                        @Model.StartDate.ToPersianDate()
                     </span>
                 </div>
 
                 <div class="loan-info-item">
-                    <span class="loan-info-label">تاریخ سررسید</span>
+                    <span class="loan-info-label">
+                        @Html.DisplayNameFor(model => model.DueDate)
+                    </span>
+
                     <span class="loan-info-value">
-                        @Model.DueDate.ToString("yyyy/MM/dd")
+                        @Model.DueDate.ToPersianDate()
                     </span>
                 </div>
 
                 <div class="loan-info-item">
-                    <span class="loan-info-label">وضعیت</span>
-                    <span class="loan-status">
+                    <span class="loan-info-label">
+                        @Html.DisplayNameFor(model => model.LoanStatus)
+                    </span>
+
+                    <span class="loan-status
+                        @(Model.LoanStatus switch
+                          {
+                              LoanStatus.Active => "loan-status-active",
+                              LoanStatus.Completed => "loan-status-completed",
+                              LoanStatus.ReturnPending => "loan-status-pending",
+                              _ => "loan-status-unknown"
+                          })">
+
                         @(Model.LoanStatus switch
                         {
                             LoanStatus.Active => "فعال",
@@ -67,27 +110,31 @@
                             LoanStatus.ReturnPending => "در انتظار تایید",
                             _ => "نامشخص"
                         })
-                   </span>
 
+                    </span>
                 </div>
 
             </div>
-        </section>
 
-        <div class="loan-details-actions">
-            <a asp-controller="Home"
-               asp-action="Index"
-               class="loan-back-button">
-                بازگشت
-            </a>
-        </div>
+        </section>
 
     </div>
 
-</div
+    <div class="loan-details-actions">
+
+        <a asp-controller="Loan"
+           asp-action="MyLoans"
+           class="loan-back-button">
+            بازگشت
+        </a>
+
+    </div>
+
+</div>
 
 @section Styles {
     <link rel="stylesheet"
           href="~/css/pages/loan/details.css"
           asp-append-version="true" />
 }
+

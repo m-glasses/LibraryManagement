@@ -10,6 +10,7 @@ namespace LibraryManagement.Services.Interfaces
         bool RequestReturn(int loanId);
         bool ConfirmReturn(int loanId, DateTime returnDate);
         bool Renew(int loanId);
-        Loan? GetDetailsById(int id);
+        Loan? GetDetailsById(int loanId, int userId);
+        List<Loan> GetUserLoans(int userId);
     }
 }

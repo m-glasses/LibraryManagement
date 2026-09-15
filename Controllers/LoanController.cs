@@ -51,9 +51,17 @@ namespace LibraryManagement.Controllers
         }
 
         // GET: LoanController/Details/5
-        public IActionResult Details(int id)
+
+        [Authorize]
+        public async Task<IActionResult> Details(int id)
         {
-            var loan = _loanService.GetDetailsById(id);
+            var user = await _userManager.GetUserAsync(User);
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var loan = _loanService.GetDetailsById(id , user.Id);
 
             if (loan == null)
             {
@@ -87,9 +95,38 @@ namespace LibraryManagement.Controllers
 
             var loan = _loanService.Borrow(user.Id, bookCopy.Id);
 
-            return RedirectToAction(nameof(Details), "Loan", new { id = bookId });
+            return RedirectToAction(nameof(Details), "Loan", new { id = loan.Id });
         }
 
+        [Authorize]
+        public async Task<IActionResult> MyLoans()
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user == null)
+            {
+                return Unauthorized();
+            }
+
+            var userLoans = _loanService.GetUserLoans(user.Id);
+
+            var viewModels = new List<LoanListViewModel>();
+
+            foreach (var loan in userLoans)
+            {
+                viewModels.Add(new LoanListViewModel
+                {
+                    Id = loan.Id,
+                    BookTitle = loan.BookCopy.Book.Title,
+                    Author = loan.BookCopy.Book.Author,
+                    StartDate = loan.StartDate,
+                    DueDate = loan.DueDate,
+                    LoanStatus = loan.LoanStatus
+                });
+            }
+
+            return View(viewModels);
+        }
 
     }
 }

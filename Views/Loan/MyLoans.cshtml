@@ -1,0 +1,131 @@
+﻿@model List<LibraryManagement.ViewModels.LoanListViewModel>
+
+@{
+    ViewData["Title"] = "امانت‌های من";
+}
+
+<div class="loan-list-page">
+
+    <div class="loan-page-header">
+        <div>
+            <h1 class="loan-page-title">امانت‌های من</h1>
+
+            <p class="loan-page-subtitle">
+                فهرست کتاب‌هایی که در اختیار شماست
+            </p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="loan-empty-state">
+            <p>شما هنوز هیچ کتابی به امانت نگرفته‌اید.</p>
+        </div>
+    }
+    else
+    {
+        <div class="loan-list-card">
+
+            <div class="table-responsive">
+
+                <table class="loan-list-table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().BookTitle)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Author)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().StartDate)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().DueDate)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().LoanStatus)
+                            </th>
+
+                            <th>
+                                عملیات
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var loan in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @loan.BookTitle
+                                </td>
+
+                                <td>
+                                    @loan.Author
+                                </td>
+
+                                <td>
+                                    @loan.StartDate.ToPersianDate()
+                                </td>
+
+                                <td>
+                                    @loan.DueDate.ToPersianDate()
+                                </td>
+
+                                <td>
+                                    <span class="loan-status
+                                        @(loan.LoanStatus switch
+                                          {
+                                              LoanStatus.Active => "loan-status-active",
+                                              LoanStatus.Completed => "loan-status-completed",
+                                              LoanStatus.ReturnPending => "loan-status-pending",
+                                              _ => "loan-status-unknown"
+                                          })">
+
+                                        @(loan.LoanStatus switch
+                                        {
+                                            LoanStatus.Active => "فعال",
+                                            LoanStatus.Completed => "خاتمه یافته",
+                                            LoanStatus.ReturnPending => "در انتظار تایید",
+                                            _ => "نامشخص"
+                                        })
+
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <a asp-controller="Loan"
+                                       asp-action="Details"
+                                       asp-route-id="@loan.Id"
+                                       class="loan-details-link">
+                                        جزئیات
+                                    </a>
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/loan/myloans.css"
+          asp-append-version="true" />
+}
