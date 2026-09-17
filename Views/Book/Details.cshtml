@@ -1,5 +1,4 @@
-﻿
-@model BookDetailsViewModel
+﻿@model BookDetailsViewModel
 
 @{
     ViewData["Title"] = "اطلاعات کتاب";
@@ -15,6 +14,13 @@
             </p>
         </div>
     </div>
+
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="book-error-message" role="alert">
+            @errorMessage
+        </div>
+    }
 
     <div class="book-details-card">
 
@@ -186,13 +192,37 @@
                   method="post"
                   class="book-borrow-form">
 
+                @Html.AntiForgeryToken()
+
                 <input type="hidden"
                        name="bookId"
                        value="@Model.Id" />
 
                 <button type="submit"
+                        data-confirm="آیا از امانت گرفتن این کتاب مطمئن هستید؟"
                         class="book-borrow-button">
                     امانت گرفتن کتاب
+                </button>
+
+            </form>
+        }
+        else
+        {
+            <form asp-controller="Reservation"
+                  asp-action="Reserve"
+                  method="post"
+                  class="book-reserve-form">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="bookId"
+                       value="@Model.Id" />
+
+                <button type="submit"
+                        data-confirm="آیا از رزرو این کتاب مطمئن هستید؟"
+                        class="book-reserve-button">
+                    رزرو کتاب
                 </button>
 
             </form>

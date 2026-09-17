@@ -1,17 +1,18 @@
 ﻿/* ================================
-   Book Details Page
+   Reservation Details Page
 ================================ */
-.book-details-page {
+
+.reservation-details-page {
     padding: var(--lm-space-6) 0;
 }
 
 /* Page Header */
 
-.book-page-header {
+.reservation-page-header {
     margin-bottom: var(--lm-space-5);
 }
 
-.book-page-title {
+.reservation-page-title {
     margin: 0;
     color: var(--lm-text);
     font-size: var(--lm-font-size-2xl);
@@ -19,29 +20,15 @@
     line-height: 1.5;
 }
 
-.book-page-subtitle {
+.reservation-page-subtitle {
     margin: 0.35rem 0 0;
     color: var(--lm-text-muted);
     font-size: var(--lm-font-size);
 }
 
-/* Error Message */
+/* Details Card */
 
-.book-error-message {
-    margin-bottom: var(--lm-space-5);
-    padding: var(--lm-space-3) var(--lm-space-4);
-    border: 1px solid #f3caca;
-    border-radius: var(--lm-radius);
-    background-color: #fdecec;
-    color: var(--lm-danger);
-    font-size: var(--lm-font-size);
-    font-weight: var(--lm-font-weight-medium);
-    line-height: var(--lm-line-height);
-}
-
-/* Main Card */
-
-.book-details-card {
+.reservation-details-card {
     overflow: hidden;
     background-color: var(--lm-surface);
     border: 1px solid var(--lm-border);
@@ -49,25 +36,17 @@
     box-shadow: var(--lm-shadow-sm);
 }
 
-/* Sections */
-
-.book-details-section {
+.reservation-details-section {
     padding: var(--lm-space-6);
 }
 
-    .book-details-section + .book-details-section {
-        border-top: 1px solid var(--lm-border);
-    }
-
-/* Section Header */
-
-.book-details-section-header {
+.reservation-details-section-header {
     position: relative;
     margin-bottom: var(--lm-space-5);
     padding-right: var(--lm-space-3);
 }
 
-    .book-details-section-header::before {
+    .reservation-details-section-header::before {
         content: "";
         position: absolute;
         top: 0.2rem;
@@ -78,7 +57,7 @@
         background-color: var(--lm-primary);
     }
 
-    .book-details-section-header h2 {
+    .reservation-details-section-header h2 {
         margin: 0;
         color: var(--lm-text);
         font-size: var(--lm-font-size-lg);
@@ -86,9 +65,9 @@
         line-height: 1.5;
     }
 
-/* Book Information */
+/* Details Grid */
 
-.book-details-grid {
+.reservation-details-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     overflow: hidden;
@@ -97,7 +76,7 @@
     background-color: var(--lm-background);
 }
 
-.book-details-item {
+.reservation-details-item {
     display: flex;
     flex-direction: column;
     gap: var(--lm-space-1);
@@ -106,24 +85,22 @@
     background-color: var(--lm-surface);
 }
 
-    .book-details-item:nth-child(odd) {
+    .reservation-details-item:nth-child(odd) {
         border-left: 1px solid var(--lm-border);
     }
 
-    .book-details-item:nth-child(n + 3) {
+    .reservation-details-item:nth-child(n + 3) {
         border-top: 1px solid var(--lm-border);
     }
 
-/* Labels & Values */
-
-.book-details-label {
+.reservation-details-label {
     color: var(--lm-text-muted);
     font-size: var(--lm-font-size-sm);
     font-weight: var(--lm-font-weight-medium);
     line-height: 1.5;
 }
 
-.book-details-value {
+.reservation-details-value {
     color: var(--lm-text);
     font-size: var(--lm-font-size);
     font-weight: var(--lm-font-weight-medium);
@@ -131,60 +108,18 @@
     word-break: break-word;
 }
 
-/* Highlight Book Title */
-
-.book-details-item:first-child {
+.reservation-details-item:first-child {
     background-color: var(--lm-primary-light);
 }
 
-    .book-details-item:first-child .book-details-value {
+    .reservation-details-item:first-child .reservation-details-value {
         color: var(--lm-primary);
         font-weight: var(--lm-font-weight-semibold);
     }
 
-/* Inventory */
-
-.book-inventory-section {
-    background-color: var(--lm-background);
-}
-
-.book-inventory-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    overflow: hidden;
-    border: 1px solid var(--lm-border);
-    border-radius: var(--lm-radius-lg);
-    background-color: var(--lm-surface);
-}
-
-.book-inventory-item {
-    display: flex;
-    flex-direction: column;
-    gap: var(--lm-space-2);
-    min-width: 0;
-    padding: var(--lm-space-4) var(--lm-space-5);
-}
-
-    .book-inventory-item + .book-inventory-item {
-        border-right: 1px solid var(--lm-border);
-    }
-
-    .book-inventory-item .book-details-value {
-        font-size: var(--lm-font-size-lg);
-        font-weight: var(--lm-font-weight-semibold);
-    }
-
-    .book-inventory-item:nth-child(2) {
-        background-color: #f7fcf9;
-    }
-
-        .book-inventory-item:nth-child(2) .book-details-value {
-            color: var(--lm-success);
-        }
-
 /* Status */
 
-.book-details-value .book-status {
+.reservation-status {
     display: inline-flex;
     align-items: center;
     width: fit-content;
@@ -195,44 +130,91 @@
     line-height: var(--lm-line-height-tight);
 }
 
-.book-details-value .book-status-available {
+.reservation-status-active {
     background-color: #e8f7ee;
     color: var(--lm-success);
 }
 
-.book-details-value .book-status-unavailable {
+.reservation-status-completed {
+    background-color: var(--lm-primary-light);
+    color: var(--lm-primary);
+}
+
+.reservation-status-cancelled {
     background-color: #fdecec;
     color: var(--lm-danger);
 }
 
+.reservation-status-expired {
+    background-color: #fff1e6;
+    color: var(--lm-warning);
+}
+
+.reservation-status-unknown {
+    background-color: var(--lm-background);
+    color: var(--lm-text-muted);
+}
+
 /* Actions */
 
-.book-details-actions {
+.reservation-details-actions {
     display: flex;
     align-items: center;
     justify-content: flex-start;
-    gap: var(--lm-space-3);
+    flex-wrap: wrap;
+    gap: var(--lm-space-2);
     margin-top: var(--lm-space-4);
 }
 
-.book-borrow-form,
-.book-reserve-form {
-    display: flex;
-    margin: 0;
+    .reservation-details-actions form {
+        margin: 0;
+    }
+
+/* Cancel Button */
+
+.reservation-cancel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    min-height: 38px;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    border: 1px solid var(--lm-danger);
+    border-radius: var(--lm-button-radius);
+    background-color: var(--lm-danger);
+    color: #ffffff;
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
 }
 
-/* Action Buttons */
+    .reservation-cancel-button:hover {
+        border-color: #b52f2f;
+        background-color: #b52f2f;
+        color: #ffffff;
+    }
 
-.book-borrow-button,
-.book-reserve-button,
-.book-back-link {
+    .reservation-cancel-button:focus-visible {
+        outline: 2px solid var(--lm-danger);
+        outline-offset: 2px;
+    }
+
+/* Back Link */
+
+.reservation-back-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     min-width: 150px;
     min-height: 38px;
     padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    border: 1px solid var(--lm-border);
     border-radius: var(--lm-button-radius);
+    background-color: var(--lm-surface);
+    color: var(--lm-text);
     font-family: var(--lm-font-family);
     font-size: var(--lm-font-size);
     font-weight: var(--lm-font-weight-medium);
@@ -242,66 +224,13 @@
     transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
 }
 
-/* Borrow Button — Primary */
-
-.book-borrow-button {
-    border: 1px solid var(--lm-primary);
-    background-color: var(--lm-primary);
-    color: #ffffff;
-}
-
-    .book-borrow-button:hover {
-        border-color: var(--lm-primary-hover);
-        background-color: var(--lm-primary-hover);
-        color: #ffffff;
-    }
-
-    .book-borrow-button:focus-visible {
-        outline: 2px solid var(--lm-primary);
-        outline-offset: 2px;
-    }
-
-    .book-borrow-button:active {
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
-    }
-
-/* Reserve Button — Warning */
-
-.book-reserve-button {
-    border: 1px solid var(--lm-warning);
-    background-color: var(--lm-warning);
-    color: #ffffff;
-}
-
-    .book-reserve-button:hover {
-        border-color: #dd5d05;
-        background-color: #dd5d05;
-    }
-
-    .book-reserve-button:focus-visible {
-        outline: 2px solid var(--lm-warning);
-        outline-offset: 2px;
-    }
-
-    .book-reserve-button:active {
-        box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
-    }
-
-/* Back Button — Secondary */
-
-.book-back-link {
-    border: 1px solid var(--lm-border);
-    background-color: var(--lm-surface);
-    color: var(--lm-text);
-}
-
-    .book-back-link:hover {
+    .reservation-back-link:hover {
         border-color: var(--lm-primary);
         background-color: var(--lm-primary-light);
         color: var(--lm-primary);
     }
 
-    .book-back-link:focus-visible {
+    .reservation-back-link:focus-visible {
         outline: 2px solid var(--lm-primary);
         outline-offset: 2px;
     }
@@ -310,64 +239,46 @@
 
 @media (max-width: 767.98px) {
 
-    .book-details-page {
+    .reservation-details-page {
         padding: var(--lm-space-4) 0;
     }
 
-    .book-page-title {
+    .reservation-page-title {
         font-size: var(--lm-font-size-xl);
     }
 
-    .book-page-subtitle {
+    .reservation-page-subtitle {
         font-size: var(--lm-font-size-sm);
     }
 
-    .book-details-card {
+    .reservation-details-card {
         border-radius: var(--lm-radius-lg);
     }
 
-    .book-details-section {
+    .reservation-details-section {
         padding: var(--lm-space-5);
     }
 
-    .book-details-grid {
+    .reservation-details-grid {
         grid-template-columns: 1fr;
     }
 
-    .book-details-item:nth-child(odd) {
+    .reservation-details-item:nth-child(odd) {
         border-left: 0;
     }
 
-    .book-details-item + .book-details-item {
+    .reservation-details-item + .reservation-details-item {
         border-top: 1px solid var(--lm-border);
     }
 
-    .book-inventory-grid {
-        grid-template-columns: 1fr;
-    }
-
-    .book-inventory-item + .book-inventory-item {
-        border-right: 0;
-        border-top: 1px solid var(--lm-border);
-    }
-
-    .book-details-actions {
+    .reservation-details-actions {
         flex-direction: column;
         align-items: stretch;
-        gap: var(--lm-space-2);
         margin-top: var(--lm-space-3);
     }
 
-    .book-borrow-form,
-    .book-reserve-form {
-        width: 100%;
-    }
-
-    .book-borrow-button,
-    .book-reserve-button,
-    .book-back-link {
+    .reservation-cancel-button,
+    .reservation-back-link {
         width: 100%;
     }
 }
-
-

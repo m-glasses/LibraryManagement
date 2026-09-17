@@ -1,0 +1,164 @@
+﻿@model ReservationDetailsViewModel
+
+@{
+    ViewData["Title"] = "اطلاعات رزرو";
+}
+
+<div class="reservation-details-page">
+
+    <div class="reservation-page-header">
+
+        <div>
+            <h1 class="reservation-page-title">
+                اطلاعات رزرو
+            </h1>
+
+            <p class="reservation-page-subtitle">
+                جزئیات و وضعیت رزرو کتاب
+            </p>
+        </div>
+
+    </div>
+
+    <div class="reservation-details-card">
+
+        <section class="reservation-details-section">
+
+            <div class="reservation-details-section-header">
+                <h2>مشخصات رزرو</h2>
+            </div>
+
+            <div class="reservation-details-grid">
+
+                <div class="reservation-details-item">
+
+                    <span class="reservation-details-label">
+                        @Html.DisplayNameFor(model => model.BookTitle)
+                    </span>
+
+                    <span class="reservation-details-value">
+                        @Model.BookTitle
+                    </span>
+
+                </div>
+
+                <div class="reservation-details-item">
+
+                    <span class="reservation-details-label">
+                        @Html.DisplayNameFor(model => model.ReservedAt)
+                    </span>
+
+                    <span class="reservation-details-value">
+                        @Model.ReservedAt.ToPersianDate()
+                    </span>
+
+                </div>
+
+                <div class="reservation-details-item">
+
+                    <span class="reservation-details-label">
+                        @Html.DisplayNameFor(model => model.ExpiresAt)
+                    </span>
+
+                    <span class="reservation-details-value">
+                        @Model.ExpiresAt.ToPersianDate()
+                    </span>
+
+                </div>
+
+                <div class="reservation-details-item">
+
+                    <span class="reservation-details-label">
+                        @Html.DisplayNameFor(model => model.ReservationStatus)
+                    </span>
+
+                    <span class="reservation-details-value">
+
+                        @switch (Model.ReservationStatus)
+                        {
+                            case ReservationStatus.Active:
+                                <span class="reservation-status reservation-status-active">
+                                    فعال
+                                </span>
+                                break;
+
+                            case ReservationStatus.Completed:
+                                <span class="reservation-status reservation-status-completed">
+                                    تکمیل شده
+                                </span>
+                                break;
+
+                            case ReservationStatus.Cancelled:
+                                <span class="reservation-status reservation-status-cancelled">
+                                    لغو شده
+                                </span>
+                                break;
+
+                            case ReservationStatus.Expired:
+                                <span class="reservation-status reservation-status-expired">
+                                    منقضی شده
+                                </span>
+                                break;
+
+                            default:
+                                <span class="reservation-status reservation-status-unknown">
+                                    نامشخص
+                                </span>
+                                break;
+                        }
+
+                    </span>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+    <div class="reservation-details-actions">
+
+        @if (Model.ReservationStatus == ReservationStatus.Active)
+        {
+            <form asp-controller="Reservation"
+                  asp-action="CancelReservation"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input type="hidden"
+                       name="reservationId"
+                       value="@Model.Id" />
+
+                <button type="submit"
+                        class="reservation-cancel-button"
+                        data-confirm="آیا از لغو این رزرو مطمئن هستید؟">
+                    لغو رزرو
+                </button>
+
+            </form>
+        }
+
+        <a asp-controller="Reservation"
+           asp-action="MyReservations"
+           class="reservation-back-link">
+            بازگشت به رزروهای من
+        </a>
+
+        <a asp-controller="Book"
+           asp-action="Details"
+           asp-route-id="@Model.BookId"
+           class="reservation-back-link">
+            بازگشت به اطلاعات کتاب
+        </a>
+
+    </div>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/reservation/details.css"
+          asp-append-version="true" />
+}

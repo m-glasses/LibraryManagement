@@ -1,0 +1,132 @@
+﻿@model List<ReservationListViewModel>
+
+@{
+    ViewData["Title"] = "رزروهای من";
+}
+
+<div class="reservation-list-page">
+
+    <div class="reservation-page-header">
+
+        <div>
+            <h1 class="reservation-page-title">
+                رزروهای من
+            </h1>
+
+            <p class="reservation-page-subtitle">
+                فهرست کتاب‌هایی که رزرو کرده‌اید
+            </p>
+        </div>
+
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="reservation-empty-state">
+            <p>شما هنوز هیچ رزروی ثبت نکرده‌اید.</p>
+        </div>
+    }
+    else
+    {
+        <div class="reservation-list">
+
+            @foreach (var reservation in Model)
+            {
+                <div class="reservation-list-item">
+
+                    <div class="reservation-list-item-content">
+
+                        <h2 class="reservation-book-title">
+                            @reservation.BookTitle
+                        </h2>
+
+                        <div class="reservation-list-item-info">
+
+                            <span>
+                                تاریخ رزرو:
+                                @reservation.ReservedAt.ToPersianDate()
+                            </span>
+
+                            <span>
+                                تاریخ انقضا:
+                                @reservation.ExpiresAt.ToPersianDate()
+                            </span>
+
+                            <span class="reservation-status
+                                @(reservation.ReservationStatus switch
+                                  {
+                                      ReservationStatus.Active =>
+                                          "reservation-status-active",
+
+                                      ReservationStatus.Completed =>
+                                          "reservation-status-completed",
+
+                                      ReservationStatus.Cancelled =>
+                                          "reservation-status-cancelled",
+
+                                      ReservationStatus.Expired =>
+                                          "reservation-status-expired",
+
+                                      _ => "reservation-status-unknown"
+                                  })">
+
+                                @(reservation.ReservationStatus switch
+                                {
+                                    ReservationStatus.Active => "فعال",
+                                    ReservationStatus.Completed => "تکمیل شده",
+                                    ReservationStatus.Cancelled => "لغو شده",
+                                    ReservationStatus.Expired => "منقضی شده",
+                                    _ => "نامشخص"
+                                })
+
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="reservation-list-item-actions">
+
+                        <a asp-controller="Reservation"
+                           asp-action="Details"
+                           asp-route-id="@reservation.Id"
+                           class="reservation-details-link">
+                            مشاهده جزئیات
+                        </a>
+
+                        @if (reservation.ReservationStatus == ReservationStatus.Active)
+                        {
+                            <form asp-controller="Reservation"
+                                  asp-action="CancelReservation"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="reservationId"
+                                       value="@reservation.Id" />
+
+                                <button type="submit"
+                                        class="reservation-cancel-button"
+                                        data-confirm="آیا از لغو این رزرو مطمئن هستید؟">
+                                    لغو رزرو
+                                </button>
+
+                            </form>
+                        }
+
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/reservation/MyReservetions.css"
+          asp-append-version="true" />
+}

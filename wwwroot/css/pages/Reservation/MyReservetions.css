@@ -1,0 +1,252 @@
+﻿/* ================================
+   Reservation List Page
+================================ */
+
+.reservation-list-page {
+    padding: var(--lm-space-6) 0;
+}
+
+/* Page Header */
+
+.reservation-page-header {
+    margin-bottom: var(--lm-space-5);
+}
+
+.reservation-page-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-2xl);
+    font-weight: var(--lm-font-weight-semibold);
+    line-height: 1.5;
+}
+
+.reservation-page-subtitle {
+    margin: 0.35rem 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size);
+}
+
+/* Empty State */
+
+.reservation-empty-state {
+    padding: var(--lm-space-8) var(--lm-space-6);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-xl);
+    background-color: var(--lm-surface);
+    box-shadow: var(--lm-shadow-sm);
+    text-align: center;
+}
+
+    .reservation-empty-state p {
+        margin: 0;
+        color: var(--lm-text-muted);
+        font-size: var(--lm-font-size);
+    }
+
+/* Reservation List */
+
+.reservation-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--lm-space-3);
+}
+
+.reservation-list-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--lm-space-5);
+    padding: var(--lm-space-5);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-xl);
+    background-color: var(--lm-surface);
+    box-shadow: var(--lm-shadow-sm);
+    transition: border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
+
+    .reservation-list-item:hover {
+        border-color: #cbd5e1;
+        box-shadow: var(--lm-shadow);
+    }
+
+/* Content */
+
+.reservation-list-item-content {
+    min-width: 0;
+    flex: 1;
+}
+
+.reservation-book-title {
+    margin: 0 0 var(--lm-space-2);
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-lg);
+    font-weight: var(--lm-font-weight-semibold);
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.reservation-list-item-info {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--lm-space-2) var(--lm-space-5);
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+    line-height: var(--lm-line-height);
+}
+
+/* Status */
+
+.reservation-status {
+    display: inline-flex;
+    align-items: center;
+    width: fit-content;
+    padding: var(--lm-space-1) var(--lm-space-2);
+    border-radius: var(--lm-radius-full);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+}
+
+.reservation-status-active {
+    background-color: #e8f7ee;
+    color: var(--lm-success);
+}
+
+.reservation-status-completed {
+    background-color: var(--lm-primary-light);
+    color: var(--lm-primary);
+}
+
+.reservation-status-cancelled {
+    background-color: #fdecec;
+    color: var(--lm-danger);
+}
+
+.reservation-status-expired {
+    background-color: #fff1e6;
+    color: var(--lm-warning);
+}
+
+.reservation-status-unknown {
+    background-color: var(--lm-background);
+    color: var(--lm-text-muted);
+}
+
+/* Actions */
+
+.reservation-list-item-actions {
+    display: flex;
+    align-items: center;
+    flex-shrink: 0;
+    gap: var(--lm-space-2);
+}
+
+    .reservation-list-item-actions form {
+        margin: 0;
+    }
+
+/* Details Button */
+
+.reservation-details-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    min-height: 38px;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    border: 1px solid var(--lm-primary);
+    border-radius: var(--lm-button-radius);
+    background-color: var(--lm-primary);
+    color: #ffffff;
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    text-decoration: none;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
+
+    .reservation-details-link:hover {
+        border-color: var(--lm-primary-hover);
+        background-color: var(--lm-primary-hover);
+        color: #ffffff;
+    }
+
+    .reservation-details-link:focus-visible {
+        outline: 2px solid var(--lm-primary);
+        outline-offset: 2px;
+    }
+
+/* Cancel Button */
+
+.reservation-cancel-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 100px;
+    min-height: 38px;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    border: 1px solid var(--lm-danger);
+    border-radius: var(--lm-button-radius);
+    background-color: var(--lm-surface);
+    color: var(--lm-danger);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
+
+    .reservation-cancel-button:hover {
+        background-color: var(--lm-danger);
+        border-color: var(--lm-danger);
+        color: #ffffff;
+    }
+
+    .reservation-cancel-button:focus-visible {
+        outline: 2px solid var(--lm-danger);
+        outline-offset: 2px;
+    }
+
+/* Responsive */
+
+@media (max-width: 767.98px) {
+
+    .reservation-list-page {
+        padding: var(--lm-space-4) 0;
+    }
+
+    .reservation-page-title {
+        font-size: var(--lm-font-size-xl);
+    }
+
+    .reservation-page-subtitle {
+        font-size: var(--lm-font-size-sm);
+    }
+
+    .reservation-list-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: var(--lm-space-4);
+        padding: var(--lm-space-4);
+    }
+
+    .reservation-list-item-actions {
+        width: 100%;
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .reservation-details-link,
+    .reservation-cancel-button {
+        width: 100%;
+    }
+
+    .reservation-list-item-info {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--lm-space-1);
+    }
+}

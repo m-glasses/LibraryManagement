@@ -3,25 +3,65 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
     <title>@ViewData["Title"] - LibraryManagement</title>
+
     <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" />
 
-    <link rel="stylesheet" href="~/css/base/variables.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/base/base.css" asp-append-version="true" />
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" />
 
-    <link rel="stylesheet" href="~/css/layout/navbar.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/layout/sidebar.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/layout/layout.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/layout/footer.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link href="~/css/vendor/jalalidatepicker.css" rel="stylesheet" />
-    <link href="~/css/vendor/jalalidatepicker.min.css" rel="stylesheet" />
+    <!-- Base -->
+    <link rel="stylesheet"
+          href="~/css/base/variables.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/base/base.css"
+          asp-append-version="true" />
+
+    <!-- Layout -->
+    <link rel="stylesheet"
+          href="~/css/layout/navbar.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/layout/sidebar.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/layout/layout.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/layout/footer.css"
+          asp-append-version="true" />
+
+    <!-- Site -->
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <!-- Vendor -->
+    <link rel="stylesheet"
+          href="~/css/vendor/jalalidatepicker.css" />
+
+    <link rel="stylesheet"
+          href="~/css/vendor/jalalidatepicker.min.css" />
+
     <script src="~/js/vendor/jalalidatepicker.js"></script>
     <script src="~/js/vendor/jalalidatepicker.min.js"></script>
 
+    <!-- Components -->
+    <link rel="stylesheet"
+          href="~/css/components/confirmation-modal.css"
+          asp-append-version="true" />
+
+    @await RenderSectionAsync("Styles", required: false)
 
 </head>
+
 <body>
 
     @{
@@ -29,7 +69,9 @@
     }
 
     <header class="navbar">
+
         <div class="container-fluid">
+
             <button type="button"
                     class="navbar-menu-toggle"
                     id="sidebar-toggle"
@@ -39,26 +81,41 @@
                 <img src="~/images/icons/menu.svg" alt="" />
             </button>
 
-            <a asp-controller="Home" asp-action="Index" class="navbar-brand">
-                <img src="~/images/logo.svg" alt="کتابخانه من" />
+            <a asp-controller="Home"
+               asp-action="Index"
+               class="navbar-brand">
+
+                <img src="~/images/logo.svg"
+                     alt="کتابخانه من" />
+
                 <span>کتابخانه من</span>
+
             </a>
 
             <div class="navbar-user">
+
                 @if (isAuthenticated)
                 {
                     <div class="navbar-auth">
+
                         <span class="text-primary">
                             کاربر @User.Identity.Name خوش آمدید
                         </span>
+
                     </div>
+
                     <div class="dropdown">
+
                         <button class="btn dropdown-toggle"
                                 type="button"
                                 data-bs-toggle="dropdown">
+
                             حساب کاربری
+
                         </button>
+
                         <ul class="dropdown-menu">
+
                             <li>
                                 <a asp-controller="Account"
                                    asp-action="Index"
@@ -66,121 +123,192 @@
                                     پروفایل
                                 </a>
                             </li>
+
                             <li>
-                                <a href="#" class="dropdown-item">
+                                <a href="#"
+                                   class="dropdown-item">
                                     تنظیمات
                                 </a>
                             </li>
+
                             <li>
                                 <hr class="dropdown-divider" />
                             </li>
+
                             <li>
                                 <form asp-controller="Account"
                                       asp-action="Logout"
                                       method="post">
-                                    <button type="submit" class="dropdown-item">
+
+                                    <button type="submit"
+                                            class="dropdown-item">
                                         خروج
                                     </button>
+
                                 </form>
                             </li>
+
                         </ul>
+
                     </div>
                 }
                 else
                 {
                     <div class="navbar-auth">
+
                         <a asp-controller="Account"
                            asp-action="Login"
                            class="nav-link">
                             ورود
                         </a>
+
                         <a asp-controller="Account"
                            asp-action="Register"
                            class="nav-link">
                             ثبت‌نام
                         </a>
+
                     </div>
                 }
+
             </div>
+
         </div>
+
     </header>
 
     @if (isAuthenticated)
     {
-
-        <aside class="sidebar "
+        <aside class="sidebar"
                id="app-sidebar"
                aria-label="منوی اصلی">
 
             <nav>
+
                 <ul class="sidebar-nav">
+
                     <li class="sidebar-nav-item">
+
                         <a asp-controller="Home"
                            asp-action="Index"
                            class="sidebar-nav-link active">
+
                             <img src="~/images/icons/home.svg"
                                  class="sidebar-nav-icon"
                                  alt="" />
-                            <span class="sidebar-nav-title">داشبورد</span>
+
+                            <span class="sidebar-nav-title">
+                                داشبورد
+                            </span>
+
                         </a>
+
                     </li>
 
                     <li class="sidebar-nav-item">
+
                         <a asp-controller="Book"
                            asp-action="Index"
                            class="sidebar-nav-link">
+
                             <img src="~/images/icons/book.svg"
                                  class="sidebar-nav-icon"
                                  alt="" />
-                            <span class="sidebar-nav-title">کتاب‌ها</span>
+
+                            <span class="sidebar-nav-title">
+                                کتاب‌ها
+                            </span>
+
                         </a>
+
                     </li>
 
                     <li class="sidebar-nav-item">
+
                         <a asp-controller="Loan"
                            asp-action="Myloans"
                            class="sidebar-nav-link">
+
                             <img src="~/images/icons/book.svg"
                                  class="sidebar-nav-icon"
                                  alt="" />
-                            <span class="sidebar-nav-title">امانت‌ها</span>
+
+                            <span class="sidebar-nav-title">
+                                امانت‌ها
+                            </span>
+
                         </a>
+
                     </li>
 
                     <li class="sidebar-nav-item">
+
                         <a asp-controller="Reservation"
-                           asp-action="Index"
+                           asp-action="MyReservations"
                            class="sidebar-nav-link">
+
                             <img src="~/images/icons/calendar-event.svg"
                                  class="sidebar-nav-icon"
                                  alt="" />
-                            <span class="sidebar-nav-title">رزروها</span>
+
+                            <span class="sidebar-nav-title">
+                                رزروها
+                            </span>
+
                         </a>
+
                     </li>
+
                 </ul>
+
             </nav>
+
         </aside>
     }
-    
 
     <div class="page-wrapper @(isAuthenticated ? "has-sidebar" : "")">
-        <main role="main" class="page-content">
+
+        <main role="main"
+              class="page-content">
+
             @RenderBody()
+
         </main>
 
         <footer class="footer">
-            <span>© 2026 - کتابخانه من</span>
+
+            <span>
+                © 2026 - کتابخانه من
+            </span>
 
             <a asp-controller="Home"
                asp-action="Privacy">
                 حریم خصوصی
             </a>
+
         </footer>
+
     </div>
+
+
+    <!-- Core Scripts -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
+
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
+
+    <script src="~/js/site.js"
+            asp-append-version="true"></script>
+
+
+    <!-- Shared Components -->
+
+    <partial name="_ConfirmationModal" />
+
+    <script src="~/js/components/confirmation-modal.js"
+            asp-append-version="true"></script>
+
     @await RenderSectionAsync("Scripts", required: false)
-    @await RenderSectionAsync("Styles" , required: false)
+
 </body>
 </html>
