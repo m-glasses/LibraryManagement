@@ -61,7 +61,7 @@ namespace LibraryManagement.Controllers
                 return Unauthorized();
             }
 
-            var loan = _loanService.GetDetailsById(id , user.Id);
+            var loan = _loanService.GetDetailsById(id, user.Id);
 
             if (loan == null)
             {
@@ -86,16 +86,28 @@ namespace LibraryManagement.Controllers
         {
             var user = await _userManager.GetUserAsync(User);
 
-            if (user == null)
+            if (user is null)
             {
                 return Unauthorized();
             }
 
-            var bookCopy = _loanService.FindAvailableBookCopy(bookId);
+            try
+            {
+                var loan = _loanService.Borrow(user.Id, bookId);
 
-            var loan = _loanService.Borrow(user.Id, bookCopy.Id);
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = loan.Id });
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ex.Message;
 
-            return RedirectToAction(nameof(Details), "Loan", new { id = loan.Id });
+                return RedirectToAction(
+                    nameof(BookController.Details),
+                    "Book",
+                    new { id = bookId });
+            }
         }
 
         [Authorize]
@@ -110,11 +122,8 @@ namespace LibraryManagement.Controllers
 
             var userLoans = _loanService.GetUserLoans(user.Id);
 
-            var viewModels = new List<LoanListViewModel>();
-
-            foreach (var loan in userLoans)
-            {
-                viewModels.Add(new LoanListViewModel
+            var viewModels = userLoans
+                .Select(loan => new LoanListViewModel
                 {
                     Id = loan.Id,
                     BookTitle = loan.BookCopy.Book.Title,
@@ -122,8 +131,8 @@ namespace LibraryManagement.Controllers
                     StartDate = loan.StartDate,
                     DueDate = loan.DueDate,
                     LoanStatus = loan.LoanStatus
-                });
-            }
+                })
+                .ToList();
 
             return View(viewModels);
         }
@@ -131,6 +140,7 @@ namespace LibraryManagement.Controllers
 
         [Authorize]
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> RequestReturn(int loanId)
         {
             var user = await _userManager.GetUserAsync(User);

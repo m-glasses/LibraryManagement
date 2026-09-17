@@ -8,10 +8,12 @@
 
     <div class="loan-page-header">
         <div>
-            <h1 class="loan-page-title">امانت‌های من</h1>
+            <h1 class="loan-page-title">
+                امانت‌های من
+            </h1>
 
             <p class="loan-page-subtitle">
-                فهرست کتاب‌هایی که در اختیار شماست
+                فهرست کتاب‌هایی که به امانت گرفته‌اید
             </p>
         </div>
     </div>
@@ -19,7 +21,9 @@
     @if (!Model.Any())
     {
         <div class="loan-empty-state">
-            <p>شما هنوز هیچ کتابی به امانت نگرفته‌اید.</p>
+            <p>
+                شما هنوز هیچ کتابی به امانت نگرفته‌اید.
+            </p>
         </div>
     }
     else
@@ -51,7 +55,6 @@
                             <th>
                                 @Html.DisplayNameFor(model => model.First().LoanStatus)
                             </th>
-
                             <th>
                                 عملیات
                             </th>
@@ -59,33 +62,59 @@
                     </thead>
 
                     <tbody>
+
                         @foreach (var loan in Model)
                         {
                             <tr>
-                                <td>@loan.BookTitle</td>
 
-                                <td>@loan.Author</td>
+                                <td>
+                                    @loan.BookTitle
+                                </td>
 
-                                <td>@loan.StartDate.ToPersianDate()</td>
+                                <td>
+                                    @loan.Author
+                                </td>
 
-                                <td>@loan.DueDate.ToPersianDate()</td>
+                                <td>
+                                    @loan.StartDate.ToPersianDate()
+                                </td>
+
+                                <td>
+                                    @loan.DueDate.ToPersianDate()
+                                </td>
 
                                 <td>
                                     <span class="loan-status
                                         @(loan.LoanStatus switch
                                           {
-                                              LoanStatus.Active => "loan-status-active",
-                                              LoanStatus.Completed => "loan-status-completed",
-                                              LoanStatus.ReturnPending => "loan-status-pending",
-                                              _ => "loan-status-unknown"
+                                              LoanStatus.Active =>
+                                                  "loan-status-active",
+
+                                              LoanStatus.Completed =>
+                                                  "loan-status-completed",
+
+                                              LoanStatus.ReturnPending =>
+                                                  "loan-status-pending",
+
+                                              _ =>
+                                                  "loan-status-unknown"
                                           })">
+
                                         @(loan.LoanStatus switch
                                         {
-                                            LoanStatus.Active => "فعال",
-                                            LoanStatus.Completed => "خاتمه یافته",
-                                            LoanStatus.ReturnPending => "در انتظار تأیید",
-                                            _ => "نامشخص"
+                                            LoanStatus.Active =>
+                                                "فعال",
+
+                                            LoanStatus.Completed =>
+                                                "خاتمه یافته",
+
+                                            LoanStatus.ReturnPending =>
+                                                "در انتظار تأیید",
+
+                                            _ =>
+                                                "نامشخص"
                                         })
+
                                     </span>
                                 </td>
 
@@ -106,8 +135,11 @@
                                               method="post"
                                               class="loan-return-form">
 
+                                            @Html.AntiForgeryToken()
+
                                             <button type="submit"
-                                                    class="loan-return-button">
+                                                    class="loan-return-button"
+                                                    data-confirm="آیا از درخواست بازگشت این کتاب مطمئن هستید؟">
                                                 درخواست بازگشت
                                             </button>
 
@@ -115,13 +147,16 @@
                                     }
 
                                 </td>
+
                             </tr>
                         }
+
                     </tbody>
 
                 </table>
 
             </div>
+
         </div>
     }
 
@@ -132,4 +167,3 @@
           href="~/css/pages/loan/Myloans.css"
           asp-append-version="true" />
 }
-

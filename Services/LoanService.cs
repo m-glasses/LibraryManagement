@@ -13,67 +13,61 @@ namespace LibraryManagement.Services
             _context = context;
         }
 
-        public BookCopy FindAvailableBookCopy(int bookId)
+        public BookCopy GetAvailableBookCopy(int userId, int bookId)
         {
-            if (!_context.Books.Any(b => b.Id == bookId))
+            if (!_context.Users.Any(user => user.Id == userId))
             {
-                throw new InvalidOperationException("Book not found");
+                throw new InvalidOperationException("User not found.");
+            }
+
+            if (!_context.Books.Any(book => book.Id == bookId))
+            {
+                throw new InvalidOperationException("Book not found.");
             }
 
             var bookCopy = _context.BookCopies
-                .FirstOrDefault(bc =>
-                    bc.BookId == bookId &&
-                    !bc.Loans.Any(l => l.LoanStatus == LoanStatus.Active));
+                .FirstOrDefault(bookCopy =>
+                    bookCopy.BookId == bookId &&
+                    !bookCopy.Loans.Any(loan =>
+                        loan.LoanStatus == LoanStatus.Active));
 
-            if (bookCopy == null)
+            if (bookCopy is null)
             {
-                throw new InvalidOperationException("Book not Available");
+                throw new InvalidOperationException("Book not available.");
             }
 
             return bookCopy;
         }
 
-
-        public Loan Borrow(int userId, int bookCopyId)
+        public Loan Borrow(int userId, int bookId)
         {
             var settings = _context.LibrarySettings.SingleOrDefault();
-            if (settings == null)
+
+            if (settings is null)
             {
-                throw new InvalidOperationException("Library settings not found.");
+                throw new InvalidOperationException(
+                    "Library settings not found.");
             }
 
-
-            if (!_context.Users.Any(u => u.Id == userId))
-            {
-                throw new InvalidOperationException("User not found");
-            }
-
-
-            if (!_context.BookCopies.Any(bc => bc.Id == bookCopyId))
-            {
-                throw new InvalidOperationException("Book Copy not found");
-            }
-
-
-            if (_context.Loans.Any(l => l.BookCopyId == bookCopyId && l.LoanStatus == LoanStatus.Active))
-            {
-                throw new InvalidOperationException("Book copy is already on loan");
-            }
+            var bookCopy = GetAvailableBookCopy(userId, bookId);
 
             var startDate = DateTime.Now;
-            var loan = new Loan()
+
+            var loan = new Loan
             {
                 UserId = userId,
-                BookCopyId = bookCopyId,
+                BookCopyId = bookCopy.Id,
                 StartDate = startDate,
                 DueDate = startDate.AddDays(settings.LoanDurationDays),
                 LoanStatus = LoanStatus.Active,
                 RenewalCount = 0,
                 LateFeePerDay = settings.LateFeePerDay,
-                DailyRate = settings.DailyRate,
+                DailyRate = settings.DailyRate
             };
+
             _context.Loans.Add(loan);
             _context.SaveChanges();
+
             return loan;
         }
 
