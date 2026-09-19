@@ -1,6 +1,4 @@
-﻿using LibraryManagement.Models;
-
-namespace LibraryManagement.ViewModels
+﻿namespace LibraryManagement.ViewModels
 {
     public class BorrowViewModel
     {

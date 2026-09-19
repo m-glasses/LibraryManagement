@@ -110,6 +110,26 @@
         border-top: 1px solid var(--lm-border);
     }
 
+.loan-error-message {
+    margin-bottom: var(--lm-space-5);
+    padding: var(--lm-space-3) var(--lm-space-4);
+    border: 1px solid var(--lm-danger);
+    border-radius: var(--lm-radius);
+    background-color: #fff5f5;
+    color: var(--lm-danger);
+    font-size: var(--lm-font-size);
+}
+
+.loan-success-message {
+    margin-bottom: var(--lm-space-5);
+    padding: var(--lm-space-3) var(--lm-space-4);
+    border: 1px solid var(--lm-success);
+    border-radius: var(--lm-radius);
+    background-color: #f0fff4;
+    color: var(--lm-success);
+    font-size: var(--lm-font-size);
+}
+
 
 /* ================================
    Labels & Values
@@ -170,6 +190,40 @@
 /* ================================
    Actions
 ================================ */
+
+.loan-details-actions {
+    display: flex;
+    align-items: center;
+    gap: var(--lm-space-3);
+}
+
+.loan-renew-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    border: 1px solid var(--lm-primary);
+    border-radius: var(--lm-button-radius);
+    background-color: var(--lm-primary);
+    color: #ffffff;
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: var(--lm-transition);
+}
+
+    .loan-renew-button:hover {
+        background-color: var(--lm-primary-hover);
+        border-color: var(--lm-primary-hover);
+    }
+
+    .loan-renew-button:focus-visible {
+        outline: 2px solid var(--lm-primary);
+        outline-offset: 2px;
+    }
+
 
 .loan-details-actions {
     display: flex;

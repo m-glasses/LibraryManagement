@@ -5,7 +5,7 @@ namespace LibraryManagement.Models
 {
     public class Book : BaseEntity
     {
-        public Book() 
+        public Book()
         {
             BookCopies = new List<BookCopy>();
             Reservations = new List<Reservation>();
@@ -13,7 +13,7 @@ namespace LibraryManagement.Models
 
         [Required]
         [StringLength(200)]
-        public string  Title { get; set; }
+        public string Title { get; set; }
 
         [Required]
         [StringLength(100)]
@@ -32,7 +32,7 @@ namespace LibraryManagement.Models
         public int PageCount { get; set; }
 
         [Range(1, 1000)]
-        public int Edition {  get; set; }
+        public int Edition { get; set; }
 
         [Range(1, 100)]
         public int Volume { get; set; }

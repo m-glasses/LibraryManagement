@@ -12,7 +12,7 @@ namespace LibraryManagement.Models
         public DateTime? ReturnDate { get; set; }
         public LoanStatus LoanStatus { get; set; }
 
-        [Range(0,int.MaxValue)]
+        [Range(0, int.MaxValue)]
         public int RenewalCount { get; set; }
         public decimal DailyRate { get; set; }
         public decimal LateFeePerDay { get; set; }

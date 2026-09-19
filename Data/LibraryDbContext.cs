@@ -9,7 +9,7 @@ namespace LibraryManagement.Data
     {
         public LibraryDbContext(DbContextOptions<LibraryDbContext> options) : base(options)
         {
-            
+
         }
         public DbSet<Book> Books { get; set; }
         public DbSet<BookCopy> BookCopies { get; set; }

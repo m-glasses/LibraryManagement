@@ -5,10 +5,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services
 {
-    public class ReservationService : GenericService<Reservation> , IReservationService 
+    public class ReservationService : GenericService<Reservation>, IReservationService
     {
         private readonly LibraryDbContext _context;
-        public ReservationService(LibraryDbContext context) : base(context) 
+        public ReservationService(LibraryDbContext context) : base(context)
         {
             _context = context;
         }

@@ -6,7 +6,7 @@
         {
             WalletTransactions = new List<WalletTransaction>();
         }
-        public int  UserId { get; set; }
+        public int UserId { get; set; }
         public decimal Balance { get; set; }
 
         //Navigation Property

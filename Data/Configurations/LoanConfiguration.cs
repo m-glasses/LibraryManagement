@@ -1,5 +1,4 @@
 ﻿using LibraryManagement.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
@@ -18,14 +17,14 @@ namespace LibraryManagement.Data.Configurations
 
             builder
                 .HasOne(l => l.BookCopy)
-                .WithMany(bc =>  bc.Loans)
+                .WithMany(bc => bc.Loans)
                 .HasForeignKey(l => l.BookCopyId)
                  .OnDelete(DeleteBehavior.Restrict)
                 .IsRequired();
 
             builder
                 .Property(l => l.DailyRate)
-                .HasPrecision(18 , 0);
+                .HasPrecision(18, 0);
 
             builder
                 .Property(l => l.LateFeePerDay)

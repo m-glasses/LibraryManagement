@@ -1,6 +1,4 @@
-﻿using System.Transactions;
-
-namespace LibraryManagement.Models
+﻿namespace LibraryManagement.Models
 {
     public class WalletTransaction : BaseEntity
     {

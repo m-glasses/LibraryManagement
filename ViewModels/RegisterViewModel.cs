@@ -1,6 +1,6 @@
 ﻿using LibraryManagement.Models;
-using System.ComponentModel.DataAnnotations;
 using LibraryManagement.ViewModels.Validation;
+using System.ComponentModel.DataAnnotations;
 public class RegisterViewModel
 {
     [Required(ErrorMessage = "وارد کردن نام الزامی است")]

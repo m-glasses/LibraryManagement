@@ -9,7 +9,7 @@ namespace LibraryManagement.ViewModels.Validation
 
         protected override ValidationResult? IsValid(object? value, ValidationContext validationContext)
         {
-            if(value is not DateTime dateOfBirth)
+            if (value is not DateTime dateOfBirth)
             {
                 return ValidationResult.Success;
             }
@@ -19,13 +19,13 @@ namespace LibraryManagement.ViewModels.Validation
             DateTime youngestDate = today.AddYears(-MinimumAge);
             DateTime oldestDate = today.AddYears(-MaximumAge);
 
-            if(dateOfBirth < oldestDate || dateOfBirth > youngestDate)
+            if (dateOfBirth < oldestDate || dateOfBirth > youngestDate)
             {
                 return new ValidationResult("سن باید بین ده تا صدوده سال باشد");
             }
 
             return ValidationResult.Success;
-            
+
         }
 
 

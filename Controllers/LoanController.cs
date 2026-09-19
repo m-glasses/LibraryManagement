@@ -1,7 +1,7 @@
 ﻿using LibraryManagement.Models;
-using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
 using LibraryManagement.ViewModels;
+using LibraryManagement.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -101,7 +101,7 @@ namespace LibraryManagement.Controllers
             }
             catch (InvalidOperationException ex)
             {
-                TempData["ErrorMessage"] = ex.Message;
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
 
                 return RedirectToAction(
                     nameof(BookController.Details),
@@ -138,6 +138,7 @@ namespace LibraryManagement.Controllers
         }
 
 
+
         [Authorize]
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -150,13 +151,72 @@ namespace LibraryManagement.Controllers
                 return Unauthorized();
             }
 
-            if (!_loanService.RequestReturn(loanId, user.Id))
+            try
             {
-                return NotFound();
+                _loanService.RequestReturn(loanId, user.Id);
+
+                return RedirectToAction(nameof(MyLoans));
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+
+                return RedirectToAction(nameof(MyLoans));
+            }
+        }
+
+
+
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Renew(int loanId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+
+            if (user is null)
+            {
+                return Unauthorized();
             }
 
-            return RedirectToAction(nameof(MyLoans));
+            try
+            {
+                _loanService.Renew(loanId, user.Id);
+
+                TempData["SuccessMessage"] = "امانت با موفقیت تمدید شد.";
+
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = loanId });
+
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+
+                return RedirectToAction(nameof(Details), new { id = loanId });
+            }
         }
+
+
+
+        //[Authorize(Roles = "Admin")]
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public async Task<IActionResult> ConfirmReturn(ConfirmReturnViewModel confirm)
+        //{
+        //    try
+        //    {
+        //        _loanService.ConfirmReturn(confirm.LoanId, confirm.ReturnDate);
+        //        TempData["SuccessMessage"] = ErrorMessageHelper.Translate("تایید بازگشت امانت با موفقیت انجام شد");
+        //    }
+        //    catch (InvalidOperationException ex)
+        //    {
+        //        TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+        //        return RedirectToAction()
+        //    }
+
+        //}
 
     }
 }

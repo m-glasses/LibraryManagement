@@ -1,5 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
-using LibraryManagement.Models;
+﻿using LibraryManagement.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace LibraryManagement.ViewModels
 {

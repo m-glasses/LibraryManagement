@@ -4,7 +4,7 @@ namespace LibraryManagement.Data
 {
     public class SeedData
     {
-        public static async Task Initialize(LibraryDbContext context , UserManager<User> userManager , RoleManager<IdentityRole<int>> roleManager)
+        public static async Task Initialize(LibraryDbContext context, UserManager<User> userManager, RoleManager<IdentityRole<int>> roleManager)
         {
             if (!context.LibrarySettings.Any())
             {
@@ -19,7 +19,7 @@ namespace LibraryManagement.Data
                 };
                 context.LibrarySettings.Add(librarySetting);
                 await context.SaveChangesAsync();
-               
+
             }
 
             if (!await roleManager.RoleExistsAsync("Admin"))
@@ -27,7 +27,7 @@ namespace LibraryManagement.Data
                 await roleManager.CreateAsync(new IdentityRole<int>("Admin"));
             }
 
-            if(! await roleManager.RoleExistsAsync("User"))
+            if (!await roleManager.RoleExistsAsync("User"))
             {
                 await roleManager.CreateAsync(new IdentityRole<int>("User"));
             }
@@ -54,16 +54,16 @@ namespace LibraryManagement.Data
                 if (!result.Succeeded)
                 {
                     throw new Exception(
-                        string.Join(", ", result.Errors.Select(e =>e.Description)));
+                        string.Join(", ", result.Errors.Select(e => e.Description)));
                 }
             }
 
-            if(!await userManager.IsInRoleAsync(admin, "Admin"))
+            if (!await userManager.IsInRoleAsync(admin, "Admin"))
             {
                 await userManager.AddToRoleAsync(admin, "Admin");
             }
 
-            
+
         }
     }
 }

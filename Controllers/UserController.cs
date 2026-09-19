@@ -1,9 +1,5 @@
-﻿using LibraryManagement.Data;
-using LibraryManagement.Services;
-using Microsoft.AspNetCore.Http;
+﻿using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using LibraryManagement.Models;
-using LibraryManagement.Services.Interfaces;
 
 namespace LibraryManagement.Controllers
 {
@@ -14,7 +10,7 @@ namespace LibraryManagement.Controllers
         {
             _userService = userService;
         }
-        
+
     }
 }
-    
+

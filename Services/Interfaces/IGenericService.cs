@@ -1,6 +1,4 @@
-﻿using LibraryManagement.Models;
-
-namespace LibraryManagement.Services.Interfaces
+﻿namespace LibraryManagement.Services.Interfaces
 {
     public interface IGenericService<TEntity>
     {

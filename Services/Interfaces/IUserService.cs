@@ -1,9 +1,7 @@
-﻿using LibraryManagement.Models;
-
-namespace LibraryManagement.Services.Interfaces
+﻿namespace LibraryManagement.Services.Interfaces
 {
-    public interface IUserService 
+    public interface IUserService
     {
-    
+
     }
 }

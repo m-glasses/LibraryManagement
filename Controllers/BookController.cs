@@ -1,7 +1,5 @@
 ﻿using LibraryManagement.Models;
-using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -43,7 +41,7 @@ namespace LibraryManagement.Controllers
         }
 
 
-        
+
 
         // POST: BookController/Create
         [HttpPost]

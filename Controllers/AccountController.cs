@@ -11,7 +11,7 @@ namespace LibraryManagement.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IdentityErrorLocalizer _identityErrorLocalizer;
-        public AccountController(UserManager<User> userManage , SignInManager<User> signInManager , IdentityErrorLocalizer identityErrorLocalizer)
+        public AccountController(UserManager<User> userManage, SignInManager<User> signInManager, IdentityErrorLocalizer identityErrorLocalizer)
         {
             _userManager = userManage;
             _signInManager = signInManager;
@@ -23,8 +23,8 @@ namespace LibraryManagement.Controllers
         {
             return View();
         }
-
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(RegisterViewModel register)
         {
             if (!ModelState.IsValid)
@@ -32,36 +32,56 @@ namespace LibraryManagement.Controllers
                 return View(register);
             }
 
-            var user = new User()
+            var user = new User
             {
                 Name = register.Name,
                 Family = register.Family,
                 FatherName = register.FatherName,
                 DateOfBirth = register.DateOfBirth,
-                Education = register.Education.Value,
-                Gender = register.Gender.Value,
+                Education = register.Education!.Value,
+                Gender = register.Gender!.Value,
                 Address = register.Address,
                 UserName = register.UserName,
                 PhoneNumber = register.PhoneNumber,
-                Email = register.Email,
-
+                Email = register.Email
             };
 
-            var result = await _userManager.CreateAsync(user , register.Password);
+            var createResult = await _userManager.CreateAsync(
+                user,
+                register.Password);
 
-            if(!result.Succeeded)
+            if (!createResult.Succeeded)
             {
-                foreach (var error in result.Errors)
-                {
-                    var massage = _identityErrorLocalizer.Localizer(error.Code);
-                    ModelState.AddModelError("", massage);
-                }
+                AddIdentityErrors(createResult);
 
                 return View(register);
             }
-            
-            return RedirectToAction("Login");
-            
+
+            var roleResult = await _userManager.AddToRoleAsync(
+                user,
+                "User");
+
+            if (!roleResult.Succeeded)
+            {
+                await _userManager.DeleteAsync(user);
+
+                AddIdentityErrors(roleResult);
+
+                return View(register);
+            }
+
+            return RedirectToAction(nameof(Login));
+        }
+
+        private void AddIdentityErrors(IdentityResult result)
+        {
+            foreach (var error in result.Errors)
+            {
+                var message =
+                    _identityErrorLocalizer.Localizer(error.Code);
+
+                ModelState.AddModelError("", message);
+            }
         }
 
         [HttpGet]

@@ -7,6 +7,6 @@ namespace LibraryManagement.Services.Interfaces
     {
         List<BookListViewModel> GetBookList();
         BookDetailsViewModel? GetBookDetails(int id);
-        
+
     }
 }

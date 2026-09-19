@@ -17,6 +17,20 @@
         </div>
     </div>
 
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="loan-error-message" role="alert">
+            @errorMessage
+        </div>
+    }
+
+    @if (TempData["SuccessMessage"] is string successMessage)
+    {
+        <div class="loan-success-message" role="alert">
+            @successMessage
+        </div>
+    }
+
     <div class="loan-details-card">
 
         <section class="loan-details-section">
@@ -128,6 +142,23 @@
             بازگشت
         </a>
 
+        @if (Model.LoanStatus == LoanStatus.Active)
+        {
+            <form asp-controller="Loan"
+                  asp-action="Renew"
+                  asp-route-loanId="@Model.Id"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <button type="submit"
+                        class="loan-renew-button"
+                        data-confirm="آیا از تمدید این امانت مطمئن هستید؟">
+                    تمدید امانت
+                </button>
+
+            </form>
+        }
     </div>
 
 </div>

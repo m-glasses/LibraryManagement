@@ -17,12 +17,12 @@ namespace LibraryManagement.Services
         {
             if (!_context.Users.Any(user => user.Id == userId))
             {
-                throw new InvalidOperationException("User not found.");
+                throw new InvalidOperationException("User not found");
             }
 
             if (!_context.Books.Any(book => book.Id == bookId))
             {
-                throw new InvalidOperationException("Book not found.");
+                throw new InvalidOperationException("Book not found");
             }
 
             var bookCopy = _context.BookCopies
@@ -33,7 +33,7 @@ namespace LibraryManagement.Services
 
             if (bookCopy is null)
             {
-                throw new InvalidOperationException("Book not available.");
+                throw new InvalidOperationException("Book not available");
             }
 
             return bookCopy;
@@ -46,7 +46,7 @@ namespace LibraryManagement.Services
             if (settings is null)
             {
                 throw new InvalidOperationException(
-                    "Library settings not found.");
+                    "Library settings not found");
             }
 
             var bookCopy = GetAvailableBookCopy(userId, bookId);
@@ -71,99 +71,126 @@ namespace LibraryManagement.Services
             return loan;
         }
 
-        public bool RequestReturn(int loanId, int userId)
+        public void RequestReturn(int loanId, int userId)
         {
             var loan = _context.Loans
-                .FirstOrDefault(l => l.Id == loanId && l.UserId == userId);
+                .FirstOrDefault(loan =>
+                    loan.Id == loanId &&
+                    loan.UserId == userId);
 
-            if (loan is null || loan.LoanStatus != LoanStatus.Active)
+            if (loan is null)
             {
-                return false;
+                throw new InvalidOperationException(
+                    "Loan not found");
+            }
+
+            if (loan.LoanStatus != LoanStatus.Active)
+            {
+                throw new InvalidOperationException(
+                    "The loan is not active");
             }
 
             loan.LoanStatus = LoanStatus.ReturnPending;
 
             _context.SaveChanges();
-
-            return true;
         }
 
-        public bool ConfirmReturn(int loanId, DateTime returnDate)
+
+        private void CalculateLoanAmount(Loan loan, DateTime returnDate)
         {
-            var loan = _context.Loans.FirstOrDefault(l => l.Id == loanId);
-
-            if (loan == null)
-            {
-                return false;
-            }
-
-            if (loan.LoanStatus != LoanStatus.Active && loan.LoanStatus != LoanStatus.ReturnPending)
-            {
-                return false;
-            }
-
-            if (returnDate < loan.StartDate || returnDate > DateTime.Now)
-            {
-                return false;
-            }
-
-            loan.ReturnDate = returnDate;
-
             var normalDays = Math.Min(
                 (returnDate - loan.StartDate).Days,
                 (loan.DueDate - loan.StartDate).Days);
 
-            loan.CalculatedAmount = normalDays * loan.DailyRate;
+            loan.CalculatedAmount =
+                normalDays * loan.DailyRate;
 
-            loan.LateDays = Math.Max
-                (0, (returnDate - loan.DueDate).Days);
+            loan.LateDays =
+                Math.Max(0, (returnDate - loan.DueDate).Days);
 
-            loan.LateFee = loan.LateDays * loan.LateFeePerDay;
+            loan.LateFee =
+                loan.LateDays * loan.LateFeePerDay;
 
-            loan.FinalAmount = loan.LateFee + loan.CalculatedAmount;
-            
-                loan.LoanStatus = LoanStatus.Completed;
-                _context.SaveChanges();
-                return true;
-            
+            loan.FinalAmount =
+                loan.LateFee + loan.CalculatedAmount;
         }
 
-        public bool Renew(int loanId)
+        public void ConfirmReturn(int loanId, DateTime returnDate)
         {
-            var loan = _context.Loans.FirstOrDefault(l => l.Id == loanId);
+            var loan = _context.Loans
+                .FirstOrDefault(l => l.Id == loanId);
 
-            if (loan == null)
+            if (loan is null)
             {
-                return false;
+                throw new InvalidOperationException("Loan not found");
             }
 
-            if(loan.LoanStatus != LoanStatus.Active)
+            if (loan.LoanStatus is not LoanStatus.Active
+                and not LoanStatus.ReturnPending)
             {
-                return false;
+                throw new InvalidOperationException(
+                    "The loan cannot be returned");
             }
 
-            var librarySetting = _context.LibrarySettings.SingleOrDefault();
-
-            if (librarySetting == null)
+            if (returnDate < loan.StartDate ||
+                returnDate > DateTime.Now)
             {
-                return false;
+                throw new InvalidOperationException(
+                    "Invalid return date");
             }
 
-            if(loan.RenewalCount >= librarySetting.MaxRenewalCount)
+            loan.ReturnDate = returnDate;
+
+            CalculateLoanAmount(loan, returnDate);
+
+            loan.LoanStatus = LoanStatus.Completed;
+
+            _context.SaveChanges();
+        }
+
+        public void Renew(int loanId, int userId)
+        {
+            var loan = _context.Loans
+                .FirstOrDefault(loan =>
+                    loan.Id == loanId &&
+                    loan.UserId == userId);
+
+            if (loan is null)
             {
-                return false;
+                throw new InvalidOperationException(
+                    "Loan not found");
             }
 
-            loan.DueDate = loan.DueDate.AddDays(librarySetting.RenewalDurationDays);
+            if (loan.LoanStatus != LoanStatus.Active)
+            {
+                throw new InvalidOperationException(
+                    "The loan is not active");
+            }
+
+            var settings = _context.LibrarySettings
+                .SingleOrDefault();
+
+            if (settings is null)
+            {
+                throw new InvalidOperationException(
+                    "Library settings not found");
+            }
+
+            if (loan.RenewalCount >= settings.MaxRenewalCount)
+            {
+                throw new InvalidOperationException(
+                    "Maximum renewal limit has been reached");
+            }
+
+            loan.DueDate = loan.DueDate
+                .AddDays(settings.RenewalDurationDays);
 
             loan.RenewalCount++;
 
             _context.SaveChanges();
-            return true;
-
         }
 
-        public Loan? GetDetailsById(int loanId , int userId)
+        public Loan? GetDetailsById(int loanId, int userId)
         {
             return _context.Loans
                 .Include(l => l.BookCopy)
