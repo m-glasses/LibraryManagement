@@ -1,0 +1,322 @@
+﻿@model LibraryManagement.ViewModels.AdminLoanDetailsViewModel
+
+@{
+    ViewData["Title"] = "جزئیات امانت";
+}
+
+<div class="admin-loan-details-page">
+
+    <div class="admin-loan-details-header">
+
+        <div>
+            <h1 class="admin-loan-details-title">
+                جزئیات امانت
+            </h1>
+
+            <p class="admin-loan-details-subtitle">
+                مشاهده اطلاعات کامل امانت، کاربر، کتاب و وضعیت مالی
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Loan"
+           asp-action="Index"
+           class="admin-loan-details-back-link">
+            بازگشت به لیست امانت‌ها
+        </a>
+
+    </div>
+
+
+    <div class="admin-loan-details-grid">
+
+        <!-- Loan Information -->
+
+        <div class="admin-loan-details-card">
+
+            <div class="admin-loan-details-card-header">
+                <h2>اطلاعات امانت</h2>
+            </div>
+
+            <div class="admin-loan-details-card-body">
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.Id)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.Id
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.StartDate)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.StartDate.ToPersianDate()
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.DueDate)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.DueDate.ToPersianDate()
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.ReturnDate)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+
+                        @if (Model.ReturnDate.HasValue)
+                        {
+                            @Model.ReturnDate.Value.ToPersianDate()
+                        }
+                        else
+                        {
+                            <span>هنوز بازگردانده نشده</span>
+                        }
+
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.LoanStatus)
+                    </span>
+
+                    <span class="admin-loan-status
+                        @(Model.LoanStatus switch
+                        {
+                            LibraryManagement.Models.LoanStatus.Active
+                                => "admin-loan-status-active",
+
+                            LibraryManagement.Models.LoanStatus.ReturnPending
+                                => "admin-loan-status-pending",
+
+                            LibraryManagement.Models.LoanStatus.Completed
+                                => "admin-loan-status-completed",
+
+                            _
+                                => "admin-loan-status-unknown"
+                        })">
+
+                        @(Model.LoanStatus switch
+                        {
+                            LibraryManagement.Models.LoanStatus.Active
+                                => "فعال",
+
+                            LibraryManagement.Models.LoanStatus.ReturnPending
+                                => "در انتظار تأیید",
+
+                            LibraryManagement.Models.LoanStatus.Completed
+                                => "خاتمه یافته",
+
+                            _
+                                => "نامشخص"
+                        })
+
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.RenewalCount)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.RenewalCount
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- User Information -->
+
+        <div class="admin-loan-details-card">
+
+            <div class="admin-loan-details-card-header">
+                <h2>اطلاعات کاربر</h2>
+            </div>
+
+            <div class="admin-loan-details-card-body">
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.UserId)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.UserId
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.FullName)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.FullName
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Book Information -->
+
+        <div class="admin-loan-details-card">
+
+            <div class="admin-loan-details-card-header">
+                <h2>اطلاعات کتاب</h2>
+            </div>
+
+            <div class="admin-loan-details-card-body">
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.BookTitle)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.BookTitle
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.InventoryNumber)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.InventoryNumber
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Financial Information -->
+
+        <div class="admin-loan-details-card">
+
+            <div class="admin-loan-details-card-header">
+                <h2>اطلاعات مالی</h2>
+            </div>
+
+            <div class="admin-loan-details-card-body">
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.DailyRate)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.DailyRate.ToString("N0")
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.LateFeePerDay)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.LateFeePerDay.ToString("N0")
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.LateDays)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.LateDays
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.CalculatedAmount)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.CalculatedAmount.ToString("N0")
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.LateFee)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.LateFee.ToString("N0")
+                    </span>
+                </div>
+
+                <div class="admin-loan-detail-item admin-loan-final-amount">
+                    <span class="admin-loan-detail-label">
+                        @Html.DisplayNameFor(model => model.FinalAmount)
+                    </span>
+
+                    <span class="admin-loan-detail-value">
+                        @Model.FinalAmount.ToString("N0")
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Administrative Information -->
+
+        <div class="admin-loan-details-card admin-loan-admin-note-card">
+
+            <div class="admin-loan-details-card-header">
+                <h2>یادداشت مدیر</h2>
+            </div>
+
+            <div class="admin-loan-details-card-body">
+
+                @if (string.IsNullOrWhiteSpace(Model.AdminNote))
+                {
+                    <p class="admin-loan-empty-note">
+                        یادداشتی برای این امانت ثبت نشده است.
+                    </p>
+                }
+                else
+                {
+                    <p class="admin-loan-admin-note">
+                        @Model.AdminNote
+                    </p>
+                }
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/loan/details.css"
+          asp-append-version="true" />
+}

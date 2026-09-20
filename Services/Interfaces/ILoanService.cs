@@ -11,5 +11,7 @@ namespace LibraryManagement.Services.Interfaces
         void Renew(int loanId, int userId);
         Loan? GetDetailsById(int loanId, int userId);
         List<Loan> GetUserLoans(int userId);
+        List<Loan> GetAllLoans();
+        Loan? GetAdminDetailsById(int loanId);
     }
 }

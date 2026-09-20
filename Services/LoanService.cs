@@ -28,8 +28,8 @@ namespace LibraryManagement.Services
             var bookCopy = _context.BookCopies
                 .FirstOrDefault(bookCopy =>
                     bookCopy.BookId == bookId &&
-                    !bookCopy.Loans.Any(loan =>
-                        loan.LoanStatus == LoanStatus.Active));
+                        !bookCopy.Loans.Any(loan =>
+                            loan.LoanStatus != LoanStatus.Completed));
 
             if (bookCopy is null)
             {
@@ -206,6 +206,28 @@ namespace LibraryManagement.Services
                 .Include(loan => loan.BookCopy)
                     .ThenInclude(bookCopy => bookCopy.Book)
                 .ToList();
+        }
+
+
+        //Admin services
+        public List<Loan> GetAllLoans()
+        {
+            return _context.Loans
+                .AsNoTracking()
+                .Include(loan => loan.User)
+                .Include(loan => loan.BookCopy)
+                    .ThenInclude(BookCopy => BookCopy.Book)
+                .ToList();
+        }
+
+        public Loan? GetAdminDetailsById(int loanId)
+        {
+            return _context.Loans
+                .AsNoTracking()
+                .Include(loan => loan.User)
+                .Include(loan => loan.BookCopy)
+                    .ThenInclude(bookCopy => bookCopy.Book)
+                .FirstOrDefault(loan => loan.Id == loanId);
         }
     }
 }

@@ -1,0 +1,85 @@
+﻿@model ConfirmReturnViewModel
+
+<div class="modal fade"
+     id="confirmReturnModal"
+     tabindex="-1"
+     aria-labelledby="confirmReturnModalLabel"
+     aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+        <div class="modal-content confirmation-modal">
+
+            <div class="modal-header confirmation-modal-header">
+
+                <h5 class="modal-title"
+                    id="confirmReturnModalLabel">
+                    تأیید بازگشت امانت
+                </h5>
+
+                <button type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="بستن">
+                </button>
+
+            </div>
+
+            <form asp-area="Admin"
+                  asp-controller="Loan"
+                  asp-action="ConfirmReturn"
+                  method="post">
+
+                <div class="modal-body confirmation-modal-body">
+
+                    <input asp-for="LoanId"
+                           type="hidden" />
+
+                    <div class="admin-loan-return-field">
+
+                        <label asp-for="ReturnDate"
+                               class="form-label">
+                        </label>
+
+                        <input data-jdp
+                               data-jdp-target-value-input="#return-date-gregorian"
+                               data-jdp-target-value-type="gregorian"
+                               class="form-control"
+                               type="text"
+                               autocomplete="off" />
+
+                        <input id="return-date-gregorian"
+                               asp-for="ReturnDate"
+                               type="text"
+                               hidden="hidden" />
+
+                        <span asp-validation-for="ReturnDate"
+                              class="text-danger">
+                        </span>
+
+                    </div>
+
+                </div>
+
+                <div class="modal-footer confirmation-modal-footer">
+
+                    <button type="button"
+                            class="confirmation-modal-cancel"
+                            data-bs-dismiss="modal">
+                        انصراف
+                    </button>
+
+                    <button type="submit"
+                            class="confirmation-modal-confirm">
+                        تأیید بازگشت
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>

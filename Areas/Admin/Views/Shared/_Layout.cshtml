@@ -1,0 +1,386 @@
+﻿<!DOCTYPE html>
+
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>@ViewData["Title"] - پنل مدیریت کتابخانه</title>
+
+    <script type="importmap"></script>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet"
+          href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" />
+
+    <!-- Base -->
+    <link rel="stylesheet"
+          href="~/css/base/variables.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/base/base.css"
+          asp-append-version="true" />
+
+    <!-- Shared Layout -->
+    <link rel="stylesheet"
+          href="~/css/layout/navbar.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/layout/sidebar.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/layout/layout.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/layout/footer.css"
+          asp-append-version="true" />
+
+    <!-- Site -->
+    <link rel="stylesheet"
+          href="~/css/site.css"
+          asp-append-version="true" />
+
+    <!-- Admin -->
+    <link rel="stylesheet"
+          href="~/css/admin/adminLayout.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/admin/adminSidebar.css"
+          asp-append-version="true" />
+    
+    <link rel="stylesheet"
+      href="~/css/admin/adminLoanReturn.css"
+      asp-append-version="true" />
+
+    <!-- Jalali DatePicker -->
+    <link rel="stylesheet"
+          href="~/css/vendor/jalalidatepicker.css"
+          asp-append-version="true" />
+
+    <link rel="stylesheet"
+          href="~/css/vendor/jalalidatepicker.min.css"
+          asp-append-version="true" />
+
+
+
+    @await RenderSectionAsync("Styles", required: false)
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="container-fluid">
+
+        <button type="button"
+                class="navbar-menu-toggle"
+                id="sidebar-toggle"
+                aria-controls="admin-sidebar"
+                aria-expanded="false"
+                aria-label="باز کردن منو">
+
+            <img src="~/images/icons/menu.svg"
+                 alt="" />
+
+        </button>
+
+        <a asp-area=""
+           asp-controller="Home"
+           asp-action="Index"
+           class="navbar-brand">
+
+            <img src="~/images/logo.svg"
+                 alt="کتابخانه من" />
+
+            <span>کتابخانه من</span>
+
+        </a>
+
+        <div class="navbar-user">
+
+            <div class="navbar-auth">
+
+                <span class="text-primary">
+                    مدیر @User.Identity?.Name خوش آمدید
+                </span>
+
+            </div>
+
+            <div class="dropdown">
+
+                <button class="btn dropdown-toggle"
+                        type="button"
+                        data-bs-toggle="dropdown">
+
+                    حساب کاربری
+
+                </button>
+
+                <ul class="dropdown-menu">
+
+                    <li>
+                        <a asp-area=""
+                           asp-controller="Account"
+                           asp-action="Index"
+                           class="dropdown-item">
+                            پروفایل
+                        </a>
+                    </li>
+
+                    <li>
+                        <a asp-area=""
+                           asp-controller="Home"
+                           asp-action="Index"
+                           class="dropdown-item">
+                            سایت اصلی
+                        </a>
+                    </li>
+
+                    <li>
+                        <hr class="dropdown-divider" />
+                    </li>
+
+                    <li>
+
+                        <form asp-area=""
+                              asp-controller="Account"
+                              asp-action="Logout"
+                              method="post">
+
+                            <button type="submit"
+                                    class="dropdown-item">
+
+                                خروج
+
+                            </button>
+
+                        </form>
+
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<aside class="sidebar admin-sidebar"
+       id="admin-sidebar"
+       aria-label="منوی مدیریت">
+
+    <nav>
+
+        <ul class="sidebar-nav">
+
+            <li class="sidebar-nav-item">
+
+                <a asp-area="Admin"
+                   asp-controller="Dashboard"
+                   asp-action="Index"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/home.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        داشبورد
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="#"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/user.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        کاربران
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a asp-area="Admin"
+                   asp-controller="Book"
+                   asp-action="Index"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/book.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        کتاب‌ها
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="#"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/book.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        نسخه‌های کتاب
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a asp-area="Admin"
+                   asp-controller="Loan"
+                   asp-action="Index"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/book.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        امانت‌ها
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="#"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/calendar-event.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        رزروها
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="#"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/wallet.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        تراکنش‌ها
+                    </span>
+
+                </a>
+
+            </li>
+
+            <li class="sidebar-nav-item">
+
+                <a href="#"
+                   class="sidebar-nav-link">
+
+                    <img src="~/images/icons/settings.svg"
+                         class="sidebar-nav-icon"
+                         alt="" />
+
+                    <span class="sidebar-nav-title">
+                        تنظیمات
+                    </span>
+
+                </a>
+
+            </li>
+
+        </ul>
+
+    </nav>
+
+</aside>
+
+
+<div class="page-wrapper has-sidebar admin-page-wrapper">
+
+    <main role="main"
+          class="page-content admin-page-content">
+
+        @RenderBody()
+
+    </main>
+
+    <footer class="footer">
+
+        <span>
+            © 2026 - پنل مدیریت کتابخانه
+        </span>
+
+        <a asp-area=""
+           asp-controller="Home"
+           asp-action="Privacy">
+            حریم خصوصی
+        </a>
+
+    </footer>
+
+</div>
+
+
+<!-- Core Scripts -->
+
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Jalali DatePicker -->
+
+<script src="~/js/vendor/jalalidatepicker.js"></script>
+
+<script src="~/js/vendor/jalalidatepicker.min.js"></script>
+
+<!-- Site -->
+
+<script src="~/js/site.js"
+        asp-append-version="true"></script>
+
+@await RenderSectionAsync("Scripts", required: false)
+
+<!-- Admin Loan Return -->
+
+<script src="~/js/components/adminLoanReturn.js"
+        asp-append-version="true"></script>
+
+</body>
+</html>

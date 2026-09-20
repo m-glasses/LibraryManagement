@@ -1,0 +1,127 @@
+﻿/* ========================================
+   LibraryManagement
+   Admin Layout
+   ======================================== */
+
+
+/* ----------------------------------------
+   Admin Page Wrapper
+   ---------------------------------------- */
+
+.admin-page-wrapper {
+    background-color: var(--lm-background);
+}
+
+
+/* ----------------------------------------
+   Admin Main Content
+   ---------------------------------------- */
+
+.admin-page-content {
+    padding: var(--lm-space-6);
+}
+
+
+/* ----------------------------------------
+   Admin Page Header
+   ---------------------------------------- */
+
+.admin-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--lm-space-4);
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-page-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-2xl);
+    font-weight: var(--lm-font-weight-bold);
+}
+
+.admin-page-description {
+    margin: var(--lm-space-1) 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size);
+}
+
+
+/* ----------------------------------------
+   Admin Content Card
+   ---------------------------------------- */
+
+.admin-card {
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-sm);
+}
+
+
+/* ----------------------------------------
+   Admin Card Header
+   ---------------------------------------- */
+
+.admin-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--lm-space-4);
+    padding: var(--lm-space-4) var(--lm-space-5);
+    border-bottom: 1px solid var(--lm-border);
+}
+
+.admin-card-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-lg);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+
+/* ----------------------------------------
+   Admin Card Body
+   ---------------------------------------- */
+
+.admin-card-body {
+    padding: var(--lm-space-5);
+}
+
+
+/* ----------------------------------------
+   Admin Card Footer
+   ---------------------------------------- */
+
+.admin-card-footer {
+    padding: var(--lm-space-4) var(--lm-space-5);
+    border-top: 1px solid var(--lm-border);
+}
+
+
+/* ----------------------------------------
+   Responsive
+   ---------------------------------------- */
+
+@media (max-width: 767.98px) {
+
+    .admin-page-content {
+        padding: var(--lm-space-4);
+    }
+
+    .admin-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: var(--lm-space-4);
+    }
+
+    .admin-page-title {
+        font-size: var(--lm-font-size-xl);
+    }
+
+    .admin-card-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

@@ -1,1 +1,198 @@
-﻿<h1>بخش ادمین</h1>
+﻿@model List<LibraryManagement.ViewModels.AdminLoanListViewModel>
+
+@{
+    ViewData["Title"] = "مدیریت امانت‌ها";
+}
+
+<div class="admin-loan-page">
+
+    <div class="admin-loan-page-header">
+        <div>
+            <h1 class="admin-loan-page-title">
+                مدیریت امانت‌ها
+            </h1>
+
+            <p class="admin-loan-page-subtitle">
+                فهرست و وضعیت امانت‌های ثبت‌شده در کتابخانه
+            </p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="admin-loan-empty-state">
+            <p>
+                در حال حاضر هیچ امانتی ثبت نشده است.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="admin-loan-list-card">
+
+            <div class="admin-loan-list-header">
+                <h2 class="admin-loan-list-title">
+                    لیست امانت‌ها
+                </h2>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="admin-loan-table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().UserFullName)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().BookTitle)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().InventoryNumber)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().LoanDate)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().DueDate)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().ReturnDate)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().LoanStatus)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().FinalAmount)
+                            </th>
+
+                            <th class="admin-loan-table-actions">
+                                عملیات
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var loan in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @loan.UserFullName
+                                </td>
+
+                                <td class="admin-loan-book-title">
+                                    @loan.BookTitle
+                                </td>
+
+                                <td>
+                                    @loan.InventoryNumber
+                                </td>
+
+                                <td>
+                                    @loan.LoanDate.ToPersianDate()
+                                </td>
+
+                                <td>
+                                    @loan.DueDate.ToPersianDate()
+                                </td>
+
+                                <td>
+                                    @if (loan.ReturnDate.HasValue)
+                                    {
+                                        @loan.ReturnDate.Value.ToPersianDate()
+                                    }
+                                    else
+                                    {
+                                        <span>—</span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <span class="admin-loan-status
+                                        @(loan.LoanStatus switch
+                                        {
+                                            LibraryManagement.Models.LoanStatus.Active
+                                                => "admin-loan-status-active",
+
+                                            LibraryManagement.Models.LoanStatus.Completed
+                                                => "admin-loan-status-completed",
+
+                                            LibraryManagement.Models.LoanStatus.ReturnPending
+                                                => "admin-loan-status-pending",
+
+                                            _
+                                                => "admin-loan-status-unknown"
+                                        })">
+
+                                        @(loan.LoanStatus switch
+                                        {
+                                            LibraryManagement.Models.LoanStatus.Active
+                                                => "فعال",
+
+                                            LibraryManagement.Models.LoanStatus.Completed
+                                                => "خاتمه یافته",
+
+                                            LibraryManagement.Models.LoanStatus.ReturnPending
+                                                => "در انتظار تأیید",
+
+                                            _
+                                                => "نامشخص"
+                                        })
+
+                                    </span>
+                                </td>
+
+                                <td class="admin-loan-amount">
+                                    @loan.FinalAmount.ToString("N0")
+                                </td>
+
+                                <td class="admin-loan-table-actions">
+
+                                    <a asp-area="Admin"
+                                       asp-controller="Loan"
+                                       asp-action="Details"
+                                       asp-route-loanId="@loan.Id"
+                                       class="admin-loan-details-link">
+                                        جزئیات
+                                    </a>
+
+                                    <button type="button"
+                                        class="..."
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#confirmReturnModal"
+                                        data-loan-id="@loan.Id">
+                                        بازگشت
+                                    </button>
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/loan/index.css"
+          asp-append-version="true" />
+}
+<partial name="_ConfirmReturnModal" model="new ConfirmReturnViewModel()" />

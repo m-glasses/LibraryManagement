@@ -1,0 +1,235 @@
+﻿/* ========================================
+   LibraryManagement
+   Admin Loan List
+   ======================================== */
+
+
+/* ----------------------------------------
+   Page
+   ---------------------------------------- */
+
+.admin-loan-page {
+    width: 100%;
+}
+
+
+/* ----------------------------------------
+   Page Header
+   ---------------------------------------- */
+
+.admin-loan-page-header {
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-loan-page-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-2xl);
+    font-weight: var(--lm-font-weight-bold);
+    line-height: var(--lm-line-height-tight);
+}
+
+.admin-loan-page-subtitle {
+    margin: var(--lm-space-2) 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-normal);
+}
+
+
+/* ----------------------------------------
+   Loan List Card
+   ---------------------------------------- */
+
+.admin-loan-list-card {
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-sm);
+    overflow: hidden;
+}
+
+
+/* ----------------------------------------
+   Card Header
+   ---------------------------------------- */
+
+.admin-loan-list-header {
+    padding: var(--lm-space-4) var(--lm-space-5);
+    border-bottom: 1px solid var(--lm-border);
+}
+
+.admin-loan-list-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-lg);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+
+/* ----------------------------------------
+   Table
+   ---------------------------------------- */
+
+.admin-loan-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size);
+}
+
+    .admin-loan-table th {
+        padding: var(--lm-space-3) var(--lm-space-4);
+        background-color: var(--lm-background);
+        border-bottom: 1px solid var(--lm-border);
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-sm);
+        font-weight: var(--lm-font-weight-bold);
+        line-height: var(--lm-line-height-tight);
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .admin-loan-table td {
+        padding: var(--lm-space-4);
+        border-bottom: 1px solid var(--lm-border);
+        vertical-align: middle;
+    }
+
+    .admin-loan-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .admin-loan-table tbody tr {
+        transition: background-color var(--lm-transition-fast);
+    }
+
+        .admin-loan-table tbody tr:hover {
+            background-color: var(--lm-background);
+        }
+
+
+/* ----------------------------------------
+   Book Title
+   ---------------------------------------- */
+
+.admin-loan-book-title {
+    color: var(--lm-text);
+    font-weight: var(--lm-font-weight-medium);
+}
+
+
+/* ----------------------------------------
+   Loan Status
+   ---------------------------------------- */
+
+.admin-loan-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 88px;
+    padding: var(--lm-space-1) var(--lm-space-3);
+    border-radius: var(--lm-radius-full);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    white-space: nowrap;
+}
+
+.admin-loan-status-active {
+    background-color: var(--lm-primary-light);
+    color: var(--lm-primary);
+}
+
+.admin-loan-status-completed {
+    background-color: #eaf7ed;
+    color: var(--lm-success);
+}
+
+.admin-loan-status-pending {
+    background-color: #fff1e8;
+    color: var(--lm-warning);
+}
+
+.admin-loan-status-unknown {
+    background-color: var(--lm-background);
+    color: var(--lm-text-muted);
+}
+
+
+/* ----------------------------------------
+   Amount
+   ---------------------------------------- */
+
+.admin-loan-amount {
+    direction: ltr;
+    text-align: right;
+    white-space: nowrap;
+    font-weight: var(--lm-font-weight-medium);
+}
+
+
+/* ----------------------------------------
+   Actions
+   ---------------------------------------- */
+
+.admin-loan-table-actions {
+    white-space: nowrap;
+}
+
+.admin-loan-details-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--lm-space-1) var(--lm-space-3);
+    border: 1px solid var(--lm-primary);
+    border-radius: var(--lm-button-radius);
+    color: var(--lm-primary);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    text-decoration: none;
+    transition: background-color var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+    .admin-loan-details-link:hover {
+        background-color: var(--lm-primary);
+        color: var(--lm-surface);
+    }
+
+
+/* ----------------------------------------
+   Empty State
+   ---------------------------------------- */
+
+.admin-loan-empty-state {
+    padding: var(--lm-space-10) var(--lm-space-6);
+    color: var(--lm-text-muted);
+    text-align: center;
+}
+
+    .admin-loan-empty-state p {
+        margin: 0;
+        font-size: var(--lm-font-size);
+    }
+
+
+/* ----------------------------------------
+   Responsive
+   ---------------------------------------- */
+
+@media (max-width: 767.98px) {
+
+    .admin-loan-page-title {
+        font-size: var(--lm-font-size-xl);
+    }
+
+    .admin-loan-list-header {
+        padding: var(--lm-space-4);
+    }
+
+    .admin-loan-table th,
+    .admin-loan-table td {
+        padding: var(--lm-space-3);
+    }
+}
