@@ -2,8 +2,50 @@
    Admin Loan Return Modal
    ======================================== */
 
+#confirmReturnModal .confirmation-modal {
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-lg);
+    overflow: hidden;
+}
+
+#confirmReturnModal .confirmation-modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--lm-space-4) var(--lm-space-5);
+    background-color: var(--lm-surface);
+    border-bottom: 1px solid var(--lm-border);
+}
+
+    #confirmReturnModal .confirmation-modal-header .modal-title {
+        margin: 0;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-lg);
+        font-weight: var(--lm-font-weight-semibold);
+        line-height: var(--lm-line-height-tight);
+    }
+
+    #confirmReturnModal .confirmation-modal-header .btn-close {
+        margin: 0;
+        padding: var(--lm-space-2);
+        border-radius: var(--lm-radius);
+        transition: background-color var(--lm-transition-fast), opacity var(--lm-transition-fast);
+    }
+
+        #confirmReturnModal .confirmation-modal-header .btn-close:hover {
+            background-color: var(--lm-background);
+            opacity: 1;
+        }
+
+        #confirmReturnModal .confirmation-modal-header .btn-close:focus {
+            box-shadow: 0 0 0 0.2rem rgba(32, 107, 196, 0.15);
+        }
+
 #confirmReturnModal .confirmation-modal-body {
     padding: var(--lm-space-6);
+    background-color: var(--lm-surface);
 }
 
 #confirmReturnModal .admin-loan-return-field {
@@ -20,21 +62,119 @@
 
     #confirmReturnModal .admin-loan-return-field .form-control {
         width: 100%;
+        min-height: 42px;
         background-color: var(--lm-input-bg);
         border: 1px solid var(--lm-input-border);
         border-radius: var(--lm-radius);
+        color: var(--lm-text);
+        font-family: var(--lm-font-family);
         transition: border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
     }
 
+        #confirmReturnModal .admin-loan-return-field .form-control:hover {
+            border-color: var(--lm-primary);
+        }
+
         #confirmReturnModal .admin-loan-return-field .form-control:focus {
+            background-color: var(--lm-input-bg);
             border-color: var(--lm-input-focus);
+            color: var(--lm-text);
             box-shadow: 0 0 0 0.2rem rgba(32, 107, 196, 0.15);
+            outline: none;
         }
 
     #confirmReturnModal .admin-loan-return-field .text-danger {
         font-size: var(--lm-font-size-sm);
     }
 
+#confirmReturnModal .confirmation-modal-footer {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: var(--lm-space-2);
+    padding: var(--lm-space-4) var(--lm-space-5);
+    background-color: var(--lm-surface);
+    border-top: 1px solid var(--lm-border);
+}
+
+#confirmReturnModal .confirmation-modal-cancel,
+#confirmReturnModal .confirmation-modal-confirm {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 38px;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    border-radius: var(--lm-button-radius);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
+
+#confirmReturnModal .confirmation-modal-cancel {
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    color: var(--lm-text-muted);
+}
+
+    #confirmReturnModal .confirmation-modal-cancel:hover {
+        background-color: var(--lm-background);
+        border-color: var(--lm-border);
+        color: var(--lm-text);
+    }
+
+    #confirmReturnModal .confirmation-modal-cancel:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(32, 107, 196, 0.15);
+    }
+
+#confirmReturnModal .confirmation-modal-confirm {
+    background-color: var(--lm-primary);
+    border: 1px solid var(--lm-primary);
+    color: #ffffff;
+}
+
+    #confirmReturnModal .confirmation-modal-confirm:hover {
+        background-color: var(--lm-primary-hover);
+        border-color: var(--lm-primary-hover);
+        color: #ffffff;
+    }
+
+    #confirmReturnModal .confirmation-modal-confirm:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(32, 107, 196, 0.2);
+    }
+
+    #confirmReturnModal .confirmation-modal-confirm:disabled,
+    #confirmReturnModal .confirmation-modal-cancel:disabled {
+        cursor: not-allowed;
+        opacity: 0.65;
+    }
+
 /* Jalali DatePicker */
 
+@media (max-width: 767.98px) {
 
+    #confirmReturnModal .modal-dialog {
+        margin: var(--lm-space-3);
+    }
+
+    #confirmReturnModal .confirmation-modal-header {
+        padding: var(--lm-space-4);
+    }
+
+    #confirmReturnModal .confirmation-modal-body {
+        padding: var(--lm-space-5) var(--lm-space-4);
+    }
+
+    #confirmReturnModal .confirmation-modal-footer {
+        padding: var(--lm-space-4);
+    }
+
+    #confirmReturnModal .confirmation-modal-cancel,
+    #confirmReturnModal .confirmation-modal-confirm {
+        flex: 1;
+    }
+}
