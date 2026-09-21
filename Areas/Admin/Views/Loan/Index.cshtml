@@ -157,7 +157,6 @@
                                 </td>
 
                                 <td class="admin-loan-table-actions">
-
                                     <a asp-area="Admin"
                                        asp-controller="Loan"
                                        asp-action="Details"
@@ -166,15 +165,17 @@
                                         جزئیات
                                     </a>
 
-                                    <button type="button"
-                                        class="..."
-                                        data-bs-toggle="modal"
-                                        data-bs-target="#confirmReturnModal"
-                                        data-loan-id="@loan.Id">
-                                        بازگشت
-                                    </button>
+                                    @if (loan.LoanStatus is LoanStatus.Active or LoanStatus.ReturnPending)
+                                    {
+                                        <button type="button"
+                                                class="admin-loan-return-button"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#confirmReturnModal"
+                                                data-loan-id="@loan.Id">
+                                            بازگشت
+                                        </button>
+                                    }
                                 </td>
-
                             </tr>
                         }
 

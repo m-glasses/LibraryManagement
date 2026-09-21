@@ -11,22 +11,22 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    gap: var(--lm-space-4);
-    margin-bottom: var(--lm-space-6);
+    gap: var(--lm-space-3);
+    margin-bottom: var(--lm-space-4);
 }
 
 .admin-loan-details-title {
     margin: 0;
     color: var(--lm-text);
-    font-size: var(--lm-font-size-2xl);
+    font-size: var(--lm-font-size-xl);
     font-weight: var(--lm-font-weight-bold);
     line-height: var(--lm-line-height-tight);
 }
 
 .admin-loan-details-subtitle {
-    margin: var(--lm-space-2) 0 0;
+    margin: var(--lm-space-1) 0 0;
     color: var(--lm-text-muted);
-    font-size: var(--lm-font-size);
+    font-size: var(--lm-font-size-sm);
 }
 
 .admin-loan-details-back-link {
@@ -34,7 +34,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    padding: var(--lm-space-2) var(--lm-space-4);
+    padding: var(--lm-space-2) var(--lm-space-3);
     border: 1px solid var(--lm-border);
     border-radius: var(--lm-button-radius);
     background-color: var(--lm-surface);
@@ -46,7 +46,7 @@
 }
 
     .admin-loan-details-back-link:hover {
-        background-color: var(--lm-background);
+        background-color: var(--lm-primary-light);
         border-color: var(--lm-primary);
         color: var(--lm-primary);
     }
@@ -59,7 +59,7 @@
 .admin-loan-details-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--lm-space-5);
+    gap: var(--lm-space-3);
 }
 
 
@@ -77,20 +77,20 @@
 }
 
 .admin-loan-details-card-header {
-    padding: var(--lm-space-4) var(--lm-space-5);
+    padding: var(--lm-space-3) var(--lm-space-4);
     border-bottom: 1px solid var(--lm-border);
-    background-color: var(--lm-background);
+    background-color: #e8f1ff;
 }
 
     .admin-loan-details-card-header h2 {
         margin: 0;
-        color: var(--lm-text);
-        font-size: var(--lm-font-size-lg);
+        color: #174ea6;
+        font-size: var(--lm-font-size);
         font-weight: var(--lm-font-weight-bold);
     }
 
 .admin-loan-details-card-body {
-    padding: var(--lm-space-2) var(--lm-space-5);
+    padding: var(--lm-space-1) var(--lm-space-4);
 }
 
 
@@ -102,9 +102,9 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--lm-space-4);
-    min-height: 48px;
-    padding: var(--lm-space-3) 0;
+    gap: var(--lm-space-3);
+    min-height: 42px;
+    padding: var(--lm-space-2) 0;
     border-bottom: 1px solid var(--lm-border);
 }
 
@@ -122,7 +122,7 @@
 .admin-loan-detail-value {
     min-width: 0;
     color: var(--lm-text);
-    font-size: var(--lm-font-size);
+    font-size: var(--lm-font-size-sm);
     font-weight: var(--lm-font-weight-medium);
     text-align: left;
     word-break: break-word;
@@ -137,8 +137,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 88px;
-    padding: var(--lm-space-1) var(--lm-space-3);
+    min-width: 82px;
+    padding: var(--lm-space-1) var(--lm-space-2);
     border-radius: var(--lm-radius-full);
     font-size: var(--lm-font-size-sm);
     font-weight: var(--lm-font-weight-medium);
@@ -172,8 +172,8 @@
    ======================================== */
 
 .admin-loan-final-amount {
-    margin-top: var(--lm-space-2);
-    padding-top: var(--lm-space-4);
+    margin-top: var(--lm-space-1);
+    padding-top: var(--lm-space-3);
     border-top: 2px solid var(--lm-border);
     border-bottom: 0;
 }
@@ -193,6 +193,71 @@
 
 
 /* ========================================
+   Admin Note
+   ======================================== */
+
+.admin-loan-details-full-width {
+    display: flex;
+    flex-direction: column;
+    grid-column: 1 / -1;
+    gap: var(--lm-space-3);
+    width: 100%;
+}
+
+.admin-loan-admin-note-card,
+.admin-loan-return-card {
+    width: 100%;
+}
+
+    .admin-loan-return-card
+    .admin-loan-details-card-body {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--lm-space-2);
+    }
+
+.admin-loan-return-pending-message {
+    margin: 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+}
+
+
+/* ========================================
+   Actions
+   ======================================== */
+
+.admin-loan-return-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--lm-space-2) var(--lm-space-4);
+    background-color: var(--lm-warning);
+    color: #ffffff;
+    border: 1px solid var(--lm-warning);
+    border-radius: var(--lm-button-radius);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
+
+    .admin-loan-return-button:hover {
+        background-color: #e85f05;
+        border-color: #e85f05;
+        color: #ffffff;
+    }
+
+    .admin-loan-return-button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(247, 103, 7, 0.2);
+    }
+
+
+/* ========================================
    Responsive
    ======================================== */
 
@@ -208,20 +273,20 @@
     }
 
     .admin-loan-details-title {
-        font-size: var(--lm-font-size-xl);
+        font-size: var(--lm-font-size-lg);
     }
 
     .admin-loan-details-grid {
         grid-template-columns: 1fr;
-        gap: var(--lm-space-4);
+        gap: var(--lm-space-3);
     }
 
     .admin-loan-details-card-header {
-        padding: var(--lm-space-4);
+        padding: var(--lm-space-3);
     }
 
     .admin-loan-details-card-body {
-        padding: var(--lm-space-2) var(--lm-space-4);
+        padding: var(--lm-space-1) var(--lm-space-3);
     }
 
     .admin-loan-detail-item {

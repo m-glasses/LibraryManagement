@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
 using LibraryManagement.ViewModels;
+using LibraryManagement.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -89,11 +90,27 @@ namespace LibraryManagement.Areas.Admin.Controllers
             };
         }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult ConfirmReturn(int loanId )
-        //{
-        //    _loanService.ConfirmReturn()
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult ConfirmReturn(ConfirmReturnViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            try
+            {
+                _loanService.ConfirmReturn(model.LoanId, model.ReturnDate);
+
+                TempData["SuccessMessage"] = "بازگشت امانت با موفقیت ثبت شد.";
+
+                return RedirectToAction("Details", new { loanId = model.LoanId });
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+
+                return RedirectToAction("Details", new { loanId = model.LoanId });
+            }
+        }
     }
 }

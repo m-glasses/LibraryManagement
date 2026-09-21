@@ -197,7 +197,33 @@
         color: var(--lm-surface);
     }
 
+.admin-loan-return-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    background-color: var(--lm-warning);
+    color: #ffffff;
+    border: 1px solid var(--lm-warning);
+    border-radius: var(--lm-button-radius);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    text-decoration: none;
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
 
+    .admin-loan-return-button:hover {
+        background-color: #e85f05;
+        border-color: #e85f05;
+        color: #ffffff;
+    }
+
+    .admin-loan-return-button:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(247, 103, 7, 0.2);
+    }
 /* ----------------------------------------
    Empty State
    ---------------------------------------- */

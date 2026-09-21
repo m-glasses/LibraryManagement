@@ -337,7 +337,21 @@
     <main role="main"
           class="page-content admin-page-content">
 
+         @if (TempData["SuccessMessage"] is string successMessage)
+        {
+            <div class="alert alert-success" role="alert">
+                @successMessage
+            </div>
+        }
+
+        @if (TempData["ErrorMessage"] is string errorMessage)
+        {
+            <div class="alert alert-danger" role="alert">
+                @errorMessage
+            </div>
+        }
         @RenderBody()
+        
 
     </main>
 
@@ -379,7 +393,7 @@
 
 <!-- Admin Loan Return -->
 
-<script src="~/js/components/adminLoanReturn.js"
+<script src="~/js/Components/adminLoanReturn.js"
         asp-append-version="true"></script>
 
 </body>

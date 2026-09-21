@@ -282,37 +282,76 @@
 
             </div>
         </div>
-
+    </div>
 
         <!-- Administrative Information -->
 
-        <div class="admin-loan-details-card admin-loan-admin-note-card">
+        <div class="admin-loan-details-full-width">
 
-            <div class="admin-loan-details-card-header">
-                <h2>یادداشت مدیر</h2>
+            <!-- Admin Note -->
+
+            <div class="admin-loan-details-card admin-loan-admin-note-card">
+
+                <div class="admin-loan-details-card-header">
+                    <h2>یادداشت مدیر</h2>
+                </div>
+
+                <div class="admin-loan-details-card-body">
+
+                    @if (!string.IsNullOrWhiteSpace(Model.AdminNote))
+                    {
+                        <p>@Model.AdminNote</p>
+                    }
+                    else
+                    {
+                        <p class="admin-loan-empty-note">
+                            یادداشتی ثبت نشده است.
+                        </p>
+                    }
+
+                </div>
+
             </div>
 
-            <div class="admin-loan-details-card-body">
 
-                @if (string.IsNullOrWhiteSpace(Model.AdminNote))
-                {
-                    <p class="admin-loan-empty-note">
-                        یادداشتی برای این امانت ثبت نشده است.
-                    </p>
-                }
-                else
-                {
-                    <p class="admin-loan-admin-note">
-                        @Model.AdminNote
-                    </p>
-                }
+            <!-- Return Action -->
+            @if (Model.LoanStatus is LoanStatus.Active or LoanStatus.ReturnPending)
+            {
+                <div class="admin-loan-details-card admin-loan-return-card">
 
-            </div>
+                    <div class="admin-loan-details-card-header">
+                        <h2>عملیات بازگشت</h2>
+                    </div>
+
+                    <div class="admin-loan-details-card-body">
+
+                        @if (Model.LoanStatus == LoanStatus.ReturnPending)
+                        {
+                            <p class="admin-loan-return-pending-message">
+                                این امانت در انتظار تأیید بازگشت است.
+                            </p>
+                        }
+
+                        <button type="button"
+                                class="admin-loan-return-button"
+                                data-bs-toggle="modal"
+                                data-bs-target="#confirmReturnModal"
+                                data-loan-id="@Model.Id">
+                            تأیید بازگشت
+                        </button>
+
+                    </div>
+
+                </div>
+            }
+
         </div>
+
+        <partial name="_ConfirmReturnModal"
+                 model="new ConfirmReturnViewModel()" />
 
     </div>
 
-</div>
 
 @section Styles
 {

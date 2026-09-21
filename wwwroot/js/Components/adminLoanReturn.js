@@ -29,9 +29,10 @@
     modalElement.addEventListener("shown.bs.modal", () => {
 
         jalaliDatepicker.startWatch({
-            targetValueInput: "attr",
-            targetValueType: "attr"
-        });
+    targetValueInput: "attr",
+    targetValueType: "attr",
+    zIndex: 1060
+    });
 
     });
 
