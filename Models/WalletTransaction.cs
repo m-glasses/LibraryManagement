@@ -8,8 +8,10 @@
         public DateTime CreatedAt { get; set; }
 
         //Navigation Property
-        public Wallet Wallet { get; set; }
+        public virtual Wallet Wallet { get; set; }
+        public virtual Payment? Payment {  set; get; }
     }
+
     public enum TransactionType
     {
         Deposit,
