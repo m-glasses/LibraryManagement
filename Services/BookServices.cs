@@ -31,7 +31,7 @@ namespace LibraryManagement.Services
                     TotalCopies = book.BookCopies.Count(),
                     AvailableCopies = book.BookCopies.Count(
                         bc => !bc.Loans.Any(
-                            l => l.LoanStatus == LoanStatus.Active))
+                            l => l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.ReturnPending))
                 })
                 .SingleOrDefault();
         }
@@ -47,7 +47,7 @@ namespace LibraryManagement.Services
                     PublicationYear = book.PublicationYear,
                     Publisher = book.Publisher,
                     TotalCopies = book.BookCopies.Count(),
-                    AvailableCopies = book.BookCopies.Count(bc => !bc.Loans.Any(l => l.LoanStatus == LoanStatus.Active))
+                    AvailableCopies = book.BookCopies.Count(bc => !bc.Loans.Any(l => l.LoanStatus == LoanStatus.Active || l.LoanStatus == LoanStatus.ReturnPending))
                 })
                 .ToList();
         }

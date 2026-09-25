@@ -4,7 +4,7 @@ namespace LibraryManagement.Services.Interfaces
 {
     public interface ILoanService : IGenericService<Loan>
     {
-        BookCopy GetAvailableBookCopy(int userId, int bookId);
+        BookCopy GetAvailableBookCopy(int bookId);
         Loan Borrow(int userId, int bookId);
         void RequestReturn(int loanId, int userId);
         void ConfirmReturn(int loanId, DateTime returnDate);

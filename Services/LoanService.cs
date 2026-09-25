@@ -13,7 +13,43 @@ namespace LibraryManagement.Services
             _context = context;
         }
 
-        public BookCopy GetAvailableBookCopy(int userId, int bookId)
+        public BookCopy GetAvailableBookCopy(int bookId)
+        {
+            var bookCopy = _context.BookCopies
+                .FirstOrDefault(bookCopy =>
+                    bookCopy.BookId == bookId &&
+                    !bookCopy.Loans.Any(loan =>
+                        loan.LoanStatus != LoanStatus.Completed));
+
+            if (bookCopy is null)
+            {
+                throw new InvalidOperationException("Book not available");
+            }
+
+            return bookCopy;
+        }
+
+        private Reservation? ValidateReservationPriority( int userId , int bookId)
+        {
+            var firstActiveReservation = _context.Reservations
+                .Where(reservation =>
+                    reservation.BookId == bookId &&
+                    reservation.ReservationStatus == ReservationStatus.Active)
+                .OrderBy(reservation => reservation.ReservedAt)
+                .FirstOrDefault();
+
+            if (firstActiveReservation is not null &&
+                firstActiveReservation.UserId != userId)
+            {
+                throw new InvalidOperationException(
+                    "Another user has priority to borrow this book");
+            }
+
+            return firstActiveReservation;
+        }
+
+
+        public Loan Borrow(int userId, int bookId)
         {
             if (!_context.Users.Any(user => user.Id == userId))
             {
@@ -25,22 +61,6 @@ namespace LibraryManagement.Services
                 throw new InvalidOperationException("Book not found");
             }
 
-            var bookCopy = _context.BookCopies
-                .FirstOrDefault(bookCopy =>
-                    bookCopy.BookId == bookId &&
-                        !bookCopy.Loans.Any(loan =>
-                            loan.LoanStatus != LoanStatus.Completed));
-
-            if (bookCopy is null)
-            {
-                throw new InvalidOperationException("Book not available");
-            }
-
-            return bookCopy;
-        }
-
-        public Loan Borrow(int userId, int bookId)
-        {
             var settings = _context.LibrarySettings.SingleOrDefault();
 
             if (settings is null)
@@ -49,7 +69,10 @@ namespace LibraryManagement.Services
                     "Library settings not found");
             }
 
-            var bookCopy = GetAvailableBookCopy(userId, bookId);
+            var firstActiveReservation =
+                ValidateReservationPriority(userId, bookId);
+
+            var bookCopy = GetAvailableBookCopy(bookId);
 
             var startDate = DateTime.Now;
 
@@ -66,10 +89,18 @@ namespace LibraryManagement.Services
             };
 
             _context.Loans.Add(loan);
+
+            if (firstActiveReservation is not null)
+            {
+                firstActiveReservation.ReservationStatus =
+                    ReservationStatus.Completed;
+            }
+
             _context.SaveChanges();
 
             return loan;
         }
+
 
         public void RequestReturn(int loanId, int userId)
         {
@@ -229,5 +260,6 @@ namespace LibraryManagement.Services
                     .ThenInclude(bookCopy => bookCopy.Book)
                 .FirstOrDefault(loan => loan.Id == loanId);
         }
+
     }
 }

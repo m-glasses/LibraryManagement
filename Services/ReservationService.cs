@@ -60,7 +60,8 @@ namespace LibraryManagement.Services
 
             var hasAvailableCopy = _context.BookCopies.Any(bookCopy =>
                 bookCopy.BookId == bookId &&
-                !bookCopy.Loans.Any(loan => loan.LoanStatus == LoanStatus.Active));
+                !bookCopy.Loans.Any(loan =>
+                    loan.LoanStatus != LoanStatus.Completed));
 
             if (hasAvailableCopy)
             {
@@ -87,6 +88,19 @@ namespace LibraryManagement.Services
             {
                 throw new InvalidOperationException(
                     "You already have an active reservation for this book");
+            }
+
+            var activeReservationCount = _context.Reservations.Count(reservation =>
+         reservation.BookId == bookId &&
+         reservation.ReservationStatus == ReservationStatus.Active);
+
+            var bookCopyCount = _context.BookCopies.Count(bookCopy =>
+                bookCopy.BookId == bookId);
+
+            if (activeReservationCount >= bookCopyCount)
+            {
+                throw new InvalidOperationException(
+                    "Reservation capacity is full");
             }
         }
 
