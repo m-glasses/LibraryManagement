@@ -9,6 +9,9 @@
                 "User not found" =>
                     "کاربر پیدا نشد",
 
+                "User not found." =>
+                    "کاربر پیدا نشد.",
+
                 "Book not found" =>
                     "کتاب پیدا نشد",
 
@@ -50,6 +53,18 @@
 
                 "Active reservation not found." =>
                     "رزرو فعال پیدا نشد.",
+
+                "Wallet not found." =>
+                    "کیف پول پیدا نشد.",
+
+                "Amount must be greater than zero." =>
+                    "مبلغ باید بیشتر از صفر باشد.",
+
+                "User already has a wallet." =>
+                    "این کاربر در حال حاضر کیف پول دارد.",
+
+                "User cannot borrow while wallet balance is negative." =>
+                    "به دلیل منفی بودن موجودی کیف پول، امکان دریافت امانت جدید وجود ندارد.",
 
                 _ =>
                     "خطایی رخ داده است."

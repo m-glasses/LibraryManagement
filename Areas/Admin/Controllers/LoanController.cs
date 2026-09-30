@@ -95,21 +95,25 @@ namespace LibraryManagement.Areas.Admin.Controllers
         public IActionResult ConfirmReturn(ConfirmReturnViewModel model)
         {
             if (!ModelState.IsValid)
-                return BadRequest(ModelState);
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate("Invalid return date");
+
+                return RedirectToAction(nameof(Details),new { loanId = model.LoanId });
+            }
 
             try
             {
-                _loanService.ConfirmReturn(model.LoanId, model.ReturnDate);
+                _loanService.ConfirmReturn(model.LoanId,model.ReturnDate);
 
                 TempData["SuccessMessage"] = "بازگشت امانت با موفقیت ثبت شد.";
 
-                return RedirectToAction("Details", new { loanId = model.LoanId });
+                return RedirectToAction(nameof(Details), new { loanId = model.LoanId });
             }
             catch (InvalidOperationException ex)
             {
                 TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
 
-                return RedirectToAction("Details", new { loanId = model.LoanId });
+                return RedirectToAction( nameof(Details), new { loanId = model.LoanId });
             }
         }
     }

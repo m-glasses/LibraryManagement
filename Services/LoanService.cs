@@ -58,6 +58,18 @@ namespace LibraryManagement.Services
                 throw new InvalidOperationException("User not found");
             }
 
+
+            var wallet = _walletService.GetByUserId(userId);
+
+            if (wallet is null)
+            {
+                throw new InvalidOperationException("Wallet not found.");
+            }
+            if (wallet.Balance < 0 )
+            {
+                throw new InvalidOperationException("User cannot borrow while wallet balance is negative.");
+            }
+            
             if (!_context.Books.Any(book => book.Id == bookId))
             {
                 throw new InvalidOperationException("Book not found");
