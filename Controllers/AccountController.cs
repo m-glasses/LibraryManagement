@@ -1,5 +1,6 @@
 ﻿using LibraryManagement.Models;
 using LibraryManagement.Services;
+using LibraryManagement.Services.Interfaces;
 using LibraryManagement.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -11,11 +12,13 @@ namespace LibraryManagement.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IdentityErrorLocalizer _identityErrorLocalizer;
-        public AccountController(UserManager<User> userManage, SignInManager<User> signInManager, IdentityErrorLocalizer identityErrorLocalizer)
+        private readonly IWalletService _walletService;
+        public AccountController(UserManager<User> userManage, SignInManager<User> signInManager, IdentityErrorLocalizer identityErrorLocalizer , IWalletService walletService)
         {
             _userManager = userManage;
             _signInManager = signInManager;
             _identityErrorLocalizer = identityErrorLocalizer;
+            _walletService = walletService;
         }
 
         [HttpGet]
@@ -57,6 +60,8 @@ namespace LibraryManagement.Controllers
                 return View(register);
             }
 
+            _walletService.CreateForUser(user.Id);
+
             var roleResult = await _userManager.AddToRoleAsync(
                 user,
                 "User");
@@ -90,7 +95,6 @@ namespace LibraryManagement.Controllers
             return View();
         }
 
-        [HttpPost]
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel login)
         {

@@ -9,7 +9,6 @@
 
         //Navigation Property
         public virtual Wallet Wallet { get; set; }
-        public virtual Payment? Payment {  set; get; }
     }
 
     public enum TransactionType

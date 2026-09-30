@@ -14,6 +14,37 @@ namespace LibraryManagement.Services
             _context = context;
         }
 
+        public Wallet CreateForUser(int userId)
+        {
+            var userExists = _context.Users
+                .Any(user => user.Id == userId);
+
+            if (!userExists)
+            {
+                throw new InvalidOperationException("User not found.");
+            }
+
+            var walletExists = _context.Wallets
+                .Any(wallet => wallet.UserId == userId);
+
+            if (walletExists)
+            {
+                throw new InvalidOperationException(
+                    "User already has a wallet.");
+            }
+
+            var wallet = new Wallet
+            {
+                UserId = userId,
+                Balance = 0
+            };
+
+            _context.Wallets.Add(wallet);
+            _context.SaveChanges();
+
+            return wallet;
+        }
+
         public void Deposit(int walletId, decimal amount)
         {
             if (amount <= 0)

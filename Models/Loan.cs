@@ -27,7 +27,6 @@ namespace LibraryManagement.Models
         //Navigation Property
         public virtual User User { get; set; }
         public virtual BookCopy BookCopy { get; set; }
-        public virtual Payment? Payment { get; set; }
     }
     public enum LoanStatus
     {

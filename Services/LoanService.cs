@@ -8,9 +8,11 @@ namespace LibraryManagement.Services
     public class LoanService : GenericService<Loan>, ILoanService
     {
         private readonly LibraryDbContext _context;
-        public LoanService(LibraryDbContext context) : base(context)
+        private readonly IWalletService _walletService;
+        public LoanService(LibraryDbContext context , IWalletService wallet) : base(context)
         {
             _context = context;
+            _walletService = wallet;
         }
 
         public BookCopy GetAvailableBookCopy(int bookId)
@@ -173,6 +175,15 @@ namespace LibraryManagement.Services
             loan.ReturnDate = returnDate;
 
             CalculateLoanAmount(loan, returnDate);
+
+            Wallet? wallet = _context.Wallets.FirstOrDefault(wallet => wallet.UserId == loan.UserId);
+
+            if (wallet is null)
+            {
+                throw new InvalidOperationException("wallet not found");
+            }
+
+            _walletService.Withdraw(wallet.Id, loan.FinalAmount);
 
             loan.LoanStatus = LoanStatus.Completed;
 
