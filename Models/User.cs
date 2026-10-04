@@ -9,6 +9,7 @@ namespace LibraryManagement.Models
         {
             Loans = new List<Loan>();
             Reservations = new List<Reservation>();
+            PaymentAttempts = new List<PaymentAttempt>();
         }
 
         [Required]
@@ -40,6 +41,7 @@ namespace LibraryManagement.Models
         public virtual List<Loan> Loans { get; set; }
         public virtual List<Reservation> Reservations { get; set; }
         public Wallet Wallet { get; set; }
+        public virtual List<PaymentAttempt> PaymentAttempts { get; set; }
     }
     public enum Gender
     {

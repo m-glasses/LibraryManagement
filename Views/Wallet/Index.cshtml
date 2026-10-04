@@ -1,0 +1,272 @@
+﻿@model LibraryManagement.ViewModels.WalletViewModel
+
+@{
+    ViewData["Title"] = "کیف پول";
+}
+
+<div class="wallet-page">
+
+    <!-- Page Header -->
+
+    <div class="wallet-page-header">
+
+        <div>
+            <h1 class="wallet-page-title">
+                کیف پول
+            </h1>
+
+            <p class="wallet-page-subtitle">
+                موجودی و تاریخچه تراکنش‌های کیف پول شما
+            </p>
+        </div>
+
+        <button type="button"
+        class="wallet-deposit-button"
+        data-bs-toggle="modal"
+        data-bs-target="#walletDepositModal">
+        شارژ کیف پول
+        </button>
+
+    </div>
+
+
+    <!-- Wallet Summary -->
+
+    <div class="wallet-summary-card">
+
+        <div class="wallet-balance-section">
+
+            <span class="wallet-balance-label">
+                @Html.DisplayNameFor(model => model.Balance)
+            </span>
+
+            <span class="wallet-balance">
+                @Model.Balance.ToString("N0")
+            </span>
+
+        </div>
+
+        <div class="wallet-status-section">
+
+            <span class="wallet-status-label">
+                @Html.DisplayNameFor(model => model.IsBlocked)
+            </span>
+
+            @if (Model.IsBlocked)
+            {
+                <span class="wallet-status wallet-status-blocked">
+                    بدهکار
+                </span>
+            }
+            else
+            {
+                <span class="wallet-status wallet-status-active">
+                    فعال
+                </span>
+            }
+
+        </div>
+
+    </div>
+
+
+    <!-- Transactions -->
+
+    <div class="wallet-transactions-card">
+
+        <div class="wallet-transactions-header">
+
+            <div>
+                <h2 class="wallet-transactions-title">
+                    تاریخچه تراکنش‌ها
+                </h2>
+
+                <p class="wallet-transactions-subtitle">
+                    آخرین تراکنش‌های کیف پول شما
+                </p>
+            </div>
+
+        </div>
+
+        @if (Model.Transactions.Count == 0)
+        {
+            <div class="wallet-empty-state">
+
+                <h3>
+                    هنوز تراکنشی ثبت نشده است
+                </h3>
+
+                <p>
+                    تاریخچه تراکنش‌های کیف پول شما در این بخش نمایش داده می‌شود.
+                </p>
+
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive">
+
+                <table class="wallet-transactions-table">
+
+                    <thead>
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(
+                                    model => model.Transactions.First().Amount)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(
+                                    model => model.Transactions.First().Type)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(
+                                    model => model.Transactions.First().CreatedAt)
+                            </th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var transaction in Model.Transactions)
+                        {
+                            <tr>
+
+                                <td>
+                                    @transaction.Amount.ToString("N0")
+                                </td>
+
+                                <td>
+                                    @if (transaction.Type == LibraryManagement.Models.TransactionType.Deposit)
+                                    {
+                                        <span class="wallet-transaction-type wallet-transaction-type-deposit">
+                                            واریز
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="wallet-transaction-type wallet-transaction-type-withdrawal">
+                                            برداشت
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    @transaction.CreatedAt.ToPersianDate()
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+        }
+
+    </div>
+
+
+    <!-- Wallet Deposit Modal -->
+
+    <div class="modal fade"
+         id="walletDepositModal"
+         tabindex="-1"
+         aria-labelledby="walletDepositModalLabel"
+         aria-hidden="true">
+
+        <div class="modal-dialog modal-dialog-centered">
+
+            <div class="modal-content wallet-deposit-modal">
+
+                <div class="modal-header">
+
+                    <h5 class="modal-title"
+                        id="walletDepositModalLabel">
+                        شارژ کیف پول
+                    </h5>
+
+                    <button type="button"
+                            class="btn-close"
+                            data-bs-dismiss="modal"
+                            aria-label="بستن">
+                    </button>
+
+                </div>
+
+                <form asp-controller="Wallet"
+                      asp-action="Deposit"
+                      method="post">
+
+                    <div class="modal-body">
+
+                        <div class="wallet-deposit-field">
+
+                            <label for="Amount"
+                                   class="wallet-deposit-label">
+                                مبلغ شارژ
+                            </label>
+
+                            <div class="wallet-deposit-input-wrapper">
+
+                                <input type="text"
+                                   id="Amount"
+                                   name="Amount"
+                                   class="form-control wallet-deposit-input"
+                                   inputmode="numeric"
+                                   autocomplete="off"
+                                   placeholder="مثلاً 500,000"
+                                   required />
+
+                                <span class="wallet-deposit-currency">
+                                    تومان
+                                </span>
+
+                            </div>
+
+                            <span class="wallet-deposit-hint">
+                                مبلغ شارژ باید بین ۱,۰۰۰ تا ۱۰۰,۰۰۰,۰۰۰ تومان باشد.
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                    <div class="modal-footer">
+
+                        <button type="button"
+                                class="wallet-deposit-cancel-button"
+                                data-bs-dismiss="modal">
+                            انصراف
+                        </button>
+
+                        <button type="submit"
+                                class="wallet-deposit-submit-button">
+                            ادامه پرداخت
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/wallet/index.css"
+          asp-append-version="true" />
+}
+
+@section Scripts {
+    <script src="~/js/Components/DepositWallet.js"
+            asp-append-version="true"></script>
+}

@@ -8,5 +8,6 @@ namespace LibraryManagement.Services.Interfaces
         Wallet? GetByUserId(int  userId);
         void Deposit (int walletId , decimal amount);
         void Withdraw (int walletId , decimal amount);
+        List<WalletTransaction> GetTransactions(int walletId);
     }
 }

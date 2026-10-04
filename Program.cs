@@ -1,8 +1,9 @@
+using LibraryManagement.Configuration;
 using LibraryManagement.Data;
-//using LibraryManagement.Middlewares;
 using LibraryManagement.Models;
 using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
+using LibraryManagement.Services.ZarinPal;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -23,7 +24,14 @@ builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
 builder.Services.AddScoped<IdentityErrorLocalizer>();
+builder.Services.AddHttpClient<IZarinPalService, ZarinpalService>();
+builder.Services.AddScoped<IPaymentAttemptService, PaymentAttemptService>();
+builder.Services.Configure<ZarinPalOptions>(builder.Configuration.GetSection("ZarinPal"));
+
+
 var app = builder.Build();
+
+
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;

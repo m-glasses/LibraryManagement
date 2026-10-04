@@ -68,6 +68,8 @@
         bool isAuthenticated = User.Identity?.IsAuthenticated == true;
     }
 
+    <!-- Navbar -->
+
     <header class="navbar">
 
         <div class="container-fluid">
@@ -78,7 +80,10 @@
                     aria-controls="app-sidebar"
                     aria-expanded="false"
                     aria-label="باز کردن منو">
-                <img src="~/images/icons/menu.svg" alt="" />
+
+                <img src="~/images/icons/menu.svg"
+                     alt="" />
+
             </button>
 
             <a asp-controller="Home"
@@ -177,6 +182,9 @@
 
     </header>
 
+
+    <!-- Sidebar -->
+
     @if (isAuthenticated)
     {
         <aside class="sidebar"
@@ -186,6 +194,8 @@
             <nav>
 
                 <ul class="sidebar-nav">
+
+                    <!-- Dashboard -->
 
                     <li class="sidebar-nav-item">
 
@@ -205,6 +215,9 @@
 
                     </li>
 
+
+                    <!-- Books -->
+
                     <li class="sidebar-nav-item">
 
                         <a asp-controller="Book"
@@ -222,6 +235,9 @@
                         </a>
 
                     </li>
+
+
+                    <!-- Loans -->
 
                     <li class="sidebar-nav-item">
 
@@ -241,6 +257,9 @@
 
                     </li>
 
+
+                    <!-- Reservations -->
+
                     <li class="sidebar-nav-item">
 
                         <a asp-controller="Reservation"
@@ -259,12 +278,36 @@
 
                     </li>
 
+
+                    <!-- Wallet -->
+
+                    <li class="sidebar-nav-item">
+
+                        <a asp-controller="Wallet"
+                           asp-action="Index"
+                           class="sidebar-nav-link">
+
+                            <img src="~/images/icons/wallet.svg"
+                                 class="sidebar-nav-icon"
+                                 alt="" />
+
+                            <span class="sidebar-nav-title">
+                                کیف پول
+                            </span>
+
+                        </a>
+
+                    </li>
+
                 </ul>
 
             </nav>
 
         </aside>
     }
+
+
+    <!-- Page -->
 
     <div class="page-wrapper @(isAuthenticated ? "has-sidebar" : "")">
 

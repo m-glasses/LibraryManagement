@@ -66,6 +66,7 @@ namespace LibraryManagement.Services
                 WalletId = walletId,
                 Amount = amount,
                 Type = TransactionType.Deposit,
+                Reason = WalletTransactionReason.WalletDeposit,
                 CreatedAt = DateTime.Now
             };
 
@@ -107,6 +108,15 @@ namespace LibraryManagement.Services
             _context.WalletTransactions.Add(walletTransaction);
 
             _context.SaveChanges();
+        }
+
+        public List<WalletTransaction> GetTransactions(int walletId)
+        {
+            return _context.WalletTransactions
+                    .AsNoTracking()
+                    .Where(transaction => transaction.WalletId == walletId)
+                    .OrderByDescending(transaction => transaction.CreatedAt)
+                    .ToList();
         }
     }
 }
