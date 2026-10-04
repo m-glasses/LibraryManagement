@@ -66,7 +66,6 @@ namespace LibraryManagement.Services
                 WalletId = walletId,
                 Amount = amount,
                 Type = TransactionType.Deposit,
-                Reason = WalletTransactionReason.WalletDeposit,
                 CreatedAt = DateTime.Now
             };
 

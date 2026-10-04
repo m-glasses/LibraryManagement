@@ -5,7 +5,6 @@
         public int WalletId { get; set; }
         public decimal Amount { get; set; }
         public TransactionType Type { get; set; }
-        public WalletTransactionReason Reason { get; set; }
         public DateTime CreatedAt { get; set; }
 
         //Navigation Property
@@ -18,11 +17,4 @@
         Withdrawal
     }
 
-    public enum WalletTransactionReason
-    {
-        WalletDeposit,
-        LoanPayment,
-        LateReturnPenalty,
-        ReservationPayment
-    }
 }
