@@ -19,9 +19,13 @@
 
     form.addEventListener("submit", (event) => {
 
-        const amount = Number(amountInput.value);
+        const rawValue =
+            amountInput.value.replace(/,/g, "");
 
-        if (!amount || amount < 1000) {
+        const amount =
+            Number(rawValue);
+
+        if (!amount || amount < 1000 || amount > 100000000) {
             event.preventDefault();
 
             amountInput.classList.add("is-invalid");
@@ -29,19 +33,24 @@
         }
 
         amountInput.classList.remove("is-invalid");
+
+        // Send the raw numeric value to the server.
+        amountInput.value = rawValue;
     });
 
     amountInput.addEventListener("input", () => {
 
-    const value = amountInput.value.replace(/\D/g, "");
+        const value =
+            amountInput.value.replace(/\D/g, "");
 
-    if (!value) {
-        amountInput.value = "";
-        return;
-    }
+        if (!value) {
+            amountInput.value = "";
+            return;
+        }
 
-    amountInput.value =
-        Number(value).toLocaleString("en-US");
+        amountInput.value =
+            Number(value).toLocaleString("en-US");
+    });
+
 });
 
-});

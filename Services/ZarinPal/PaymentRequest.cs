@@ -17,6 +17,6 @@ namespace LibraryManagement.Services.ZarinPal
         public string Description { get; set; }
 
         [JsonPropertyName("metadata")]
-        public Metadata Metadata { get; set; }
+        public List<Metadata>? Metadata { get; set; }
     }
 }

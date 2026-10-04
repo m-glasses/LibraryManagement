@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using LibraryManagement.Configuration;
+using LibraryManagement.Models;
 using Microsoft.Extensions.Options;
 using System.Text.Json;
 
@@ -15,16 +16,25 @@ namespace LibraryManagement.Services.ZarinPal
             _zarinPalOption = options;
         }
 
-        public async Task<PaymentRequestResult> RequestPaymentAsync(decimal amountInTomans , string callbackUrl)
+        public async Task<PaymentRequestResult> RequestPaymentAsync(decimal amountInTomans , string callbackUrl , User user)
         {
+ 
             var request = new PaymentRequest()
             {
                 Amount = (long)amountInTomans * 10,
                 MerchantId = _zarinPalOption.Value.MerchantId,
                 CallbackUrl = callbackUrl,
-                Description = "شارژ کیف‌پول"
+                Description = "شارژ کیف‌پول",
+                Metadata = new List<Metadata>
+                {
+                    new Metadata
+                    {
+                        Mobile = user.PhoneNumber,
+                        Email = user.Email
+                    }
+                }
             };
-
+   
             var response = await _httpClient.PostAsJsonAsync(_zarinPalOption.Value.RequestUrl,request);
 
             response.EnsureSuccessStatusCode();

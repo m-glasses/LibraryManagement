@@ -84,7 +84,7 @@ namespace LibraryManagement.Controllers
                 if (string.IsNullOrWhiteSpace(callbackUrl))
                     throw new InvalidOperationException("Callback URL could not be generated");
 
-                var paymentResult = await _zarinPal.RequestPaymentAsync(model.Amount,callbackUrl);
+                var paymentResult = await _zarinPal.RequestPaymentAsync(model.Amount,callbackUrl , user);
 
                 if (string.IsNullOrWhiteSpace(paymentResult.Authority))
                     throw new InvalidOperationException("Payment authority was not received from ZarinPal.");
@@ -95,6 +95,7 @@ namespace LibraryManagement.Controllers
 
                 return Redirect(paymentUrl);
             }
+
             catch (InvalidOperationException ex)
             {
                 TempData["Error"] =
@@ -102,6 +103,7 @@ namespace LibraryManagement.Controllers
 
                 return View(model);
             }
+
         }
 
 
@@ -127,26 +129,45 @@ namespace LibraryManagement.Controllers
             {
                 _payment.SetStatus(paymentAttempt, PaymentStatus.Failed);
 
-                return BadRequest("Payment was not successful.");
+                var viewModel = new PaymentResultViewModel
+                {
+                    IsSuccess = false,
+                    Message = "پرداخت لغو شد یا ناموفق بود.",
+                    Amount = paymentAttempt.Amount
+                };
+
+                return View("PaymentResult", viewModel);
             }
 
-            var paymentResult = await _zarinPal.VerifyPaymentAsync(paymentAttempt.Authority!,paymentAttempt.Amount);
+            var paymentResult = await _zarinPal.VerifyPaymentAsync(
+                paymentAttempt.Authority!,
+                paymentAttempt.Amount);
 
             if (paymentResult.Code != 100 && paymentResult.Code != 101)
             {
                 _payment.SetStatus(paymentAttempt, PaymentStatus.Failed);
 
-                return BadRequest("Payment verification failed.");
+                var viewModel = new PaymentResultViewModel
+                {
+                    IsSuccess = false,
+                    Message = "پرداخت تأیید نشد و مبلغی به کیف پول شما اضافه نشد",
+                    Amount = paymentAttempt.Amount
+                };
+
+                return View("PaymentResult", viewModel);
             }
 
             _payment.CompletePayment(paymentAttempt);
 
-            return Ok(new
+            var successViewModel = new PaymentResultViewModel
             {
-                paymentAttempt.Authority,
-                paymentResult.Code
-            });
+                IsSuccess = true,
+                Amount = paymentAttempt.Amount,
+                ReferenceId = paymentResult.RefId,
+                Message = "تراکنش با موفقیت انجام شد."
+            };
 
+            return View("PaymentResult", successViewModel);
         }
 
     }

@@ -1,0 +1,108 @@
+﻿@model LibraryManagement.ViewModels.PaymentResultViewModel
+
+@{
+    ViewData["Title"] = Model.IsSuccess
+        ? "پرداخت موفق"
+        : "پرداخت ناموفق";
+}
+
+<div class="wallet-payment-result-page">
+
+    <div class="wallet-payment-result-card">
+
+        <!-- Result Icon -->
+
+        <div class="wallet-payment-result-icon @(Model.IsSuccess
+                        ? "wallet-payment-result-icon-success"
+                        : "wallet-payment-result-icon-failed")">
+
+            @if (Model.IsSuccess)
+            {
+                <span>✓</span>
+            }
+            else
+            {
+                <span>×</span>
+            }
+
+        </div>
+
+
+        <!-- Result Title -->
+
+        <h1 class="wallet-payment-result-title">
+
+            @if (Model.IsSuccess)
+            {
+                <span>پرداخت با موفقیت انجام شد</span>
+            }
+            else
+            {
+                <span>پرداخت ناموفق بود</span>
+            }
+
+        </h1>
+
+
+        <!-- Result Message -->
+
+        <p class="wallet-payment-result-message">
+            @Model.Message
+        </p>
+
+
+        <!-- Payment Details -->
+
+        <div class="wallet-payment-result-details">
+
+            <div class="wallet-payment-result-detail">
+
+                <span class="wallet-payment-result-label">
+                    مبلغ
+                </span>
+
+                <span class="wallet-payment-result-value">
+                    @Model.Amount.ToString("N0") تومان
+                </span>
+
+            </div>
+
+            @if (Model.ReferenceId.HasValue)
+            {
+                <div class="wallet-payment-result-detail">
+
+                    <span class="wallet-payment-result-label">
+                        شماره پیگیری
+                    </span>
+
+                    <span class="wallet-payment-result-value">
+                        @Model.ReferenceId
+                    </span>
+
+                </div>
+            }
+
+        </div>
+
+
+        <!-- Return Button -->
+
+        <a asp-controller="Wallet"
+           asp-action="Index"
+           class="wallet-payment-result-button">
+            بازگشت به کیف پول
+        </a>
+
+    </div>
+
+</div>
+
+
+@section Styles {
+
+    <link rel="stylesheet"
+          href="~/css/pages/wallet/paymentResult.css"
+          asp-append-version="true" />
+
+}
+
