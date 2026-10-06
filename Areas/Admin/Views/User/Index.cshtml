@@ -1,0 +1,153 @@
+﻿@model List<LibraryManagement.Areas.Admin.ViewModels.UserListViewModel>
+
+@{
+    ViewData["Title"] = "مدیریت کاربران";
+}
+
+<div class="admin-user-page">
+
+    <div class="admin-user-page-header">
+        <div>
+            <h1 class="admin-user-page-title">
+                مدیریت کاربران
+            </h1>
+
+            <p class="admin-user-page-subtitle">
+                فهرست کاربران ثبت‌شده در سامانه
+            </p>
+        </div>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <div class="admin-user-empty-state">
+            <p>
+                در حال حاضر هیچ کاربری ثبت نشده است.
+            </p>
+        </div>
+    }
+    else
+    {
+        <div class="admin-user-list-card">
+
+            <div class="admin-user-list-header">
+                <h2 class="admin-user-list-title">
+                    لیست کاربران
+                </h2>
+            </div>
+
+            <div class="table-responsive">
+
+                <table class="admin-user-table">
+
+                    <thead>
+                        <tr>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Id)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().FullName)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Email)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().PhoneNumber)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().Role)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().WalletBalance)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.First().IsDebtor)
+                            </th>
+
+                            <th class="admin-user-table-actions">
+                                عملیات
+                            </th>
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var user in Model)
+                        {
+                            <tr>
+
+                                <td>
+                                    @user.Id
+                                </td>
+
+                                <td class="admin-user-full-name">
+                                    @user.FullName
+                                </td>
+
+                                <td class="admin-user-email">
+                                    @user.Email
+                                </td>
+
+                                <td class="admin-user-phone">
+                                    @user.PhoneNumber
+                                </td>
+                                <td>
+                                    @user.RoleDisplayName
+                                </td>
+                                <td class="admin-user-wallet-balance">
+                                    @user.WalletBalance.ToString("N0")
+                                </td>
+
+                                <td>
+                                    @if (user.IsDebtor)
+                                    {
+                                        <span class="admin-user-status admin-user-status-debtor">
+                                            بدهکار
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="admin-user-status admin-user-status-normal">
+                                            عادی
+                                        </span>
+                                    }
+                                </td>
+
+                                <td class="admin-user-table-actions">
+
+                                    <a asp-area="Admin"
+                                       asp-controller="User"
+                                       asp-action="Details"
+                                       asp-route-id="@user.Id"
+                                       class="admin-user-details-link">
+                                        جزئیات
+                                    </a>
+
+                                </td>
+
+                            </tr>
+                        }
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    }
+
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/user/index.css"
+          asp-append-version="true" />
+}

@@ -1,0 +1,235 @@
+﻿/* ========================================
+   LibraryManagement
+   Admin User List
+   ======================================== */
+
+
+/* ----------------------------------------
+   Page
+   ---------------------------------------- */
+
+.admin-user-page {
+    width: 100%;
+}
+
+
+/* ----------------------------------------
+   Page Header
+   ---------------------------------------- */
+
+.admin-user-page-header {
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-user-page-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-2xl);
+    font-weight: var(--lm-font-weight-bold);
+    line-height: var(--lm-line-height-tight);
+}
+
+.admin-user-page-subtitle {
+    margin: var(--lm-space-2) 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-normal);
+}
+
+
+/* ----------------------------------------
+   User List Card
+   ---------------------------------------- */
+
+.admin-user-list-card {
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-sm);
+    overflow: hidden;
+}
+
+
+/* ----------------------------------------
+   Card Header
+   ---------------------------------------- */
+
+.admin-user-list-header {
+    padding: var(--lm-space-4) var(--lm-space-5);
+    border-bottom: 1px solid var(--lm-border);
+}
+
+.admin-user-list-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-lg);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+
+/* ----------------------------------------
+   Table
+   ---------------------------------------- */
+
+.admin-user-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: collapse;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size);
+}
+
+    .admin-user-table th {
+        padding: var(--lm-space-3) var(--lm-space-4);
+        background-color: var(--lm-background);
+        border-bottom: 1px solid var(--lm-border);
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-sm);
+        font-weight: var(--lm-font-weight-bold);
+        line-height: var(--lm-line-height-tight);
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .admin-user-table td {
+        padding: var(--lm-space-4);
+        border-bottom: 1px solid var(--lm-border);
+        vertical-align: middle;
+    }
+
+    .admin-user-table tbody tr:last-child td {
+        border-bottom: 0;
+    }
+
+    .admin-user-table tbody tr {
+        transition: background-color var(--lm-transition-fast);
+    }
+
+        .admin-user-table tbody tr:hover {
+            background-color: var(--lm-background);
+        }
+
+
+/* ----------------------------------------
+   User Name
+   ---------------------------------------- */
+
+.admin-user-full-name {
+    color: var(--lm-text);
+    font-weight: var(--lm-font-weight-medium);
+}
+
+
+/* ----------------------------------------
+   Email & Phone
+   ---------------------------------------- */
+
+.admin-user-email,
+.admin-user-phone {
+    color: var(--lm-text-muted);
+}
+
+
+/* ----------------------------------------
+   Wallet Balance
+   ---------------------------------------- */
+
+.admin-user-wallet-balance {
+    direction: ltr;
+    text-align: right;
+    white-space: nowrap;
+    font-weight: var(--lm-font-weight-medium);
+}
+
+
+/* ----------------------------------------
+   User Status
+   ---------------------------------------- */
+
+.admin-user-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 80px;
+    padding: var(--lm-space-1) var(--lm-space-3);
+    border-radius: var(--lm-radius-full);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    white-space: nowrap;
+}
+
+.admin-user-status-normal {
+    background-color: var(--lm-primary-light);
+    color: var(--lm-primary);
+}
+
+.admin-user-status-debtor {
+    background-color: #fff1e8;
+    color: var(--lm-warning);
+}
+
+
+/* ----------------------------------------
+   Actions
+   ---------------------------------------- */
+
+.admin-user-table-actions {
+    white-space: nowrap;
+}
+
+.admin-user-details-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--lm-space-1) var(--lm-space-3);
+    border: 1px solid var(--lm-primary);
+    border-radius: var(--lm-button-radius);
+    color: var(--lm-primary);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    text-decoration: none;
+    transition: background-color var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+    .admin-user-details-link:hover {
+        background-color: var(--lm-primary);
+        color: var(--lm-surface);
+    }
+
+
+/* ----------------------------------------
+   Empty State
+   ---------------------------------------- */
+
+.admin-user-empty-state {
+    padding: var(--lm-space-10) var(--lm-space-6);
+    color: var(--lm-text-muted);
+    text-align: center;
+}
+
+    .admin-user-empty-state p {
+        margin: 0;
+        font-size: var(--lm-font-size);
+    }
+
+
+/* ----------------------------------------
+   Responsive
+   ---------------------------------------- */
+
+@media (max-width: 767.98px) {
+
+    .admin-user-page-title {
+        font-size: var(--lm-font-size-xl);
+    }
+
+    .admin-user-list-header {
+        padding: var(--lm-space-4);
+    }
+
+    .admin-user-table th,
+    .admin-user-table td {
+        padding: var(--lm-space-3);
+    }
+}

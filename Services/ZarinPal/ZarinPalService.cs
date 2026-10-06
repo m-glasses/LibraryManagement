@@ -1,5 +1,6 @@
 ﻿using Azure.Core;
 using LibraryManagement.Configuration;
+using LibraryManagement.DTO;
 using LibraryManagement.Models;
 using Microsoft.Extensions.Options;
 using System.Text.Json;

@@ -1,9 +1,12 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace LibraryManagement.Services.ZarinPal
+namespace LibraryManagement.DTO
 {
-    public class PaymentVerifyResult
+    public class PaymentRequestResult
     {
+        [JsonPropertyName("authority")]
+        public string? Authority { get; set; }
+
         [JsonPropertyName("fee")]
         public long? Fee { get; set; }
 
@@ -15,11 +18,5 @@ namespace LibraryManagement.Services.ZarinPal
 
         [JsonPropertyName("message")]
         public string? Message { get; set; }
-
-        [JsonPropertyName("ref_id")]
-        public long? RefId { get; set; }
-
-        [JsonPropertyName("card_pan")]
-        public string? CardPan { get; set; }
     }
 }

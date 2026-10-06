@@ -1,0 +1,230 @@
+﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminUserDetailsViewModel
+
+@{
+    ViewData["Title"] = "جزئیات کاربر";
+}
+
+<div class="admin-user-details-page">
+
+    <div class="admin-user-details-header">
+
+        <div>
+            <h1 class="admin-user-details-title">
+                جزئیات کاربر
+            </h1>
+
+            <p class="admin-user-details-subtitle">
+                مشاهده اطلاعات کامل کاربر و وضعیت حساب
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="User"
+           asp-action="Index"
+           class="admin-user-details-back-link">
+            بازگشت به لیست کاربران
+        </a>
+
+    </div>
+
+
+    <div class="admin-user-details-grid">
+
+        <!-- Personal Information -->
+
+        <div class="admin-user-details-card">
+
+            <div class="admin-user-details-card-header">
+                <h2>اطلاعات شخصی</h2>
+            </div>
+
+            <div class="admin-user-details-card-body">
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        شناسه کاربر
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.Id
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        نام و نام خانوادگی
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.FullName
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        تاریخ تولد
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.DateOfBirth.ToPersianDate()
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        جنسیت
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.Gender.GetDisplayName()
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        تحصیلات
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.Education.GetDisplayName()
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Contact Information -->
+
+        <div class="admin-user-details-card">
+
+            <div class="admin-user-details-card-header">
+                <h2>اطلاعات تماس</h2>
+            </div>
+
+            <div class="admin-user-details-card-body">
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        ایمیل
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.Email
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        شماره همراه
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.PhoneNumber
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        آدرس
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @if (!string.IsNullOrWhiteSpace(Model.Address))
+                        {
+                            @Model.Address
+                        }
+                        else
+                        {
+                            <span class="admin-user-empty-value">
+                                ثبت نشده
+                            </span>
+                        }
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Account Information -->
+
+        <div class="admin-user-details-card">
+
+            <div class="admin-user-details-card-header">
+                <h2>اطلاعات حساب</h2>
+            </div>
+
+            <div class="admin-user-details-card-body">
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        نقش
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @(Model.Role == "Admin" ? "مدیر" : "کاربر")
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Wallet Information -->
+
+        <div class="admin-user-details-card">
+
+            <div class="admin-user-details-card-header">
+                <h2>کیف پول</h2>
+            </div>
+
+            <div class="admin-user-details-card-body">
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        موجودی
+                    </span>
+
+                    <span class="admin-user-detail-value admin-user-wallet-balance">
+                        @Model.WalletBalance.ToString("N0") تومان
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        وضعیت
+                    </span>
+
+                    <span class="admin-user-detail-value">
+
+                        @if (Model.IsDebtor)
+                        {
+                            <span class="admin-user-status admin-user-status-debtor">
+                                بدهکار
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="admin-user-status admin-user-status-normal">
+                                عادی
+                            </span>
+                        }
+
+                    </span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/user/details.css"
+          asp-append-version="true" />
+}

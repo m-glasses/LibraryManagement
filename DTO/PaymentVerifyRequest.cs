@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace LibraryManagement.Services.ZarinPal
+namespace LibraryManagement.DTO
 {
     public class PaymentVerifyRequest
     {
