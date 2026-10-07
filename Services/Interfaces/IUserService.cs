@@ -5,7 +5,7 @@ namespace LibraryManagement.Services.Interfaces
 {
     public interface IUserService
     {
-        List<UserListDto> GetAllUsers();
+        UserListResult GetAllUsers(UserListQueryDto input);
         UserDetailsDto? GetUserDetails(int id);
     }
 }

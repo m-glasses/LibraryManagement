@@ -19,22 +19,45 @@ namespace LibraryManagement.Areas.Admin.Controllers
             _userService = userService;
             _userManager = usermanager;
         }
-        public IActionResult Index()
-        {
-            var users = _userService.GetAllUsers();
 
-            var viewModel = users
-                .Select(user => new UserListViewModel
-                {
-                    Id = user.Id,
-                    FullName = $"{user.Name} {user.Family}",
-                    Email = user.Email,
-                    PhoneNumber = user.PhoneNumber,
-                    IsDebtor = user.WalletBalance < 0,
-                    WalletBalance = user.WalletBalance,
-                    Role = user.Role
-                })
-                .ToList();
+
+        public IActionResult Index(AdminUserFilterViewModel inputViewModel)
+        {
+            var queryDto = new UserListQueryDto
+            {
+                SearchTerm = inputViewModel.SearchTerm,
+                Role = inputViewModel.Role,
+                IsDebtor = inputViewModel.IsDebtor,
+                Page = inputViewModel.Page,
+                PageSize = inputViewModel.PageSize
+            };
+
+            var result = _userService.GetAllUsers(queryDto);
+
+            var viewModel = new AdminUserIndexViewModel
+            {
+                Users = result.Users
+                    .Select(user => new UserListViewModel
+                    {
+                        Id = user.Id,
+                        FullName = $"{user.Name} {user.Family}",
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber,
+                        Role = user.Role,
+                        IsDebtor = user.WalletBalance < 0,
+                        WalletBalance = user.WalletBalance
+                    })
+                    .ToList(),
+
+                SearchTerm = inputViewModel.SearchTerm,
+                Role = inputViewModel.Role,
+                IsDebtor = inputViewModel.IsDebtor,
+
+                CurrentPage = result.CurrentPage,
+                PageSize = result.PageSize,
+                TotalCount = result.TotalCount,
+                TotalPages = result.TotalPages
+            };
 
             return View(viewModel);
         }

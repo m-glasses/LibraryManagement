@@ -18,9 +18,9 @@ namespace LibraryManagement.Services
             _userManager = userManager;
         }
 
-        public List<UserListDto> GetAllUsers()
+        public UserListResult GetAllUsers(UserListQueryDto input)
         {
-            var users = _context.Users
+            var usersQuery = _context.Users
                 .Join(
                     _context.UserRoles,
                     user => user.Id,
@@ -29,26 +29,74 @@ namespace LibraryManagement.Services
                     {
                         User = user,
                         UserRole = userRole
-                    }
-                )
+                    })
                 .Join(
                     _context.Roles,
                     userRoleData => userRoleData.UserRole.RoleId,
                     role => role.Id,
-                    (userRoleData, role) => new UserListDto
+                    (userRoleData, role) => new
                     {
-                        Id = userRoleData.User.Id,
-                        Name = userRoleData.User.Name,
-                        Family = userRoleData.User.Family,
-                        Email = userRoleData.User.Email,
-                        PhoneNumber = userRoleData.User.PhoneNumber,
-                        Role = role.Name,
-                        WalletBalance = userRoleData.User.Wallet.Balance
-                    }
-                )
+                        User = userRoleData.User,
+                        Role = role.Name
+                    });
+
+            if (!string.IsNullOrWhiteSpace(input.SearchTerm))
+            {
+                usersQuery = usersQuery.Where(user =>
+                    user.User.Name.Contains(input.SearchTerm)
+                    || user.User.Family.Contains(input.SearchTerm)
+                    || (user.User.Name + " " + user.User.Family).Contains(input.SearchTerm)
+                    || user.User.Email.Contains(input.SearchTerm)
+                    || user.User.PhoneNumber.Contains(input.SearchTerm));
+            }
+
+            if (!string.IsNullOrWhiteSpace(input.Role))
+            {
+                usersQuery = usersQuery.Where(user =>
+                    user.Role == input.Role);
+            }
+
+            if (input.IsDebtor is not null)
+            {
+                if (input.IsDebtor.Value)
+                {
+                    usersQuery = usersQuery.Where(user =>
+                        user.User.Wallet.Balance < 0);
+                }
+                else
+                {
+                    usersQuery = usersQuery.Where(user =>
+                        user.User.Wallet.Balance >= 0);
+                }
+            }
+
+            var totalCount = usersQuery.Count();
+
+            var skip = (input.Page - 1) * input.PageSize;
+
+            var users = usersQuery
+                .OrderBy(user => user.User.Id)
+                .Skip(skip)
+                .Take(input.PageSize)
+                .Select(user => new UserListDto
+                {
+                    Id = user.User.Id,
+                    Name = user.User.Name,
+                    Family = user.User.Family,
+                    Email = user.User.Email,
+                    PhoneNumber = user.User.PhoneNumber,
+                    Role = user.Role,
+                    WalletBalance = user.User.Wallet.Balance
+                })
                 .ToList();
 
-            return users;
+            return new UserListResult
+            {
+                Users = users,
+                CurrentPage = input.Page,
+                PageSize = input.PageSize,
+                TotalCount = totalCount
+            };
         }
 
         public UserDetailsDto? GetUserDetails(int id)

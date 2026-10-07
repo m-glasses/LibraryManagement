@@ -1,4 +1,4 @@
-﻿@model List<LibraryManagement.Areas.Admin.ViewModels.UserListViewModel>
+﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminUserIndexViewModel
 
 @{
     ViewData["Title"] = "مدیریت کاربران";
@@ -18,12 +18,116 @@
         </div>
     </div>
 
-    @if (!Model.Any())
+
+    <!-- Filters -->
+
+    <div class="admin-user-filter-card">
+
+        <form asp-area="Admin"
+              asp-controller="User"
+              asp-action="Index"
+              method="get"
+              class="admin-user-filter-form">
+
+            <div class="admin-user-filter-group">
+
+                <label asp-for="SearchTerm"
+                       class="admin-user-filter-label">
+                </label>
+
+                <input asp-for="SearchTerm"
+                       class="admin-user-filter-input"
+                       placeholder="نام، ایمیل یا شماره همراه..." />
+
+            </div>
+
+            <div class="admin-user-filter-group">
+
+                <label asp-for="Role"
+                       class="admin-user-filter-label">
+                </label>
+
+                <select asp-for="Role"
+                        class="admin-user-filter-input">
+
+                    <option value="">
+                        همه نقش‌ها
+                    </option>
+
+                    <option value="User">
+                        کاربر
+                    </option>
+
+                    <option value="Admin">
+                        مدیر
+                    </option>
+
+                </select>
+
+            </div>
+
+            <div class="admin-user-filter-group">
+
+                <label asp-for="IsDebtor"
+                       class="admin-user-filter-label">
+                </label>
+
+                <select asp-for="IsDebtor"
+                        class="admin-user-filter-input">
+
+                    <option value="">
+                        همه
+                    </option>
+
+                    <option value="true">
+                        بدهکار
+                    </option>
+
+                    <option value="false">
+                        عادی
+                    </option>
+
+                </select>
+
+            </div>
+
+            <input type="hidden"
+                   asp-for="PageSize" />
+
+            <input type="hidden"
+                   name="Page"
+                   value="1" />
+
+            <div class="admin-user-filter-actions">
+
+                <button type="submit"
+                        class="admin-user-filter-submit">
+                    جستجو
+                </button>
+
+                <a asp-area="Admin"
+                   asp-controller="User"
+                   asp-action="Index"
+                   class="admin-user-filter-reset">
+                    پاک کردن فیلترها
+                </a>
+
+            </div>
+
+        </form>
+
+    </div>
+
+
+    <!-- User List -->
+    @if (!Model.Users.Any())
     {
         <div class="admin-user-empty-state">
+
             <p>
-                در حال حاضر هیچ کاربری ثبت نشده است.
+                کاربری با این مشخصات پیدا نشد.
             </p>
+
         </div>
     }
     else
@@ -31,42 +135,52 @@
         <div class="admin-user-list-card">
 
             <div class="admin-user-list-header">
+
                 <h2 class="admin-user-list-title">
                     لیست کاربران
                 </h2>
+
+                <span class="admin-user-list-count">
+                    @Model.TotalCount کاربر
+                </span>
+
             </div>
+
 
             <div class="table-responsive">
 
                 <table class="admin-user-table">
 
                     <thead>
+
                         <tr>
 
                             <th>
-                                @Html.DisplayNameFor(model => model.First().Id)
+                                @Html.DisplayNameFor(model => model.Users.First().Id)
                             </th>
 
                             <th>
-                                @Html.DisplayNameFor(model => model.First().FullName)
+                                @Html.DisplayNameFor(model => model.Users.First().FullName)
                             </th>
 
                             <th>
-                                @Html.DisplayNameFor(model => model.First().Email)
+                                @Html.DisplayNameFor(model => model.Users.First().Email)
                             </th>
 
                             <th>
-                                @Html.DisplayNameFor(model => model.First().PhoneNumber)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().Role)
-                            </th>
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().WalletBalance)
+                                @Html.DisplayNameFor(model => model.Users.First().PhoneNumber)
                             </th>
 
                             <th>
-                                @Html.DisplayNameFor(model => model.First().IsDebtor)
+                                @Html.DisplayNameFor(model => model.Users.First().Role)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Users.First().WalletBalance)
+                            </th>
+
+                            <th>
+                                @Html.DisplayNameFor(model => model.Users.First().IsDebtor)
                             </th>
 
                             <th class="admin-user-table-actions">
@@ -74,11 +188,13 @@
                             </th>
 
                         </tr>
+
                     </thead>
+
 
                     <tbody>
 
-                        @foreach (var user in Model)
+                        @foreach (var user in Model.Users)
                         {
                             <tr>
 
@@ -97,14 +213,17 @@
                                 <td class="admin-user-phone">
                                     @user.PhoneNumber
                                 </td>
+
                                 <td>
                                     @user.RoleDisplayName
                                 </td>
+
                                 <td class="admin-user-wallet-balance">
                                     @user.WalletBalance.ToString("N0")
                                 </td>
 
                                 <td>
+
                                     @if (user.IsDebtor)
                                     {
                                         <span class="admin-user-status admin-user-status-debtor">
@@ -117,6 +236,7 @@
                                             عادی
                                         </span>
                                     }
+
                                 </td>
 
                                 <td class="admin-user-table-actions">
@@ -141,9 +261,86 @@
             </div>
 
         </div>
+
+
+        <!-- Pagination -->
+        @if (Model.TotalPages > 1)
+        {
+            <nav class="admin-user-pagination"
+                 aria-label="صفحه‌بندی کاربران">
+
+                <ul class="admin-user-pagination-list">
+
+                    @if (Model.CurrentPage > 1)
+                    {
+                        <li class="admin-user-pagination-item">
+
+                            <a asp-area="Admin"
+                               asp-controller="User"
+                               asp-action="Index"
+                               asp-route-SearchTerm="@Model.SearchTerm"
+                               asp-route-Role="@Model.Role"
+                               asp-route-IsDebtor="@Model.IsDebtor"
+                               asp-route-Page="@(Model.CurrentPage - 1)"
+                               asp-route-PageSize="@Model.PageSize"
+                               class="admin-user-pagination-link">
+                                قبلی
+                            </a>
+
+                        </li>
+                    }
+
+
+                    @for (var pageNumber = 1;
+                          pageNumber <= Model.TotalPages;
+                          pageNumber++)
+                    {
+                        <li class="admin-user-pagination-item">
+
+                            <a asp-area="Admin"
+                               asp-controller="User"
+                               asp-action="Index"
+                               asp-route-SearchTerm="@Model.SearchTerm"
+                               asp-route-Role="@Model.Role"
+                               asp-route-IsDebtor="@Model.IsDebtor"
+                               asp-route-Page="@pageNumber"
+                               asp-route-PageSize="@Model.PageSize"
+                               class="admin-user-pagination-link @(pageNumber == Model.CurrentPage ? "active" : "")">
+                                @pageNumber
+                            </a>
+
+                        </li>
+                    }
+
+
+                    @if (Model.CurrentPage < Model.TotalPages)
+                    {
+                        <li class="admin-user-pagination-item">
+
+                            <a asp-area="Admin"
+                               asp-controller="User"
+                               asp-action="Index"
+                               asp-route-SearchTerm="@Model.SearchTerm"
+                               asp-route-Role="@Model.Role"
+                               asp-route-IsDebtor="@Model.IsDebtor"
+                               asp-route-Page="@(Model.CurrentPage + 1)"
+                               asp-route-PageSize="@Model.PageSize"
+                               class="admin-user-pagination-link">
+                                بعدی
+                            </a>
+
+                        </li>
+                    }
+
+                </ul>
+
+            </nav>
+        }
+
     }
 
 </div>
+
 
 @section Styles
 {
