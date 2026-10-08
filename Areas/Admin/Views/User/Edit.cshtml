@@ -1,0 +1,257 @@
+﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminUserEditViewModel
+
+@{
+    ViewData["Title"] = "ویرایش کاربر";
+
+    var jalaliDateOfBirth = Model.DateOfBirth.ToPersianDate();
+}
+
+<div class="admin-user-edit-page">
+
+    <div class="admin-user-edit-header">
+
+        <div>
+            <h1 class="admin-user-edit-title">
+                ویرایش کاربر
+            </h1>
+
+            <p class="admin-user-edit-subtitle">
+                ویرایش اطلاعات کاربر
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="User"
+           asp-action="Details"
+           asp-route-id="@Model.Id"
+           class="admin-user-edit-back-link">
+            بازگشت به جزئیات کاربر
+        </a>
+
+    </div>
+
+
+    <div class="admin-user-edit-card">
+
+        <div class="admin-user-edit-card-header">
+            <h2>اطلاعات کاربر</h2>
+        </div>
+
+        <div class="admin-user-edit-card-body">
+
+            <form asp-area="Admin"
+                  asp-controller="User"
+                  asp-action="Edit"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="admin-user-edit-validation"
+                     role="alert">
+                </div>
+
+                <div class="admin-user-edit-form-grid">
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="Name"></label>
+
+                        <input asp-for="Name"
+                               class="form-control" />
+
+                        <span asp-validation-for="Name"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="Family"></label>
+
+                        <input asp-for="Family"
+                               class="form-control" />
+
+                        <span asp-validation-for="Family"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="FatherName"></label>
+
+                        <input asp-for="FatherName"
+                               class="form-control" />
+
+                        <span asp-validation-for="FatherName"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="DateOfBirth"></label>
+
+                        <input data-jdp
+                               data-jdp-target-value-input="#gregorian-date"
+                               data-jdp-target-value-type="gregorian"
+                               value="@jalaliDateOfBirth"
+                               class="form-control"
+                               type="text" />
+
+                        <input id="gregorian-date"
+                               asp-for="DateOfBirth"
+                               class="form-control"
+                               type="hidden" />
+
+                        <span asp-validation-for="DateOfBirth"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="Education"></label>
+
+                        <select asp-for="Education"
+                                asp-items="Html.GetEnumSelectList<EducationLevel>()"
+                                class="form-select">
+
+                            <option value="">
+                                انتخاب کنید
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Education"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="Gender"></label>
+
+                        <select asp-for="Gender"
+                                asp-items="Html.GetEnumSelectList<Gender>()"
+                                class="form-select">
+
+                            <option value="">
+                                انتخاب کنید
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Gender"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field admin-user-edit-field-full">
+                        <label asp-for="Address"></label>
+
+                        <textarea asp-for="Address"
+                                  class="form-control"
+                                  rows="3"></textarea>
+
+                        <span asp-validation-for="Address"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="UserName"></label>
+
+                        <input asp-for="UserName"
+                               class="form-control"
+                               autocomplete="username" />
+
+                        <span asp-validation-for="UserName"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="Email"></label>
+
+                        <input asp-for="Email"
+                               class="form-control"
+                               autocomplete="email" />
+
+                        <span asp-validation-for="Email"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="PhoneNumber"></label>
+
+                        <input asp-for="PhoneNumber"
+                               class="form-control"
+                               autocomplete="tel" />
+
+                        <span asp-validation-for="PhoneNumber"
+                              class="text-danger"></span>
+                    </div>
+
+
+                    <div class="admin-user-edit-field">
+                        <label asp-for="Role"></label>
+
+                        <select asp-for="Role"
+                                class="form-select">
+
+                            <option value="User">
+                                کاربر
+                            </option>
+
+                            <option value="Admin">
+                                مدیر
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="Role"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+
+                <div class="admin-user-edit-actions">
+
+                    <a asp-area="Admin"
+                       asp-controller="User"
+                       asp-action="Details"
+                       asp-route-id="@Model.Id"
+                       class="admin-user-edit-cancel">
+                        انصراف
+                    </a>
+
+                    <button type="submit"
+                            class="admin-user-edit-submit">
+                        ذخیره تغییرات
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/user/edit.css"
+          asp-append-version="true" />
+}
+
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+
+    <script src="~/js/pages/account/register.js"></script>
+}

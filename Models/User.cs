@@ -36,6 +36,8 @@ namespace LibraryManagement.Models
 
         public Gender Gender { get; set; }
 
+        public bool IsActive { get; set; } = true;
+
         //Navigation Property
 
         public virtual List<Loan> Loans { get; set; }

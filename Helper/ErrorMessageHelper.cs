@@ -66,6 +66,18 @@
                 "User cannot borrow while wallet balance is negative." =>
                     "به دلیل منفی بودن موجودی کیف پول، امکان دریافت امانت جدید وجود ندارد.",
 
+                "User is already inactive." =>
+                    "این کاربر در حال حاضر غیرفعال است.",
+
+                "User is already active." =>
+                    "این کاربر در حال حاضر فعال است.",
+
+                "First close all open loans." =>
+                    "ابتدا تمام امانت‌های باز این کاربر را ببندید.",
+
+                "First close all active reservations." =>
+                    "ابتدا تمام رزروهای فعال این کاربر را ببندید.",
+
                 _ =>
                     "خطایی رخ داده است."
             };

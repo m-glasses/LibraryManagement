@@ -47,6 +47,11 @@
         color: var(--lm-primary);
     }
 
+
+/* ========================================
+   Information Cards
+   ======================================== */
+
 .admin-user-details-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -118,6 +123,11 @@
     white-space: nowrap;
 }
 
+
+/* ========================================
+   Status
+   ======================================== */
+
 .admin-user-status {
     display: inline-flex;
     align-items: center;
@@ -140,6 +150,140 @@
     background-color: #fff1e8;
     color: var(--lm-warning);
 }
+
+.admin-user-status-active {
+    background-color: var(--lm-primary-light);
+    color: var(--lm-primary);
+}
+
+.admin-user-status-inactive {
+    background-color: #fff1e8;
+    color: var(--lm-warning);
+}
+
+
+/* ========================================
+   Management & Records
+   ======================================== */
+
+.admin-user-details-management-card,
+.admin-user-details-records-card {
+    margin-top: var(--lm-space-5);
+}
+
+.admin-user-details-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--lm-space-3);
+    padding: var(--lm-space-5) 0;
+}
+
+.admin-user-action-form {
+    margin: 0;
+}
+
+.admin-user-action-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    border-radius: var(--lm-button-radius);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: var(--lm-line-height-tight);
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+
+/* Edit */
+
+.admin-user-action-edit {
+    background-color: var(--lm-primary);
+    border: 1px solid var(--lm-primary);
+    color: #ffffff;
+}
+
+    .admin-user-action-edit:hover {
+        background-color: #1f6feb;
+        border-color: #1f6feb;
+        color: #ffffff;
+    }
+
+    .admin-user-action-edit:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(31, 111, 235, 0.2);
+    }
+
+
+/* Deactivate */
+
+.admin-user-action-deactivate {
+    background-color: var(--lm-warning);
+    border: 1px solid var(--lm-warning);
+    color: #ffffff;
+}
+
+    .admin-user-action-deactivate:hover {
+        background-color: #e85f05;
+        border-color: #e85f05;
+        color: #ffffff;
+    }
+
+    .admin-user-action-deactivate:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(247, 103, 7, 0.2);
+    }
+
+
+/* Activate */
+
+.admin-user-action-activate {
+    background-color: var(--lm-primary);
+    border: 1px solid var(--lm-primary);
+    color: #ffffff;
+}
+
+    .admin-user-action-activate:hover {
+        background-color: #1f6feb;
+        border-color: #1f6feb;
+        color: #ffffff;
+    }
+
+    .admin-user-action-activate:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(31, 111, 235, 0.2);
+    }
+
+
+/* Secondary actions */
+
+.admin-user-action-secondary {
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    color: var(--lm-text);
+}
+
+    .admin-user-action-secondary:hover {
+        background-color: var(--lm-background);
+        border-color: var(--lm-primary);
+        color: var(--lm-primary);
+    }
+
+    .admin-user-action-secondary:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(31, 111, 235, 0.2);
+    }
+
+
+/* ========================================
+   Responsive
+   ======================================== */
 
 @media (max-width: 767.98px) {
 
@@ -177,5 +321,24 @@
 
     .admin-user-detail-value {
         text-align: right;
+    }
+
+    .admin-user-details-management-card,
+    .admin-user-details-records-card {
+        margin-top: var(--lm-space-4);
+    }
+
+    .admin-user-details-actions {
+        align-items: stretch;
+        flex-direction: column;
+        padding: var(--lm-space-4) 0;
+    }
+
+    .admin-user-action-form {
+        width: 100%;
+    }
+
+    .admin-user-action-button {
+        width: 100%;
     }
 }

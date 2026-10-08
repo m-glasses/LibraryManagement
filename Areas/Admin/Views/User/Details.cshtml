@@ -14,7 +14,7 @@
             </h1>
 
             <p class="admin-user-details-subtitle">
-                مشاهده اطلاعات کامل کاربر و وضعیت حساب
+                مشاهده اطلاعات کامل کاربر و مدیریت حساب
             </p>
         </div>
 
@@ -57,6 +57,16 @@
 
                     <span class="admin-user-detail-value">
                         @Model.FullName
+                    </span>
+                </div>
+
+                <div class="admin-user-detail-item">
+                    <span class="admin-user-detail-label">
+                        نام پدر
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.FatherName
                     </span>
                 </div>
 
@@ -130,6 +140,7 @@
                     </span>
 
                     <span class="admin-user-detail-value">
+
                         @if (!string.IsNullOrWhiteSpace(Model.Address))
                         {
                             @Model.Address
@@ -140,6 +151,7 @@
                                 ثبت نشده
                             </span>
                         }
+
                     </span>
                 </div>
 
@@ -158,6 +170,19 @@
             <div class="admin-user-details-card-body">
 
                 <div class="admin-user-detail-item">
+
+                    <span class="admin-user-detail-label">
+                        نام کاربری
+                    </span>
+
+                    <span class="admin-user-detail-value">
+                        @Model.UserName
+                    </span>
+
+                </div>
+
+                <div class="admin-user-detail-item">
+
                     <span class="admin-user-detail-label">
                         نقش
                     </span>
@@ -165,6 +190,32 @@
                     <span class="admin-user-detail-value">
                         @(Model.Role == "Admin" ? "مدیر" : "کاربر")
                     </span>
+
+                </div>
+
+                <div class="admin-user-detail-item">
+
+                    <span class="admin-user-detail-label">
+                        وضعیت حساب
+                    </span>
+
+                    <span class="admin-user-detail-value">
+
+                        @if (Model.IsActive)
+                        {
+                            <span class="admin-user-status admin-user-status-active">
+                                فعال
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="admin-user-status admin-user-status-inactive">
+                                غیرفعال
+                            </span>
+                        }
+
+                    </span>
+
                 </div>
 
             </div>
@@ -182,6 +233,7 @@
             <div class="admin-user-details-card-body">
 
                 <div class="admin-user-detail-item">
+
                     <span class="admin-user-detail-label">
                         موجودی
                     </span>
@@ -189,11 +241,13 @@
                     <span class="admin-user-detail-value admin-user-wallet-balance">
                         @Model.WalletBalance.ToString("N0") تومان
                     </span>
+
                 </div>
 
                 <div class="admin-user-detail-item">
+
                     <span class="admin-user-detail-label">
-                        وضعیت
+                        وضعیت مالی
                     </span>
 
                     <span class="admin-user-detail-value">
@@ -212,9 +266,117 @@
                         }
 
                     </span>
+
                 </div>
 
             </div>
+        </div>
+
+    </div>
+
+
+    <!-- User Management -->
+
+    <div class="admin-user-details-card admin-user-details-management-card">
+
+        <div class="admin-user-details-card-header">
+            <h2>مدیریت کاربر</h2>
+        </div>
+
+        <div class="admin-user-details-card-body">
+
+            <div class="admin-user-details-actions">
+
+                <a asp-area="Admin"
+                   asp-controller="User"
+                   asp-action="Edit"
+                   asp-route-id="@Model.Id"
+                   class="admin-user-action-button admin-user-action-edit">
+                    ویرایش کاربر
+                </a>
+
+                @if (Model.IsActive)
+                {
+                    <form asp-area="Admin"
+                          asp-controller="User"
+                          asp-action="Deactivate"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          class="admin-user-action-form">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="admin-user-action-button admin-user-action-deactivate">
+                            غیرفعال کردن
+                        </button>
+
+                    </form>
+                }
+                else
+                {
+                    <form asp-area="Admin"
+                          asp-controller="User"
+                          asp-action="Activate"
+                          asp-route-id="@Model.Id"
+                          method="post"
+                          class="admin-user-action-form">
+
+                        @Html.AntiForgeryToken()
+
+                        <button type="submit"
+                                class="admin-user-action-button admin-user-action-activate">
+                            فعال کردن
+                        </button>
+
+                    </form>
+                }
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- User Records -->
+
+    <div class="admin-user-details-card admin-user-details-records-card">
+
+        <div class="admin-user-details-card-header">
+            <h2>سوابق کاربر</h2>
+        </div>
+
+        <div class="admin-user-details-card-body">
+
+            <div class="admin-user-details-actions">
+
+                <a asp-area="Admin"
+                   asp-controller="Loan"
+                   asp-action="Index"
+                   asp-route-userId="@Model.Id"
+                   class="admin-user-action-button admin-user-action-secondary">
+                    امانت‌های کاربر
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Reservation"
+                   asp-action="Index"
+                   asp-route-userId="@Model.Id"
+                   class="admin-user-action-button admin-user-action-secondary">
+                    رزروهای کاربر
+                </a>
+
+                <a asp-area="Admin"
+                   asp-controller="Wallet"
+                   asp-action="Transactions"
+                   asp-route-userId="@Model.Id"
+                   class="admin-user-action-button admin-user-action-secondary">
+                    تراکنش‌های کیف پول
+                </a>
+
+            </div>
+
         </div>
 
     </div>
