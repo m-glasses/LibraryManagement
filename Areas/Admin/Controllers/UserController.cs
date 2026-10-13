@@ -10,8 +10,8 @@ using System.Security.Claims;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Area(Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public class UserController : Controller
     {
         private readonly IUserService _userService;
@@ -25,6 +25,19 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
         public IActionResult Index(AdminUserFilterViewModel inputViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                inputViewModel.Page = 1;
+                inputViewModel.PageSize = 20;
+                ModelState.Clear();
+            }
+
+            if (inputViewModel.Page < 1)
+                inputViewModel.Page = 1;
+
+            if (inputViewModel.PageSize is not (10 or 20 or 50))
+                inputViewModel.PageSize = 20;
+
             var queryDto = new UserListQueryDto
             {
                 SearchTerm = inputViewModel.SearchTerm,
@@ -51,12 +64,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     })
                     .ToList(),
 
-                SearchTerm = inputViewModel.SearchTerm,
-                Role = inputViewModel.Role,
-                IsDebtor = inputViewModel.IsDebtor,
-
-                CurrentPage = result.CurrentPage,
-                PageSize = result.PageSize,
+                Filter = inputViewModel,
                 TotalCount = result.TotalCount,
                 TotalPages = result.TotalPages
             };
