@@ -99,7 +99,7 @@ namespace LibraryManagement.Services
         }
 
 
-        public async Task Deactivate(int userId, int currentUserId)
+        public async Task Deactivate(int userId)
         {
             var user = await _userManager.FindByIdAsync(userId.ToString());
 
@@ -114,24 +114,11 @@ namespace LibraryManagement.Services
             }
 
             var roles = await _userManager.GetRolesAsync(user);
-            var isAdmin = roles.Contains(Roles.Admin);
 
-            if (isAdmin && user.Id != currentUserId)
+            if (roles.Contains(Roles.Admin))
             {
                 throw new InvalidOperationException(
-                    "You cannot deactivate another admin.");
-            }
-
-            if (isAdmin)
-            {
-                var admins = await _userManager.GetUsersInRoleAsync(Roles.Admin);
-                var activeAdminCount = admins.Count(admin => admin.IsActive);
-
-                if (user.Id == currentUserId && activeAdminCount <= 1)
-                {
-                    throw new InvalidOperationException(
-                        "You cannot deactivate the last active admin.");
-                }
+                    "You cannot deactivate an admin.");
             }
 
             var hasOpenLoan = await _context.Loans.AnyAsync(loan =>

@@ -7,7 +7,7 @@ namespace LibraryManagement.Services.Interfaces
     {
         UserListResult GetAllUsers(UserListQueryDto input);
         UserDetailsDto? GetUserDetails(int id);
-        Task Deactivate(int userId, int currentUserId);
+        Task Deactivate(int userId);
         void Activate(int userId);
         Task UpdateUserAsync(AdminUserUpdateDto input, int currentUserId);
         Task<int> CreateUserAsync(AdminUserCreateDto input);

@@ -108,9 +108,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
         {
             try
             {
-                var currentUserId = int.Parse(_userManager.GetUserId(User)!);
-
-                await _userService.Deactivate(id, currentUserId);
+                await _userService.Deactivate(id);
 
                 TempData["SuccessMessage"] = "کاربر با موفقیت غیرفعال شد";
             }

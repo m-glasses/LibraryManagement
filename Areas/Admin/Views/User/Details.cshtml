@@ -298,43 +298,46 @@
                     </a>
                 }
 
-                @if (Model.IsActive)
+                @if (Model.Role != "Admin")
                 {
-                    <form asp-area="Admin"
-                          asp-controller="User"
-                          asp-action="Deactivate"
-                          asp-route-id="@Model.Id"
-                          method="post"
-                          class="admin-user-action-form">
+                    @if (Model.IsActive)
+                    {
+                        <form asp-area="Admin"
+                              asp-controller="User"
+                              asp-action="Deactivate"
+                              asp-route-id="@Model.Id"
+                              method="post"
+                              class="admin-user-action-form">
 
-                        @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
 
-                        <button type="submit"
-                                class="admin-user-action-button admin-user-action-deactivate"
-                                data-confirm="آیا از غیرفعال کردن این کاربر مطمئن هستید؟">
-                            غیرفعال کردن
-                        </button>
+                            <button type="submit"
+                                    class="admin-user-action-button admin-user-action-deactivate"
+                                    data-confirm="آیا از غیرفعال کردن این کاربر مطمئن هستید؟">
+                                غیرفعال کردن
+                            </button>
 
-                    </form>
-                }
-                else
-                {
-                    <form asp-area="Admin"
-                          asp-controller="User"
-                          asp-action="Activate"
-                          asp-route-id="@Model.Id"
-                          method="post"
-                          class="admin-user-action-form">
+                        </form>
+                    }
+                    else
+                    {
+                        <form asp-area="Admin"
+                              asp-controller="User"
+                              asp-action="Activate"
+                              asp-route-id="@Model.Id"
+                              method="post"
+                              class="admin-user-action-form">
 
-                        @Html.AntiForgeryToken()
+                            @Html.AntiForgeryToken()
 
-                        <button type="submit"
-                                class="admin-user-action-button admin-user-action-activate"
-                                data-confirm="آیا از فعال کردن این کاربر مطمئن هستید؟">
-                            فعال کردن
-                        </button>
+                            <button type="submit"
+                                    class="admin-user-action-button admin-user-action-activate"
+                                    data-confirm="آیا از فعال کردن این کاربر مطمئن هستید؟">
+                                فعال کردن
+                            </button>
 
-                    </form>
+                        </form>
+                    }
                 }
 
             </div>

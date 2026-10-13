@@ -1,5 +1,4 @@
-﻿
-namespace LibraryManagement.Helper
+﻿namespace LibraryManagement.Helper
 {
     public class ErrorMessageHelper
     {
@@ -27,11 +26,8 @@ namespace LibraryManagement.Helper
                 "Gender is required." =>
                     "انتخاب جنسیت الزامی است.",
 
-                "You cannot deactivate another admin." =>
-                    "امکان غیرفعال کردن حساب مدیر دیگر وجود ندارد.",
-
-                "You cannot deactivate the last active admin." =>
-                    "امکان غیرفعال کردن آخرین مدیر فعال وجود ندارد.",
+                "You cannot deactivate an admin." =>
+                    "امکان غیرفعال کردن حساب مدیر وجود ندارد.",
 
                 "First close all open loans." =>
                     "ابتدا تمام امانت‌های باز این کاربر را ببندید.",
@@ -45,7 +41,7 @@ namespace LibraryManagement.Helper
                 "Admin cannot change their role to User." =>
                     "مدیر نمی‌تواند نقش خود را به کاربر تغییر دهد.",
 
-                //login
+                // Login
                 "User is inactive." =>
                     "حساب کاربری شما غیرفعال است؛ برای پیگیری با مسئول کتابخانه تماس بگیرید.",
 
@@ -85,7 +81,7 @@ namespace LibraryManagement.Helper
                 "Active reservation not found." =>
                     "رزرو فعال پیدا نشد.",
 
-                // Library settings
+                // Library Settings
                 "Library settings not found" =>
                     "تنظیمات کتابخانه پیدا نشد.",
 
