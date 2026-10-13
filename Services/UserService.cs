@@ -4,6 +4,7 @@ using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Win32;
 
 namespace LibraryManagement.Services
 {
@@ -11,11 +12,13 @@ namespace LibraryManagement.Services
     {
         private readonly LibraryDbContext _context;
         private readonly UserManager<User> _userManager;
+        private readonly IWalletService _wallet;
 
-        public UserService(LibraryDbContext context , UserManager<User> userManager)
+        public UserService(LibraryDbContext context , UserManager<User> userManager , IWalletService wallet)
         {
             _context = context;
             _userManager = userManager;
+            _wallet = wallet;
         }
 
         public void Activate(int userId)
@@ -39,10 +42,66 @@ namespace LibraryManagement.Services
         }
 
 
-        public void Deactivate(int userId)
+        public async Task<int> CreateUserAsync(AdminUserCreateDto input )
         {
-            var user = _context.Users
-                .FirstOrDefault(user => user.Id == userId);
+            if (input is null)
+            {
+                throw new ArgumentNullException(nameof(input));
+            }
+
+            if (input.Role != Roles.User && input.Role != Roles.Admin)
+            {
+                throw new InvalidOperationException("Invalid role.");
+            }
+
+            await using var transaction =
+                await _context.Database.BeginTransactionAsync();
+
+            try
+            {
+                var user = new User
+                {
+                    Name = input.Name,
+                    Family = input.Family,
+                    FatherName = input.FatherName,
+                    DateOfBirth = input.DateOfBirth,
+                    Education = input.Education
+                        ?? throw new InvalidOperationException("Education is required."),
+                    Gender = input.Gender
+                        ?? throw new InvalidOperationException("Gender is required."),
+                    Address = input.Address,
+                    UserName = input.UserName,
+                    PhoneNumber = input.PhoneNumber,
+                    Email = input.Email
+                };
+
+                var createResult =
+                    await _userManager.CreateAsync(user, input.Password);
+
+                CheckIdentityResult(createResult);
+
+                var roleResult =
+                    await _userManager.AddToRoleAsync(user, input.Role);
+
+                CheckIdentityResult(roleResult);
+
+                _wallet.CreateForUser(user.Id);
+
+                await transaction.CommitAsync();
+
+                return user.Id;
+            }
+            catch
+            {
+                await transaction.RollbackAsync();
+                throw;
+            }
+        }
+
+
+        public async Task Deactivate(int userId, int currentUserId)
+        {
+            var user = await _userManager.FindByIdAsync(userId.ToString());
 
             if (user is null)
             {
@@ -54,11 +113,31 @@ namespace LibraryManagement.Services
                 throw new InvalidOperationException("User is already inactive.");
             }
 
-            var hasOpenLoan = _context.Loans
-                .Any(loan =>
-                    loan.UserId == userId &&
-                    (loan.LoanStatus == LoanStatus.Active ||
-                     loan.LoanStatus == LoanStatus.ReturnPending));
+            var roles = await _userManager.GetRolesAsync(user);
+            var isAdmin = roles.Contains(Roles.Admin);
+
+            if (isAdmin && user.Id != currentUserId)
+            {
+                throw new InvalidOperationException(
+                    "You cannot deactivate another admin.");
+            }
+
+            if (isAdmin)
+            {
+                var admins = await _userManager.GetUsersInRoleAsync(Roles.Admin);
+                var activeAdminCount = admins.Count(admin => admin.IsActive);
+
+                if (user.Id == currentUserId && activeAdminCount <= 1)
+                {
+                    throw new InvalidOperationException(
+                        "You cannot deactivate the last active admin.");
+                }
+            }
+
+            var hasOpenLoan = await _context.Loans.AnyAsync(loan =>
+                loan.UserId == userId &&
+                (loan.LoanStatus == LoanStatus.Active ||
+                 loan.LoanStatus == LoanStatus.ReturnPending));
 
             if (hasOpenLoan)
             {
@@ -66,10 +145,9 @@ namespace LibraryManagement.Services
                     "First close all open loans.");
             }
 
-            var hasActiveReservation = _context.Reservations
-                .Any(reservation =>
-                    reservation.UserId == userId &&
-                    reservation.ReservationStatus == ReservationStatus.Active);
+            var hasActiveReservation = await _context.Reservations.AnyAsync(reservation =>
+                reservation.UserId == userId &&
+                reservation.ReservationStatus == ReservationStatus.Active);
 
             if (hasActiveReservation)
             {
@@ -79,8 +157,10 @@ namespace LibraryManagement.Services
 
             user.IsActive = false;
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
+
+
 
         public UserListResult GetAllUsers(UserListQueryDto input)
         {
@@ -201,24 +281,47 @@ namespace LibraryManagement.Services
             return user;
         }
 
-        public async Task UpdateUserAsync(AdminUserUpdateDto input)
+        public async Task UpdateUserAsync(AdminUserUpdateDto input , int currentUserId)
         {
             if (input is null)
             {
                 throw new ArgumentNullException(nameof(input));
             }
 
+            if (input.Role != Roles.User && input.Role != Roles.Admin)
+            {
+                throw new InvalidOperationException("Invalid role.");
+            }
 
-            await using var transaction = await _context.Database.BeginTransactionAsync();
+            await using var transaction =
+                await _context.Database.BeginTransactionAsync();
 
             try
             {
- 
-                var user = await _userManager.FindByIdAsync(input.Id.ToString());
+                var user =
+                    await _userManager.FindByIdAsync(input.Id.ToString());
 
                 if (user is null)
                 {
                     throw new InvalidOperationException("User not found.");
+                }
+
+                var roles = await _userManager.GetRolesAsync(user);
+                var currentRole = roles.FirstOrDefault();
+
+                if (currentRole == Roles.Admin)
+                {
+                    if (user.Id != currentUserId)
+                    {
+                        throw new InvalidOperationException(
+                            "Admin users cannot be edited.");
+                    }
+
+                    if (input.Role == Roles.User)
+                    {
+                        throw new InvalidOperationException(
+                            "Admin cannot change their role to User.");
+                    }
                 }
 
                 user.Name = input.Name;
@@ -226,43 +329,44 @@ namespace LibraryManagement.Services
                 user.FatherName = input.FatherName;
                 user.DateOfBirth = input.DateOfBirth;
                 user.Education = input.Education
-                    ?? throw new InvalidOperationException("Education is required.");
-
+                    ?? throw new InvalidOperationException(
+                        "Education is required.");
                 user.Gender = input.Gender
-                    ?? throw new InvalidOperationException("Gender is required.");
-
+                    ?? throw new InvalidOperationException(
+                        "Gender is required.");
                 user.Address = input.Address;
 
                 var result = await _userManager.UpdateAsync(user);
-
                 CheckIdentityResult(result);
 
-                result = await _userManager.SetUserNameAsync(user, input.UserName);
-
+                result = await _userManager.SetUserNameAsync(
+                    user,
+                    input.UserName);
                 CheckIdentityResult(result);
 
-                result = await _userManager.SetEmailAsync(user, input.Email);
-
+                result = await _userManager.SetEmailAsync(
+                    user,
+                    input.Email);
                 CheckIdentityResult(result);
 
-                result = await _userManager.SetPhoneNumberAsync(user, input.PhoneNumber);
-
+                result = await _userManager.SetPhoneNumberAsync(
+                    user,
+                    input.PhoneNumber);
                 CheckIdentityResult(result);
-
-                var roles = await _userManager.GetRolesAsync(user);
-                var currentRole = roles.FirstOrDefault();
 
                 if (currentRole != input.Role)
                 {
                     if (currentRole is not null)
                     {
-                        result = await _userManager.RemoveFromRoleAsync(user, currentRole);
-
+                        result = await _userManager.RemoveFromRoleAsync(
+                            user,
+                            currentRole);
                         CheckIdentityResult(result);
                     }
 
-                    result = await _userManager.AddToRoleAsync(user, input.Role);
-
+                    result = await _userManager.AddToRoleAsync(
+                        user,
+                        input.Role);
                     CheckIdentityResult(result);
                 }
 

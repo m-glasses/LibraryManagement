@@ -287,13 +287,16 @@
 
             <div class="admin-user-details-actions">
 
-                <a asp-area="Admin"
-                   asp-controller="User"
-                   asp-action="Edit"
-                   asp-route-id="@Model.Id"
-                   class="admin-user-action-button admin-user-action-edit">
-                    ویرایش کاربر
-                </a>
+                @if (Model.CanEdit)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="User"
+                       asp-action="Edit"
+                       asp-route-id="@Model.Id"
+                       class="admin-user-action-button admin-user-action-edit">
+                        ویرایش کاربر
+                    </a>
+                }
 
                 @if (Model.IsActive)
                 {
@@ -307,7 +310,8 @@
                         @Html.AntiForgeryToken()
 
                         <button type="submit"
-                                class="admin-user-action-button admin-user-action-deactivate">
+                                class="admin-user-action-button admin-user-action-deactivate"
+                                data-confirm="آیا از غیرفعال کردن این کاربر مطمئن هستید؟">
                             غیرفعال کردن
                         </button>
 
@@ -325,7 +329,8 @@
                         @Html.AntiForgeryToken()
 
                         <button type="submit"
-                                class="admin-user-action-button admin-user-action-activate">
+                                class="admin-user-action-button admin-user-action-activate"
+                                data-confirm="آیا از فعال کردن این کاربر مطمئن هستید؟">
                             فعال کردن
                         </button>
 
@@ -382,7 +387,6 @@
     </div>
 
 </div>
-
 
 @section Styles
 {

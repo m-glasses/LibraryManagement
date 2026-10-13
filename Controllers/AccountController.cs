@@ -1,139 +1,122 @@
-﻿using LibraryManagement.Models;
-using LibraryManagement.Services;
+﻿
+using LibraryManagement.DTO;
+using LibraryManagement.Exceptions;
+using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
 using LibraryManagement.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
-namespace LibraryManagement.Controllers
+namespace LibraryManagement.Controllers;
+
+public class AccountController : Controller
 {
-    public class AccountController : Controller
+    private readonly SignInManager<User> _signInManager;
+    private readonly IAccountService _accountService;
+
+    public AccountController(
+        SignInManager<User> signInManager,
+        IAccountService accountService)
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
-        private readonly IdentityErrorLocalizer _identityErrorLocalizer;
-        private readonly IWalletService _walletService;
-        public AccountController(UserManager<User> userManage, SignInManager<User> signInManager, IdentityErrorLocalizer identityErrorLocalizer , IWalletService walletService)
+        _signInManager = signInManager;
+        _accountService = accountService;
+    }
+
+    [HttpGet]
+    public IActionResult Register()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Register(RegisterViewModel register)
+    {
+        if (!ModelState.IsValid)
+            return View(register);
+
+        var dto = new RegisterDto
         {
-            _userManager = userManage;
-            _signInManager = signInManager;
-            _identityErrorLocalizer = identityErrorLocalizer;
-            _walletService = walletService;
-        }
+            Name = register.Name,
+            Family = register.Family,
+            FatherName = register.FatherName,
+            DateOfBirth = register.DateOfBirth,
+            Education = register.Education!.Value,
+            Gender = register.Gender!.Value,
+            Address = register.Address,
+            UserName = register.UserName,
+            PhoneNumber = register.PhoneNumber,
+            Email = register.Email,
+            Password = register.Password
+        };
 
-        [HttpGet]
-        public IActionResult Register()
+        try
         {
-            return View();
-        }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel register)
-        {
-            if (!ModelState.IsValid)
-            {
-                return View(register);
-            }
-
-            var user = new User
-            {
-                Name = register.Name,
-                Family = register.Family,
-                FatherName = register.FatherName,
-                DateOfBirth = register.DateOfBirth,
-                Education = register.Education!.Value,
-                Gender = register.Gender!.Value,
-                Address = register.Address,
-                UserName = register.UserName,
-                PhoneNumber = register.PhoneNumber,
-                Email = register.Email
-            };
-
-            var createResult = await _userManager.CreateAsync(
-                user,
-                register.Password);
-
-            if (!createResult.Succeeded)
-            {
-                AddIdentityErrors(createResult);
-
-                return View(register);
-            }
-
-            _walletService.CreateForUser(user.Id);
-
-            var roleResult = await _userManager.AddToRoleAsync(
-                user,
-                "User");
-
-            if (!roleResult.Succeeded)
-            {
-                await _userManager.DeleteAsync(user);
-
-                AddIdentityErrors(roleResult);
-
-                return View(register);
-            }
+            await _accountService.RegisterAsync(dto);
 
             return RedirectToAction(nameof(Login));
         }
-
-        private void AddIdentityErrors(IdentityResult result)
+        catch (RegistrationException ex)
         {
-            foreach (var error in result.Errors)
-            {
-                var message =
-                    _identityErrorLocalizer.Localizer(error.Code);
+            foreach (var error in ex.Errors)
+                ModelState.AddModelError(string.Empty, error);
 
-                ModelState.AddModelError("", message);
-            }
+            return View(register);
         }
-
-        [HttpGet]
-        public IActionResult Login()
+        catch (InvalidOperationException ex)
         {
-            return View();
+            ModelState.AddModelError(
+                string.Empty,
+                Helper.ErrorMessageHelper.Translate(ex.Message));
+
+            return View(register);
         }
+    }
 
-        [HttpPost]
-        public async Task<IActionResult> Login(LoginViewModel login)
+    [HttpGet]
+    public IActionResult Login()
+    {
+        return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Login(LoginViewModel login)
+    {
+        if (!ModelState.IsValid)
+            return View(login);
+
+        var dto = new LoginDto()
         {
-            if (!ModelState.IsValid)
-            {
-                return View(login);
-            }
+            UserName = login.UserName,
+            Password = login.Password,
+            RememberMe = login.RememberMe
+        };
 
-            var result = await _signInManager.PasswordSignInAsync(
-                login.UserName,
-                login.Password,
-                login.RememberMe,
-                true
-            );
-
-            if (!result.Succeeded)
-            {
-                ModelState.AddModelError("", "نام کاربری یا رمزعبور اشتباه است");
-                return View(login);
-            }
+        try
+        {
+            await _accountService.LoginAsync(dto);
 
             return RedirectToAction("Index", "Home");
         }
-
-
-        public IActionResult Index()
+        catch (InvalidOperationException ex)
         {
-            return View();
+            ModelState.AddModelError(
+                string.Empty,
+                Helper.ErrorMessageHelper.Translate(ex.Message));
+
+            return View(login);
         }
+    }
 
 
-        [HttpPost]
-        public async Task<IActionResult> Logout()
-        {
-            await _signInManager.SignOutAsync();
-            return RedirectToAction("Login");
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> Logout()
+    {
+        await _signInManager.SignOutAsync();
 
-        }
-
-
+        return RedirectToAction(nameof(Login));
     }
 }

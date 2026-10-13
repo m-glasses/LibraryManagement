@@ -52,10 +52,15 @@
     <link rel="stylesheet"
           href="~/css/admin/adminSidebar.css"
           asp-append-version="true" />
-    
+
     <link rel="stylesheet"
-      href="~/css/admin/adminLoanReturn.css"
-      asp-append-version="true" />
+          href="~/css/admin/adminLoanReturn.css"
+          asp-append-version="true" />
+
+    <!-- Components -->
+    <link rel="stylesheet"
+          href="~/css/components/confirmation-modal.css"
+          asp-append-version="true" />
 
     <!-- Jalali DatePicker -->
     <link rel="stylesheet"
@@ -65,8 +70,6 @@
     <link rel="stylesheet"
           href="~/css/vendor/jalalidatepicker.min.css"
           asp-append-version="true" />
-
-
 
     @await RenderSectionAsync("Styles", required: false)
 
@@ -204,8 +207,9 @@
 
             <li class="sidebar-nav-item">
 
-                <a asp-controller="User",
-                    asp-action="Index"
+                <a asp-area="Admin"
+                   asp-controller="User"
+                   asp-action="Index"
                    class="sidebar-nav-link">
 
                     <img src="~/images/icons/user.svg"
@@ -338,7 +342,7 @@
     <main role="main"
           class="page-content admin-page-content">
 
-         @if (TempData["SuccessMessage"] is string successMessage)
+        @if (TempData["SuccessMessage"] is string successMessage)
         {
             <div class="alert alert-success" role="alert">
                 @successMessage
@@ -351,8 +355,8 @@
                 @errorMessage
             </div>
         }
+
         @RenderBody()
-        
 
     </main>
 
@@ -373,6 +377,11 @@
 </div>
 
 
+<!-- Confirmation Modal -->
+
+<partial name="_ConfirmationModal" />
+
+
 <!-- Core Scripts -->
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -388,6 +397,11 @@
 <!-- Site -->
 
 <script src="~/js/site.js"
+        asp-append-version="true"></script>
+
+<!-- Components -->
+
+<script src="~/js/Components/confirmation-modal.js"
         asp-append-version="true"></script>
 
 @await RenderSectionAsync("Scripts", required: false)

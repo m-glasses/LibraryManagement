@@ -1,23 +1,25 @@
 ﻿/* ========================================
-   LibraryManagement
-   Admin User List
-   ======================================== */
-
+LibraryManagement
+Admin User List
+======================================== */
 
 /* ----------------------------------------
-   Page
-   ---------------------------------------- */
+Page
+---------------------------------------- */
 
 .admin-user-page {
     width: 100%;
 }
 
-
 /* ----------------------------------------
-   Page Header
-   ---------------------------------------- */
+Page Header
+---------------------------------------- */
 
 .admin-user-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--lm-space-6);
     margin-bottom: var(--lm-space-6);
 }
 
@@ -36,10 +38,44 @@
     font-weight: var(--lm-font-weight-normal);
 }
 
+/* ----------------------------------------
+Create User Button
+---------------------------------------- */
+
+.admin-user-create-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: var(--lm-button-padding-y) var(--lm-button-padding-x);
+    background-color: var(--lm-primary);
+    border: 1px solid var(--lm-primary);
+    border-radius: var(--lm-button-radius);
+    color: #ffffff;
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: 1.5;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+    .admin-user-create-link:hover {
+        background-color: #1f6feb;
+        border-color: #1f6feb;
+        color: #ffffff;
+    }
+
+    .admin-user-create-link:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 0.2rem rgba(31, 111, 235, 0.2);
+    }
 
 /* ----------------------------------------
-   Filter Card
-   ---------------------------------------- */
+Filter Card
+---------------------------------------- */
 
 .admin-user-filter-card {
     margin-bottom: var(--lm-space-6);
@@ -106,6 +142,7 @@
     font-family: var(--lm-font-family);
     font-size: var(--lm-font-size-sm);
     font-weight: var(--lm-font-weight-medium);
+    line-height: 1.5;
     text-decoration: none;
     white-space: nowrap;
     cursor: pointer;
@@ -141,23 +178,21 @@
         color: var(--lm-text);
     }
 
-
 /* ----------------------------------------
-   User List Card
-   ---------------------------------------- */
+User List Card
+---------------------------------------- */
 
 .admin-user-list-card {
+    overflow: hidden;
     background-color: var(--lm-surface);
     border: 1px solid var(--lm-border);
     border-radius: var(--lm-radius-lg);
     box-shadow: var(--lm-shadow-sm);
-    overflow: hidden;
 }
 
-
 /* ----------------------------------------
-   Card Header
-   ---------------------------------------- */
+Card Header
+---------------------------------------- */
 
 .admin-user-list-header {
     display: flex;
@@ -182,10 +217,9 @@
     white-space: nowrap;
 }
 
-
 /* ----------------------------------------
-   Table
-   ---------------------------------------- */
+Table
+---------------------------------------- */
 
 .admin-user-table {
     width: 100%;
@@ -213,42 +247,39 @@
         vertical-align: middle;
     }
 
-    .admin-user-table tbody tr:last-child td {
-        border-bottom: 0;
-    }
-
     .admin-user-table tbody tr {
         transition: background-color var(--lm-transition-fast);
     }
+
+        .admin-user-table tbody tr:last-child td {
+            border-bottom: 0;
+        }
 
         .admin-user-table tbody tr:hover {
             background-color: var(--lm-background);
         }
 
-
 /* ----------------------------------------
-   User Name
-   ---------------------------------------- */
+User Name
+---------------------------------------- */
 
 .admin-user-full-name {
     color: var(--lm-text);
     font-weight: var(--lm-font-weight-medium);
 }
 
-
 /* ----------------------------------------
-   Email & Phone
-   ---------------------------------------- */
+Email & Phone
+---------------------------------------- */
 
 .admin-user-email,
 .admin-user-phone {
     color: var(--lm-text-muted);
 }
 
-
 /* ----------------------------------------
-   Wallet Balance
-   ---------------------------------------- */
+Wallet Balance
+---------------------------------------- */
 
 .admin-user-wallet-balance {
     direction: ltr;
@@ -257,10 +288,9 @@
     font-weight: var(--lm-font-weight-medium);
 }
 
-
 /* ----------------------------------------
-   User Status
-   ---------------------------------------- */
+User Status
+---------------------------------------- */
 
 .admin-user-status {
     display: inline-flex;
@@ -285,10 +315,9 @@
     color: var(--lm-warning);
 }
 
-
 /* ----------------------------------------
-   Actions
-   ---------------------------------------- */
+Actions
+---------------------------------------- */
 
 .admin-user-table-actions {
     white-space: nowrap;
@@ -313,10 +342,9 @@
         color: var(--lm-surface);
     }
 
-
 /* ----------------------------------------
-   Pagination
-   ---------------------------------------- */
+Pagination
+---------------------------------------- */
 
 .admin-user-pagination {
     display: flex;
@@ -366,10 +394,9 @@
         color: var(--lm-surface);
     }
 
-
 /* ----------------------------------------
-   Empty State
-   ---------------------------------------- */
+Empty State
+---------------------------------------- */
 
 .admin-user-empty-state {
     padding: var(--lm-space-10) var(--lm-space-6);
@@ -382,13 +409,13 @@
         font-size: var(--lm-font-size);
     }
 
-
 /* ----------------------------------------
-   Responsive
-   ---------------------------------------- */
+Responsive
+---------------------------------------- */
 
 @media (max-width: 991.98px) {
 
+    ```
     .admin-user-filter-form {
         grid-template-columns: 1fr 1fr;
     }
@@ -400,13 +427,25 @@
     .admin-user-filter-actions {
         grid-column: 1 / -1;
     }
-}
 
+    ```
+}
 
 @media (max-width: 767.98px) {
 
+    ```
+    .admin-user-page-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: var(--lm-space-4);
+    }
+
     .admin-user-page-title {
         font-size: var(--lm-font-size-xl);
+    }
+
+    .admin-user-create-link {
+        width: 100%;
     }
 
     .admin-user-filter-card {
@@ -447,4 +486,6 @@
         flex-wrap: wrap;
         justify-content: center;
     }
+
+    
 }

@@ -46,5 +46,7 @@ namespace LibraryManagement.Areas.Admin.ViewModels
 
         [Display(Name = "وضعیت حساب")]
         public bool IsActive { get; set; }
+
+        public bool CanEdit { get; set; }
     }
 }

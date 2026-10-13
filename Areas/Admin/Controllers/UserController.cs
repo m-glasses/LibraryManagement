@@ -1,11 +1,12 @@
-﻿using LibraryManagement.Models;
-using LibraryManagement.Areas.Admin.ViewModels;
+﻿using LibraryManagement.Areas.Admin.ViewModels;
+using LibraryManagement.DTO;
+using LibraryManagement.Helper;
+using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using LibraryManagement.DTO;
-using LibraryManagement.Helper;
+using System.Security.Claims;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -73,6 +74,8 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return NotFound();
             }
 
+            int currentUserId = int.Parse(_userManager.GetUserId(User));
+
             var viewModel = new AdminUserDetailsViewModel
             {
                 Id = dto.Id,
@@ -88,31 +91,37 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Address = dto.Address,
                 WalletBalance = dto.WalletBalance,
                 IsDebtor = dto.WalletBalance < 0,
-                IsActive = dto.IsActive
+                IsActive = dto.IsActive,
+
+                CanEdit = dto.Role != Roles.Admin ||
+                          dto.Id == currentUserId
             };
 
             return View(viewModel);
         }
 
+        #region Activator
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Deactivate(int id)
+        public async Task<IActionResult> Deactivate(int id)
         {
             try
             {
-                _userService.Deactivate(id);
+                var currentUserId = int.Parse(_userManager.GetUserId(User)!);
+
+                await _userService.Deactivate(id, currentUserId);
 
                 TempData["SuccessMessage"] = "کاربر با موفقیت غیرفعال شد";
-
-                return RedirectToAction(nameof(Details), new { id });
             }
             catch (InvalidOperationException ex)
             {
                 TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
-
-                return RedirectToAction(nameof(Details), new { id });
             }
+
+            return RedirectToAction(nameof(Details), new { id });
         }
+
 
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -134,6 +143,9 @@ namespace LibraryManagement.Areas.Admin.Controllers
             }
         }
 
+        #endregion 
+
+        #region Edit
         public IActionResult Edit(int id)
         {
             var user = _userService.GetUserDetails(id);
@@ -156,7 +168,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 UserName = user.UserName,
                 Email = user.Email,
                 PhoneNumber = user.PhoneNumber,
-                Role = user.Role
+                Role = user.Role,
             };
 
             return View(viewModel);
@@ -174,7 +186,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
             try
             {
-                var dto = new AdminUserUpdateDto()
+                var dto = new AdminUserUpdateDto
                 {
                     Id = model.Id,
                     Name = model.Name,
@@ -190,9 +202,16 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     Role = model.Role
                 };
 
-                await _userService.UpdateUserAsync(dto);
+                var currentUserId =
+                    int.Parse(_userManager.GetUserId(User));
 
-                return RedirectToAction(nameof(Details), new { model.Id });
+                await _userService.UpdateUserAsync(
+                    dto,
+                    currentUserId);
+
+                return RedirectToAction(
+                    nameof(Details),
+                    new { id = model.Id });
             }
             catch (InvalidOperationException ex)
             {
@@ -203,5 +222,57 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return View(model);
             }
         }
+
+        #endregion
+
+
+        #region Create
+        public async Task<IActionResult> CreateUser()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateUser(AdminUserCreateViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+
+            try
+            {
+                var dto = new AdminUserCreateDto
+                {
+                    Name = model.Name,
+                    Family = model.Family,
+                    DateOfBirth = model.DateOfBirth,
+                    FatherName = model.FatherName,
+                    Education = model.Education,
+                    Gender = model.Gender,
+                    Address = model.Address,
+                    UserName = model.UserName,
+                    Password = model.Password,
+                    Email = model.Email,
+                    PhoneNumber = model.PhoneNumber,
+                    Role = model.Role
+                };
+
+                var userId = await _userService.CreateUserAsync(dto);
+
+                return RedirectToAction(nameof(Details), new { id = userId });
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(
+                    string.Empty,
+                    ErrorMessageHelper.Translate(ex.Message));
+
+                return View(model);
+            }
+        }
+
+        #endregion
     }
 }

@@ -23,6 +23,7 @@ builder.Services.AddScoped<IBookCopyService, BookCopyService>();
 builder.Services.AddScoped<ILoanService, LoanService>();
 builder.Services.AddScoped<IReservationService, ReservationService>();
 builder.Services.AddScoped<IWalletService, WalletService>();
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IdentityErrorLocalizer>();
 builder.Services.AddHttpClient<IZarinPalService, ZarinpalService>();
 builder.Services.AddScoped<IPaymentAttemptService, PaymentAttemptService>();
@@ -59,6 +60,19 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path == "/" &&
+        context.User.Identity?.IsAuthenticated == true &&
+        context.User.IsInRole("Admin"))
+    {
+        context.Response.Redirect("/Admin/Dashboard");
+        return;
+    }
+
+    await next();
+});
+
 app.MapStaticAssets();
 
 app.MapControllerRoute(
@@ -70,6 +84,5 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
-
 
 app.Run();

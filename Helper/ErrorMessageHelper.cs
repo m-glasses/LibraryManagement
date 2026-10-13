@@ -1,4 +1,5 @@
-﻿namespace LibraryManagement.Helper
+﻿
+namespace LibraryManagement.Helper
 {
     public class ErrorMessageHelper
     {
@@ -6,18 +7,69 @@
         {
             return message switch
             {
-                "User not found" =>
-                    "کاربر پیدا نشد",
-
+                // Users
+                "User not found" or
                 "User not found." =>
                     "کاربر پیدا نشد.",
 
-                "Book not found" =>
-                    "کتاب پیدا نشد",
+                "User is already inactive." =>
+                    "این کاربر در حال حاضر غیرفعال است.",
+
+                "User is already active." =>
+                    "این کاربر در حال حاضر فعال است.",
+
+                "Invalid role." =>
+                    "نقش انتخاب‌شده معتبر نیست.",
+
+                "Education is required." =>
+                    "وارد کردن میزان تحصیلات الزامی است.",
+
+                "Gender is required." =>
+                    "انتخاب جنسیت الزامی است.",
+
+                "You cannot deactivate another admin." =>
+                    "امکان غیرفعال کردن حساب مدیر دیگر وجود ندارد.",
+
+                "You cannot deactivate the last active admin." =>
+                    "امکان غیرفعال کردن آخرین مدیر فعال وجود ندارد.",
+
+                "First close all open loans." =>
+                    "ابتدا تمام امانت‌های باز این کاربر را ببندید.",
+
+                "First close all active reservations." =>
+                    "ابتدا تمام رزروهای فعال این کاربر را ببندید.",
+
+                "Admin users cannot be edited." =>
+                    "اطلاعات مدیر قابل ویرایش نیست.",
+
+                "Admin cannot change their role to User." =>
+                    "مدیر نمی‌تواند نقش خود را به کاربر تغییر دهد.",
+
+                //login
+                "User is inactive." =>
+                    "حساب کاربری شما غیرفعال است؛ برای پیگیری با مسئول کتابخانه تماس بگیرید.",
+
+                "UserName or Password invalid." =>
+                    "نام کاربری یا رمزعبور اشتباه است.",
+
+                "Account is locked out." =>
+                    "حساب کاربری شما موقتاً قفل شده است؛ لطفاً بعداً تلاش کنید.",
+
+                "Sign-in is not allowed." =>
+                    "در حال حاضر امکان ورود به حساب کاربری وجود ندارد.",
+
+                // Books
+                "Book not found" or
+                "Book not found." =>
+                    "کتاب پیدا نشد.",
 
                 "The book is currently available" =>
                     "این کتاب در حال حاضر در دسترس است و نیازی به رزرو ندارد.",
 
+                "Book not available" =>
+                    "این کتاب در حال حاضر قابل امانت نیست.",
+
+                // Reservations
                 "You already have this book on loan" =>
                     "این کتاب در حال حاضر در امانت شماست.",
 
@@ -30,9 +82,14 @@
                 "Reservation capacity is full" =>
                     "ظرفیت رزرو این کتاب تکمیل شده است.",
 
+                "Active reservation not found." =>
+                    "رزرو فعال پیدا نشد.",
+
+                // Library settings
                 "Library settings not found" =>
                     "تنظیمات کتابخانه پیدا نشد.",
 
+                // Loans
                 "Loan not found" =>
                     "امانت پیدا نشد.",
 
@@ -48,12 +105,7 @@
                 "Maximum renewal limit has been reached" =>
                     "حداکثر تعداد تمدید مجاز برای این امانت انجام شده است.",
 
-                "Book not available" =>
-                    "این کتاب در حال حاضر قابل امانت نیست.",
-
-                "Active reservation not found." =>
-                    "رزرو فعال پیدا نشد.",
-
+                // Wallet
                 "Wallet not found." =>
                     "کیف پول پیدا نشد.",
 
@@ -66,18 +118,7 @@
                 "User cannot borrow while wallet balance is negative." =>
                     "به دلیل منفی بودن موجودی کیف پول، امکان دریافت امانت جدید وجود ندارد.",
 
-                "User is already inactive." =>
-                    "این کاربر در حال حاضر غیرفعال است.",
-
-                "User is already active." =>
-                    "این کاربر در حال حاضر فعال است.",
-
-                "First close all open loans." =>
-                    "ابتدا تمام امانت‌های باز این کاربر را ببندید.",
-
-                "First close all active reservations." =>
-                    "ابتدا تمام رزروهای فعال این کاربر را ببندید.",
-
+                // Fallback
                 _ =>
                     "خطایی رخ داده است."
             };
