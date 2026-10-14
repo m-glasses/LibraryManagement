@@ -1,5 +1,5 @@
 ﻿using LibraryManagement.Areas.Admin.ViewModels;
-using LibraryManagement.DTO;
+using LibraryManagement.DTO.User;
 using LibraryManagement.Helper;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
@@ -23,53 +23,94 @@ namespace LibraryManagement.Areas.Admin.Controllers
         }
 
 
+  
         public IActionResult Index(AdminUserFilterViewModel inputViewModel)
         {
-            if (!ModelState.IsValid)
+            ArgumentNullException.ThrowIfNull(inputViewModel);
+
+            // Validate pagination values
+            if (inputViewModel.Page < 1)
             {
                 inputViewModel.Page = 1;
-                inputViewModel.PageSize = 20;
-                ModelState.Clear();
+                ModelState.Remove(nameof(inputViewModel.Page));
             }
 
-            if (inputViewModel.Page < 1)
-                inputViewModel.Page = 1;
-
             if (inputViewModel.PageSize is not (10 or 20 or 50))
+            {
                 inputViewModel.PageSize = 20;
+                ModelState.Remove(nameof(inputViewModel.PageSize));
+            }
+
+            // Allow only supported sorting fields
+            string[] allowedSortFields =
+            [
+                "Name",
+                "Family",
+                "Email",
+                "WalletBalance"
+            ];
+
+            if (!string.IsNullOrWhiteSpace(inputViewModel.SortBy) &&
+                !allowedSortFields.Contains(
+                    inputViewModel.SortBy,
+                    StringComparer.OrdinalIgnoreCase))
+            {
+                inputViewModel.SortBy = null;
+                ModelState.Remove(nameof(inputViewModel.SortBy));
+            }
 
             var queryDto = new UserListQueryDto
             {
-                SearchTerm = inputViewModel.SearchTerm,
+                SearchTerm = inputViewModel.SearchTerm?.Trim(),
                 Role = inputViewModel.Role,
                 IsDebtor = inputViewModel.IsDebtor,
+                SortBy = inputViewModel.SortBy,
+                SortDescending = inputViewModel.SortDescending,
                 Page = inputViewModel.Page,
                 PageSize = inputViewModel.PageSize
             };
 
-            var result = _userService.GetAllUsers(queryDto);
-
-            var viewModel = new AdminUserIndexViewModel
+            try
             {
-                Users = result.Users
-                    .Select(user => new UserListViewModel
-                    {
-                        Id = user.Id,
-                        FullName = $"{user.Name} {user.Family}",
-                        Email = user.Email,
-                        PhoneNumber = user.PhoneNumber,
-                        Role = user.Role,
-                        IsDebtor = user.WalletBalance < 0,
-                        WalletBalance = user.WalletBalance
-                    })
-                    .ToList(),
+                var result = _userService.GetAllUsers(queryDto);
 
-                Filter = inputViewModel,
-                TotalCount = result.TotalCount,
-                TotalPages = result.TotalPages
-            };
+                var viewModel = new AdminUserIndexViewModel
+                {
+                    Users = result.Users
+                        .Select(user => new UserListViewModel
+                        {
+                            Id = user.Id,
+                            FullName = $"{user.Name} {user.Family}",
+                            Email = user.Email,
+                            PhoneNumber = user.PhoneNumber,
+                            Role = user.Role,
+                            IsDebtor = user.WalletBalance < 0,
+                            WalletBalance = user.WalletBalance
+                        })
+                        .ToList(),
 
-            return View(viewModel);
+                    Filter = inputViewModel,
+                    TotalCount = result.TotalCount,
+                    TotalPages = result.TotalPages
+                };
+
+                return View(viewModel);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] =
+                    ErrorMessageHelper.Translate(ex.Message);
+
+                var viewModel = new AdminUserIndexViewModel
+                {
+                    Users = new List<UserListViewModel>(),
+                    Filter = inputViewModel,
+                    TotalCount = 0,
+                    TotalPages = 0
+                };
+
+                return View(viewModel);
+            }
         }
 
 

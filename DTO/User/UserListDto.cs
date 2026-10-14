@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.DTO
+﻿namespace LibraryManagement.DTO.User
 {
     public class UserListDto
     {

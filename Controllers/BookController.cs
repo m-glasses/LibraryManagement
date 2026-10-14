@@ -17,11 +17,11 @@ namespace LibraryManagement.Controllers
             _userManager = userManager;
         }
         // GET: BookController
-        public IActionResult Index()
-        {
-            var books = _bookService.GetBookList();
-            return View(books);
-        }
+        //public IActionResult Index()
+        //{
+        //    var books = _bookService.GetBookList();
+        //    return View(books);
+        //}
 
         // GET: BookController/Details/5
         public IActionResult Details(int id)

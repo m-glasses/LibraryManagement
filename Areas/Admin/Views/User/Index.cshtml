@@ -2,17 +2,18 @@
 
 @{
     ViewData["Title"] = "مدیریت کاربران";
+
+    var filter = Model.Filter
+        ?? new LibraryManagement.Areas.Admin.ViewModels.AdminUserFilterViewModel();
 }
 
 <div class="admin-user-page">
-    <div class="admin-user-page-header">
-        <div>
-            <h1 class="admin-user-page-title">
-                مدیریت کاربران
-            </h1>
 
+    <header class="admin-user-page-header">
+        <div>
+            <h1 class="admin-user-page-title">مدیریت کاربران</h1>
             <p class="admin-user-page-subtitle">
-                فهرست کاربران ثبت‌شده در سامانه
+                فهرست کاربران ثبت‌شده و وضعیت حساب‌های آن‌ها
             </p>
         </div>
 
@@ -20,96 +21,85 @@
            asp-controller="User"
            asp-action="CreateUser"
            class="admin-user-create-link">
+            <span aria-hidden="true">+</span>
             افزودن کاربر
         </a>
-    </div>
+    </header>
 
-    <!-- Filters -->
-    <div class="admin-user-filter-card">
+    <section class="admin-user-filter-card" aria-label="فیلتر کاربران">
+        <div class="admin-user-filter-header">
+            <h2 class="admin-user-filter-title">جستجو و فیلتر</h2>
+            <p class="admin-user-filter-description">
+                کاربران را بر اساس مشخصات و وضعیت مالی فیلتر کن.
+            </p>
+        </div>
+
         <form asp-area="Admin"
               asp-controller="User"
               asp-action="Index"
               method="get"
               class="admin-user-filter-form">
 
-            <div class="admin-user-filter-group">
-                <label for="SearchTerm"
-                       class="admin-user-filter-label">
+            <div class="admin-user-filter-group admin-user-search-group">
+                <label for="SearchTerm" class="admin-user-filter-label">
                     جستجو
                 </label>
-
                 <input id="SearchTerm"
                        name="SearchTerm"
-                       value="@Model.Filter.SearchTerm"
+                       type="search"
+                       value="@filter.SearchTerm"
                        class="admin-user-filter-input"
-                       placeholder="نام، ایمیل یا شماره همراه..." />
+                       placeholder="نام، ایمیل یا شماره همراه..."
+                       autocomplete="off" />
             </div>
 
             <div class="admin-user-filter-group">
-                <label for="Role"
-                       class="admin-user-filter-label">
-                    نقش
-                </label>
-
-                <select id="Role"
-                        name="Role"
-                        class="admin-user-filter-input">
-
-                    <option value=""
-                            selected="@(Model.Filter.Role == null || Model.Filter.Role == "")">
+                <label for="Role" class="admin-user-filter-label">نقش کاربر</label>
+                <select id="Role" name="Role" class="admin-user-filter-input">
+                    <option value="" selected="@(string.IsNullOrEmpty(filter.Role))">
                         همه نقش‌ها
                     </option>
-
-                    <option value="User"
-                            selected="@(Model.Filter.Role == "User")">
+                    <option value="User" selected="@(filter.Role == "User")">
                         کاربر
                     </option>
-
-                    <option value="Admin"
-                            selected="@(Model.Filter.Role == "Admin")">
+                    <option value="Admin" selected="@(filter.Role == "Admin")">
                         مدیر
                     </option>
                 </select>
             </div>
 
             <div class="admin-user-filter-group">
-                <label for="IsDebtor"
-                       class="admin-user-filter-label">
-                    وضعیت مالی
-                </label>
-
-                <select id="IsDebtor"
-                        name="IsDebtor"
-                        class="admin-user-filter-input">
-
-                    <option value=""
-                            selected="@(Model.Filter.IsDebtor == null)">
-                        همه
+                <label for="IsDebtor" class="admin-user-filter-label">وضعیت مالی</label>
+                <select id="IsDebtor" name="IsDebtor" class="admin-user-filter-input">
+                    <option value="" selected="@(filter.IsDebtor == null)">
+                        همه وضعیت‌ها
                     </option>
-
-                    <option value="true"
-                            selected="@(Model.Filter.IsDebtor == true)">
+                    <option value="true" selected="@(filter.IsDebtor == true)">
                         بدهکار
                     </option>
-
-                    <option value="false"
-                            selected="@(Model.Filter.IsDebtor == false)">
+                    <option value="false" selected="@(filter.IsDebtor == false)">
                         عادی
                     </option>
                 </select>
             </div>
 
-            <input type="hidden"
-                   name="PageSize"
-                   value="@Model.Filter.PageSize" />
+            <div class="admin-user-filter-group">
+                <label for="PageSize" class="admin-user-filter-label">
+                    تعداد در هر صفحه
+                </label>
+                <select id="PageSize" name="PageSize" class="admin-user-filter-input">
+                    <option value="10" selected="@(filter.PageSize == 10)">۱۰</option>
+                    <option value="20" selected="@(filter.PageSize == 20)">۲۰</option>
+                    <option value="50" selected="@(filter.PageSize == 50)">۵۰</option>
+                </select>
+            </div>
 
-            <input type="hidden"
-                   name="Page"
-                   value="1" />
+            <input type="hidden" name="Page" value="1" />
+            <input type="hidden" name="SortBy" value="@filter.SortBy" />
+            <input type="hidden" name="SortDescending" value="@filter.SortDescending" />
 
             <div class="admin-user-filter-actions">
-                <button type="submit"
-                        class="admin-user-filter-submit">
+                <button type="submit" class="admin-user-filter-submit">
                     جستجو
                 </button>
 
@@ -121,65 +111,116 @@
                 </a>
             </div>
         </form>
-    </div>
+    </section>
 
-    <!-- User List -->
-    @if (!Model.Users.Any())
+    @if (Model.Users.Count == 0)
     {
-        <div class="admin-user-empty-state">
-            <p>
-                کاربری با این مشخصات پیدا نشد.
-            </p>
-        </div>
+        <section class="admin-user-empty-state">
+            <div class="admin-user-empty-icon" aria-hidden="true">—</div>
+            <h2 class="admin-user-empty-title">کاربری پیدا نشد</h2>
+            <p>کاربری با معیارهای انتخاب‌شده پیدا نشد. فیلترها را تغییر بده یا پاک کن.</p>
+
+            <a asp-area="Admin"
+               asp-controller="User"
+               asp-action="Index"
+               class="admin-user-empty-reset">
+                نمایش همه کاربران
+            </a>
+        </section>
     }
     else
     {
-        <div class="admin-user-list-card">
-            <div class="admin-user-list-header">
-                <h2 class="admin-user-list-title">
-                    لیست کاربران
-                </h2>
+        <section class="admin-user-list-card">
+            <header class="admin-user-list-header">
+                <div>
+                    <h2 class="admin-user-list-title">فهرست کاربران</h2>
+                    <p class="admin-user-list-description">
+                        اطلاعات حساب، نقش و موجودی کیف‌پول کاربران
+                    </p>
+                </div>
 
                 <span class="admin-user-list-count">
                     @Model.TotalCount کاربر
                 </span>
-            </div>
+            </header>
 
-            <div class="table-responsive">
+            <div class="table-responsive admin-user-table-wrapper">
                 <table class="admin-user-table">
                     <thead>
                         <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.Users.First().Id)
+                            <th scope="col">شناسه</th>
+
+                            <th scope="col">
+                                <a asp-area="Admin"
+                                   asp-controller="User"
+                                   asp-action="Index"
+                                   asp-route-SearchTerm="@filter.SearchTerm"
+                                   asp-route-Role="@filter.Role"
+                                   asp-route-IsDebtor="@filter.IsDebtor"
+                                   asp-route-PageSize="@filter.PageSize"
+                                   asp-route-Page="1"
+                                   asp-route-SortBy="FullName"
+                                   asp-route-SortDescending="@(filter.SortBy == "FullName" && !filter.SortDescending)"
+                                   class="admin-user-sort-link">
+                                    نام و نام خانوادگی
+                                    @if (filter.SortBy == "FullName")
+                                    {
+                                        <span aria-hidden="true">
+                                            @(filter.SortDescending ? "▼" : "▲")
+                                        </span>
+                                    }
+                                </a>
                             </th>
 
-                            <th>
-                                @Html.DisplayNameFor(model => model.Users.First().FullName)
+                            <th scope="col">
+                                <a asp-area="Admin"
+                                   asp-controller="User"
+                                   asp-action="Index"
+                                   asp-route-SearchTerm="@filter.SearchTerm"
+                                   asp-route-Role="@filter.Role"
+                                   asp-route-IsDebtor="@filter.IsDebtor"
+                                   asp-route-PageSize="@filter.PageSize"
+                                   asp-route-Page="1"
+                                   asp-route-SortBy="Email"
+                                   asp-route-SortDescending="@(filter.SortBy == "Email" && !filter.SortDescending)"
+                                   class="admin-user-sort-link">
+                                    ایمیل
+                                    @if (filter.SortBy == "Email")
+                                    {
+                                        <span aria-hidden="true">
+                                            @(filter.SortDescending ? "▼" : "▲")
+                                        </span>
+                                    }
+                                </a>
                             </th>
 
-                            <th>
-                                @Html.DisplayNameFor(model => model.Users.First().Email)
+                            <th scope="col">شماره همراه</th>
+                            <th scope="col">نقش</th>
+
+                            <th scope="col">
+                                <a asp-area="Admin"
+                                   asp-controller="User"
+                                   asp-action="Index"
+                                   asp-route-SearchTerm="@filter.SearchTerm"
+                                   asp-route-Role="@filter.Role"
+                                   asp-route-IsDebtor="@filter.IsDebtor"
+                                   asp-route-PageSize="@filter.PageSize"
+                                   asp-route-Page="1"
+                                   asp-route-SortBy="WalletBalance"
+                                   asp-route-SortDescending="@(filter.SortBy == "WalletBalance" && !filter.SortDescending)"
+                                   class="admin-user-sort-link">
+                                    موجودی کیف‌پول
+                                    @if (filter.SortBy == "WalletBalance")
+                                    {
+                                        <span aria-hidden="true">
+                                            @(filter.SortDescending ? "▼" : "▲")
+                                        </span>
+                                    }
+                                </a>
                             </th>
 
-                            <th>
-                                @Html.DisplayNameFor(model => model.Users.First().PhoneNumber)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.Users.First().Role)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.Users.First().WalletBalance)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.Users.First().IsDebtor)
-                            </th>
-
-                            <th class="admin-user-table-actions">
-                                عملیات
-                            </th>
+                            <th scope="col">وضعیت مالی</th>
+                            <th scope="col" class="admin-user-table-actions">عملیات</th>
                         </tr>
                     </thead>
 
@@ -187,9 +228,7 @@
                         @foreach (var user in Model.Users)
                         {
                             <tr>
-                                <td>
-                                    @user.Id
-                                </td>
+                                <td class="admin-user-id">@user.Id</td>
 
                                 <td class="admin-user-full-name">
                                     @user.FullName
@@ -200,15 +239,20 @@
                                 </td>
 
                                 <td class="admin-user-phone">
-                                    @user.PhoneNumber
+                                    @(string.IsNullOrWhiteSpace(user.PhoneNumber)
+                                        ? "—"
+                                        : user.PhoneNumber)
                                 </td>
 
                                 <td>
-                                    @user.RoleDisplayName
+                                    <span class="admin-user-role">
+                                        @user.RoleDisplayName
+                                    </span>
                                 </td>
 
-                                <td class="admin-user-wallet-balance">
-                                    @user.WalletBalance.ToString("N0")
+                                <td class="admin-user-wallet-balance @(user.WalletBalance < 0 ? "is-negative" : "")">
+                                    <span dir="ltr">@user.WalletBalance.ToString("N0")</span>
+                                    <span class="admin-user-currency">تومان</span>
                                 </td>
 
                                 <td>
@@ -240,68 +284,77 @@
                     </tbody>
                 </table>
             </div>
-        </div>
 
-        <!-- Pagination -->
+            <footer class="admin-user-list-footer">
+                <span>صفحه @filter.Page از @Model.TotalPages</span>
+                <span>@Model.Users.Count مورد در این صفحه</span>
+            </footer>
+        </section>
+
         @if (Model.TotalPages > 1)
         {
-            <nav class="admin-user-pagination"
-                 aria-label="صفحه‌بندی کاربران">
+            <nav class="admin-user-pagination" aria-label="صفحه‌بندی کاربران">
+                @if (filter.Page > 1)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="User"
+                       asp-action="Index"
+                       asp-route-SearchTerm="@filter.SearchTerm"
+                       asp-route-Role="@filter.Role"
+                       asp-route-IsDebtor="@filter.IsDebtor"
+                       asp-route-PageSize="@filter.PageSize"
+                       asp-route-SortBy="@filter.SortBy"
+                       asp-route-SortDescending="@filter.SortDescending"
+                       asp-route-Page="@(filter.Page - 1)"
+                       class="admin-user-pagination-link">
+                        قبلی
+                    </a>
+                }
+                else
+                {
+                    <span class="admin-user-pagination-link is-disabled">قبلی</span>
+                }
 
-                <ul class="admin-user-pagination-list">
-                    @if (Model.Filter.Page > 1)
+                <div class="admin-user-pagination-pages">
+                    @for (var pageNumber = 1; pageNumber <= Model.TotalPages; pageNumber++)
                     {
-                        <li class="admin-user-pagination-item">
-                            <a asp-area="Admin"
-                               asp-controller="User"
-                               asp-action="Index"
-                               asp-route-SearchTerm="@Model.Filter.SearchTerm"
-                               asp-route-Role="@Model.Filter.Role"
-                               asp-route-IsDebtor="@Model.Filter.IsDebtor"
-                               asp-route-Page="@(Model.Filter.Page - 1)"
-                               asp-route-PageSize="@Model.Filter.PageSize"
-                               class="admin-user-pagination-link">
-                                قبلی
-                            </a>
-                        </li>
+                        <a asp-area="Admin"
+                           asp-controller="User"
+                           asp-action="Index"
+                           asp-route-SearchTerm="@filter.SearchTerm"
+                           asp-route-Role="@filter.Role"
+                           asp-route-IsDebtor="@filter.IsDebtor"
+                           asp-route-PageSize="@filter.PageSize"
+                           asp-route-SortBy="@filter.SortBy"
+                           asp-route-SortDescending="@filter.SortDescending"
+                           asp-route-Page="@pageNumber"
+                           aria-current="@(pageNumber == filter.Page ? "page" : null)"
+                           class="admin-user-pagination-link @(pageNumber == filter.Page ? "active" : "")">
+                            @pageNumber
+                        </a>
                     }
+                </div>
 
-                    @for (var pageNumber = 1;
-                          pageNumber <= Model.TotalPages;
-                          pageNumber++)
-                    {
-                        <li class="admin-user-pagination-item">
-                            <a asp-area="Admin"
-                               asp-controller="User"
-                               asp-action="Index"
-                               asp-route-SearchTerm="@Model.Filter.SearchTerm"
-                               asp-route-Role="@Model.Filter.Role"
-                               asp-route-IsDebtor="@Model.Filter.IsDebtor"
-                               asp-route-Page="@pageNumber"
-                               asp-route-PageSize="@Model.Filter.PageSize"
-                               class="admin-user-pagination-link @(pageNumber == Model.Filter.Page ? "active" : "")">
-                                @pageNumber
-                            </a>
-                        </li>
-                    }
-
-                    @if (Model.Filter.Page < Model.TotalPages)
-                    {
-                        <li class="admin-user-pagination-item">
-                            <a asp-area="Admin"
-                               asp-controller="User"
-                               asp-action="Index"
-                               asp-route-SearchTerm="@Model.Filter.SearchTerm"
-                               asp-route-Role="@Model.Filter.Role"
-                               asp-route-IsDebtor="@Model.Filter.IsDebtor"
-                               asp-route-Page="@(Model.Filter.Page + 1)"
-                               asp-route-PageSize="@Model.Filter.PageSize"
-                               class="admin-user-pagination-link">
-                                بعدی
-                            </a>
-                        </li>
-                    }
-                </ul>
+                @if (filter.Page < Model.TotalPages)
+                {
+                    <a asp-area="Admin"
+                       asp-controller="User"
+                       asp-action="Index"
+                       asp-route-SearchTerm="@filter.SearchTerm"
+                       asp-route-Role="@filter.Role"
+                       asp-route-IsDebtor="@filter.IsDebtor"
+                       asp-route-PageSize="@filter.PageSize"
+                       asp-route-SortBy="@filter.SortBy"
+                       asp-route-SortDescending="@filter.SortDescending"
+                       asp-route-Page="@(filter.Page + 1)"
+                       class="admin-user-pagination-link">
+                        بعدی
+                    </a>
+                }
+                else
+                {
+                    <span class="admin-user-pagination-link is-disabled">بعدی</span>
+                }
             </nav>
         }
     }

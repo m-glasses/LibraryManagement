@@ -1,8 +1,8 @@
-﻿namespace LibraryManagement.DTO
+﻿namespace LibraryManagement.DTO.Book
 {
-    public class UserListResult
+    public class BookListResult
     {
-        public List<UserListDto> Users { get; set; } = new();
+        public List<BookListDto> Books { get; set; } = new();
 
         public int CurrentPage { get; set; }
 

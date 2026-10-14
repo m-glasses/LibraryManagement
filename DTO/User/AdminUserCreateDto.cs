@@ -1,6 +1,6 @@
 ﻿using LibraryManagement.Models;
 
-namespace LibraryManagement.DTO
+namespace LibraryManagement.DTO.User
 {
     public class AdminUserCreateDto
     {

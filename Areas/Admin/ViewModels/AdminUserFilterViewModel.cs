@@ -18,5 +18,11 @@ namespace LibraryManagement.Areas.Admin.ViewModels
 
         [Display(Name = "تعداد در هر صفحه")]
         public int PageSize { get; set; } = 20;
+
+        [Display(Name = "مرتب‌سازی بر اساس")]
+        public string? SortBy { get; set; }
+
+        [Display(Name = "مرتب‌سازی نزولی")]
+        public bool SortDescending { get; set; } = false;
     }
 }

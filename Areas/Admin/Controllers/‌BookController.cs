@@ -1,7 +1,9 @@
 ﻿using LibraryManagement.Areas.Admin.ViewModels;
 using LibraryManagement.DTO;
+using LibraryManagement.DTO.Book;
 using LibraryManagement.Helper;
 using LibraryManagement.Models;
+using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
+    [Area(Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public class BookController : Controller
     {
         private readonly IBookService _bookService;
@@ -17,7 +21,99 @@ namespace LibraryManagement.Areas.Admin.Controllers
             _bookService = bookService;
         }
 
-        public IActionResult Index()
+
+        public IActionResult Index(AdminBookFilterViewModel inputViewModel)
+        {
+            ArgumentNullException.ThrowIfNull(inputViewModel);
+
+            // Validate pagination values
+            if (inputViewModel.Page < 1)
+            {
+                inputViewModel.Page = 1;
+                ModelState.Remove(nameof(inputViewModel.Page));
+            }
+
+            if (inputViewModel.PageSize is not (10 or 20 or 50))
+            {
+                inputViewModel.PageSize = 20;
+                ModelState.Remove(nameof(inputViewModel.PageSize));
+            }
+
+            // Allow only supported sorting fields
+            string[] allowedSortFields =
+            [
+                "Title",
+                "Author",
+                "PublicationYear",
+                "TotalCopies",
+                "AvailableCopies"
+            ];
+
+            if (!string.IsNullOrWhiteSpace(inputViewModel.SortBy) &&
+                !allowedSortFields.Contains(
+                    inputViewModel.SortBy,
+                    StringComparer.OrdinalIgnoreCase))
+            {
+                inputViewModel.SortBy = null;
+                ModelState.Remove(nameof(inputViewModel.SortBy));
+            }
+
+            var queryDto = new BookListQueryDto
+            {
+                SearchTerm = inputViewModel.SearchTerm?.Trim(),
+                HasAvailableCopies = inputViewModel.HasAvailableCopies,
+                HasActiveReservations = inputViewModel.HasActiveReservations,
+                SortBy = inputViewModel.SortBy,
+                SortDescending = inputViewModel.SortDescending,
+                Page = inputViewModel.Page,
+                PageSize = inputViewModel.PageSize
+            };
+
+            try
+            {
+                var result = _bookService.GetAllBooks(queryDto);
+
+                var viewModel = new AdminBookIndexViewModel
+                {
+                    Books = result.Books.Select(book => new BookListViewModel
+                    {
+                        Id = book.Id,
+                        Title = book.Title,
+                        Author = book.Author,
+                        Publisher = book.Publisher,
+                        PublicationYear = book.PublicationYear,
+                        TotalCopies = book.TotalCopies,
+                        AvailableCopies = book.AvailableCopies,
+                        ActiveReservations = book.ActiveReservations
+                    }).ToList(),
+
+                    Filter = inputViewModel,
+                    TotalCount = result.TotalCount,
+                    TotalPages = result.TotalPages
+                };
+
+                return View(viewModel);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] =
+                    ErrorMessageHelper.Translate(ex.Message);
+
+                var viewModel = new AdminBookIndexViewModel
+                {
+                    Books = new List<BookListViewModel>(),
+                    Filter = inputViewModel,
+                    TotalCount = 0,
+                    TotalPages = 0
+                };
+
+                return View(viewModel);
+            }
+        }
+
+
+
+        public IActionResult Details(int bookId)
         {
             return View();
         }
@@ -26,267 +122,3 @@ namespace LibraryManagement.Areas.Admin.Controllers
    
 }
 
-
-
-//    public class UserController : Controller
-//    {
-//        private readonly IUserService _userService;
-//        private readonly UserManager<User> _userManager;
-//        public UserController(IUserService userService, UserManager<User> usermanager)
-//        {
-//            _userService = userService;
-//            _userManager = usermanager;
-//        }
-
-
-//        public IActionResult Index(AdminUserFilterViewModel inputViewModel)
-//        {
-//            var queryDto = new UserListQueryDto
-//            {
-//                SearchTerm = inputViewModel.SearchTerm,
-//                Role = inputViewModel.Role,
-//                IsDebtor = inputViewModel.IsDebtor,
-//                Page = inputViewModel.Page,
-//                PageSize = inputViewModel.PageSize
-//            };
-
-//            var result = _userService.GetAllUsers(queryDto);
-
-//            var viewModel = new AdminUserIndexViewModel
-//            {
-//                Users = result.Users
-//                    .Select(user => new UserListViewModel
-//                    {
-//                        Id = user.Id,
-//                        FullName = $"{user.Name} {user.Family}",
-//                        Email = user.Email,
-//                        PhoneNumber = user.PhoneNumber,
-//                        Role = user.Role,
-//                        IsDebtor = user.WalletBalance < 0,
-//                        WalletBalance = user.WalletBalance
-//                    })
-//                    .ToList(),
-
-//                SearchTerm = inputViewModel.SearchTerm,
-//                Role = inputViewModel.Role,
-//                IsDebtor = inputViewModel.IsDebtor,
-
-//                CurrentPage = result.CurrentPage,
-//                PageSize = result.PageSize,
-//                TotalCount = result.TotalCount,
-//                TotalPages = result.TotalPages
-//            };
-
-//            return View(viewModel);
-//        }
-
-
-//        public IActionResult Details(int id)
-//        {
-//            var dto = _userService.GetUserDetails(id);
-
-//            if (dto is null)
-//            {
-//                return NotFound();
-//            }
-
-//            int currentUserId = int.Parse(_userManager.GetUserId(User));
-
-//            var viewModel = new AdminUserDetailsViewModel
-//            {
-//                Id = dto.Id,
-//                FullName = $"{dto.Name} {dto.Family}",
-//                FatherName = dto.FatherName,
-//                UserName = dto.UserName,
-//                Email = dto.Email,
-//                DateOfBirth = dto.DateOfBirth,
-//                Gender = dto.Gender,
-//                Education = dto.Education,
-//                PhoneNumber = dto.PhoneNumber,
-//                Role = dto.Role,
-//                Address = dto.Address,
-//                WalletBalance = dto.WalletBalance,
-//                IsDebtor = dto.WalletBalance < 0,
-//                IsActive = dto.IsActive,
-
-//                CanEdit = dto.Role != Roles.Admin ||
-//                          dto.Id == currentUserId
-//            };
-
-//            return View(viewModel);
-//        }
-
-//        #region Activator
-
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Deactivate(int id)
-//        {
-//            try
-//            {
-//                await _userService.Deactivate(id);
-
-//                TempData["SuccessMessage"] = "کاربر با موفقیت غیرفعال شد";
-//            }
-//            catch (InvalidOperationException ex)
-//            {
-//                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
-//            }
-
-//            return RedirectToAction(nameof(Details), new { id });
-//        }
-
-
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public IActionResult Activate(int id)
-//        {
-//            try
-//            {
-//                _userService.Activate(id);
-
-//                TempData["SuccessMessage"] = "کاربر با موفقیت فعال شد";
-
-//                return RedirectToAction(nameof(Details), new { id });
-//            }
-//            catch (InvalidOperationException ex)
-//            {
-//                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
-
-//                return RedirectToAction(nameof(Details), new { id });
-//            }
-//        }
-
-//        #endregion 
-
-//        #region Edit
-//        public IActionResult Edit(int id)
-//        {
-//            var user = _userService.GetUserDetails(id);
-
-//            if (user is null)
-//            {
-//                return NotFound();
-//            }
-
-//            var viewModel = new AdminUserEditViewModel
-//            {
-//                Id = user.Id,
-//                Name = user.Name,
-//                Family = user.Family,
-//                FatherName = user.FatherName,
-//                DateOfBirth = user.DateOfBirth,
-//                Education = user.Education,
-//                Gender = user.Gender,
-//                Address = user.Address,
-//                UserName = user.UserName,
-//                Email = user.Email,
-//                PhoneNumber = user.PhoneNumber,
-//                Role = user.Role,
-//            };
-
-//            return View(viewModel);
-//        }
-
-
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> Edit(AdminUserEditViewModel model)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return View(model);
-//            }
-
-//            try
-//            {
-//                var dto = new AdminUserUpdateDto
-//                {
-//                    Id = model.Id,
-//                    Name = model.Name,
-//                    Family = model.Family,
-//                    FatherName = model.FatherName,
-//                    DateOfBirth = model.DateOfBirth,
-//                    Education = model.Education,
-//                    Gender = model.Gender,
-//                    Address = model.Address,
-//                    UserName = model.UserName,
-//                    Email = model.Email,
-//                    PhoneNumber = model.PhoneNumber,
-//                    Role = model.Role
-//                };
-
-//                var currentUserId =
-//                    int.Parse(_userManager.GetUserId(User));
-
-//                await _userService.UpdateUserAsync(
-//                    dto,
-//                    currentUserId);
-
-//                return RedirectToAction(
-//                    nameof(Details),
-//                    new { id = model.Id });
-//            }
-//            catch (InvalidOperationException ex)
-//            {
-//                ModelState.AddModelError(
-//                    string.Empty,
-//                    ErrorMessageHelper.Translate(ex.Message));
-
-//                return View(model);
-//            }
-//        }
-
-//        #endregion
-
-
-//        #region Create
-//        public async Task<IActionResult> CreateUser()
-//        {
-//            return View();
-//        }
-
-//        [HttpPost]
-//        [ValidateAntiForgeryToken]
-//        public async Task<IActionResult> CreateUser(AdminUserCreateViewModel model)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return View(model);
-//            }
-
-//            try
-//            {
-//                var dto = new AdminUserCreateDto
-//                {
-//                    Name = model.Name,
-//                    Family = model.Family,
-//                    DateOfBirth = model.DateOfBirth,
-//                    FatherName = model.FatherName,
-//                    Education = model.Education,
-//                    Gender = model.Gender,
-//                    Address = model.Address,
-//                    UserName = model.UserName,
-//                    Password = model.Password,
-//                    Email = model.Email,
-//                    PhoneNumber = model.PhoneNumber,
-//                    Role = model.Role
-//                };
-
-//                var userId = await _userService.CreateUserAsync(dto);
-
-//                return RedirectToAction(nameof(Details), new { id = userId });
-//            }
-//            catch (InvalidOperationException ex)
-//            {
-//                ModelState.AddModelError(
-//                    string.Empty,
-//                    ErrorMessageHelper.Translate(ex.Message));
-
-//                return View(model);
-//            }
-//        }
-
-//        #endregion
-//    }
-//}

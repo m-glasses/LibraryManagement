@@ -1,5 +1,5 @@
 ﻿using LibraryManagement.Data;
-using LibraryManagement.DTO;
+using LibraryManagement.DTO.User;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
@@ -149,9 +149,27 @@ namespace LibraryManagement.Services
 
 
 
+
         public UserListResult GetAllUsers(UserListQueryDto input)
         {
+            ArgumentNullException.ThrowIfNull(input);
+
+            if (input.Page < 1)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.Page),
+                    "Page must be greater than zero.");
+            }
+
+            if (input.PageSize < 1 || input.PageSize > 50)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.PageSize),
+                    "PageSize must be between 1 and 50.");
+            }
+
             var usersQuery = _context.Users
+                .AsNoTracking()
                 .Join(
                     _context.UserRoles,
                     user => user.Id,
@@ -171,42 +189,85 @@ namespace LibraryManagement.Services
                         Role = role.Name
                     });
 
+            // 1. Search
             if (!string.IsNullOrWhiteSpace(input.SearchTerm))
             {
+                var searchTerm = input.SearchTerm.Trim();
+
                 usersQuery = usersQuery.Where(user =>
-                    user.User.Name.Contains(input.SearchTerm)
-                    || user.User.Family.Contains(input.SearchTerm)
-                    || (user.User.Name + " " + user.User.Family).Contains(input.SearchTerm)
-                    || user.User.Email.Contains(input.SearchTerm)
-                    || user.User.PhoneNumber.Contains(input.SearchTerm));
+                    user.User.Name.Contains(searchTerm) ||
+                    user.User.Family.Contains(searchTerm) ||
+                    (user.User.Name + " " + user.User.Family)
+                        .Contains(searchTerm) ||
+                    (user.User.Email != null &&
+                        user.User.Email.Contains(searchTerm)) ||
+                    (user.User.PhoneNumber != null &&
+                        user.User.PhoneNumber.Contains(searchTerm)));
             }
 
+            // 2. Filter by role
             if (!string.IsNullOrWhiteSpace(input.Role))
             {
                 usersQuery = usersQuery.Where(user =>
                     user.Role == input.Role);
             }
 
-            if (input.IsDebtor is not null)
+            // 3. Filter by debtor status
+            if (input.IsDebtor.HasValue)
             {
-                if (input.IsDebtor.Value)
-                {
-                    usersQuery = usersQuery.Where(user =>
-                        user.User.Wallet.Balance < 0);
-                }
-                else
-                {
-                    usersQuery = usersQuery.Where(user =>
+                usersQuery = input.IsDebtor.Value
+                    ? usersQuery.Where(user =>
+                        user.User.Wallet.Balance < 0)
+                    : usersQuery.Where(user =>
                         user.User.Wallet.Balance >= 0);
-                }
             }
 
+            // 4. Count filtered results before pagination
             var totalCount = usersQuery.Count();
 
-            var skip = (input.Page - 1) * input.PageSize;
+            var totalPages = (int)Math.Ceiling(
+                totalCount / (double)input.PageSize);
 
+            var skip = (int)Math.Min(
+                ((long)input.Page - 1) * input.PageSize,
+                int.MaxValue);
+
+            // 5. Sorting
+            usersQuery = input.SortBy switch
+            {
+                "Name" => input.SortDescending
+                    ? usersQuery.OrderByDescending(user => user.User.Name)
+                        .ThenBy(user => user.User.Id)
+                    : usersQuery.OrderBy(user => user.User.Name)
+                        .ThenBy(user => user.User.Id),
+
+                "Family" => input.SortDescending
+                    ? usersQuery.OrderByDescending(user => user.User.Family)
+                        .ThenBy(user => user.User.Id)
+                    : usersQuery.OrderBy(user => user.User.Family)
+                        .ThenBy(user => user.User.Id),
+
+                "Email" => input.SortDescending
+                    ? usersQuery.OrderByDescending(user => user.User.Email)
+                        .ThenBy(user => user.User.Id)
+                    : usersQuery.OrderBy(user => user.User.Email)
+                        .ThenBy(user => user.User.Id),
+
+                "WalletBalance" => input.SortDescending
+                    ? usersQuery.OrderByDescending(user =>
+                            user.User.Wallet.Balance)
+                        .ThenBy(user => user.User.Id)
+                    : usersQuery.OrderBy(user =>
+                            user.User.Wallet.Balance)
+                        .ThenBy(user => user.User.Id),
+
+                _ => input.SortDescending
+                    ? usersQuery.OrderByDescending(user => user.User.Id)
+                    : usersQuery.OrderBy(user => user.User.Id)
+            };
+
+            // 6. Pagination and projection
             var users = usersQuery
-                .OrderBy(user => user.User.Id)
                 .Skip(skip)
                 .Take(input.PageSize)
                 .Select(user => new UserListDto
@@ -214,9 +275,9 @@ namespace LibraryManagement.Services
                     Id = user.User.Id,
                     Name = user.User.Name,
                     Family = user.User.Family,
-                    Email = user.User.Email,
-                    PhoneNumber = user.User.PhoneNumber,
-                    Role = user.Role,
+                    Email = user.User.Email!,
+                    PhoneNumber = user.User.PhoneNumber!,
+                    Role = user.Role!,
                     WalletBalance = user.User.Wallet.Balance
                 })
                 .ToList();
@@ -226,9 +287,10 @@ namespace LibraryManagement.Services
                 Users = users,
                 CurrentPage = input.Page,
                 PageSize = input.PageSize,
-                TotalCount = totalCount
+                TotalCount = totalCount,
             };
         }
+
 
         public UserDetailsDto? GetUserDetails(int id)
         {

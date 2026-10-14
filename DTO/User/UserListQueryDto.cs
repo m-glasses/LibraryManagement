@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.DTO
+﻿namespace LibraryManagement.DTO.User
 {
     public class UserListQueryDto
     {
@@ -7,5 +7,7 @@
         public bool? IsDebtor { get; set; }
         public int Page { get; set; }
         public int PageSize { get; set; }
+        public string? SortBy {  get; set; }
+        public bool SortDescending { get; set; } = false;
     }
 }

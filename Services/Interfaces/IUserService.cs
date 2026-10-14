@@ -1,4 +1,4 @@
-﻿using LibraryManagement.DTO;
+﻿using LibraryManagement.DTO.User;
 using LibraryManagement.Models;
 
 namespace LibraryManagement.Services.Interfaces

@@ -1,0 +1,427 @@
+﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminBookIndexViewModel
+
+@{
+    ViewData["Title"] = "مدیریت کتاب‌ها";
+
+    var filter = Model.Filter;
+    var currentPage = Math.Max(1, filter.Page);
+    var totalPages = Model.TotalPages;
+    var startPage = Math.Max(1, currentPage - 2);
+    var endPage = Math.Min(totalPages, currentPage + 2);
+}
+
+<div class="admin-book-page">
+
+    <div class="admin-book-page-header">
+        <div>
+            <h1 class="admin-book-page-title">مدیریت کتاب‌ها</h1>
+            <p class="admin-book-page-subtitle">
+                مشاهده، جست‌وجو و مدیریت کتاب‌های ثبت‌شده در کتابخانه
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Create"
+           class="admin-book-btn admin-book-btn-primary">
+            <span class="admin-book-btn-icon">+</span>
+            افزودن کتاب جدید
+        </a>
+    </div>
+
+    <section class="admin-book-card admin-book-filter-card">
+        <div class="admin-book-card-header">
+            <div>
+                <h2 class="admin-book-card-title">جست‌وجو و فیلتر</h2>
+                <p class="admin-book-card-description">
+                    کتاب موردنظر خود را پیدا کنید.
+                </p>
+            </div>
+        </div>
+
+        <div class="admin-book-card-body">
+            <form asp-area="Admin"
+                  asp-controller="Book"
+                  asp-action="Index"
+                  method="get"
+                  class="admin-book-filter-form">
+
+                <input type="hidden" name="Page" value="1" />
+
+                <div class="admin-book-filter-field admin-book-search-field">
+                    <label for="SearchTerm">عنوان، نویسنده یا ناشر</label>
+                    <input id="SearchTerm"
+                           name="SearchTerm"
+                           type="search"
+                           value="@filter.SearchTerm"
+                           class="admin-book-input"
+                           placeholder="عبارت موردنظر را وارد کنید..." />
+                </div>
+
+                <div class="admin-book-filter-field">
+                    <label for="SortBy">مرتب‌سازی بر اساس</label>
+                    <select id="SortBy"
+                            name="SortBy"
+                            class="admin-book-input">
+                        <option value="Title"
+                                selected="@(filter.SortBy == "Title")">
+                            عنوان
+                        </option>
+                        <option value="Author"
+                                selected="@(filter.SortBy == "Author")">
+                            نویسنده
+                        </option>
+                        <option value="PublicationYear"
+                                selected="@(filter.SortBy == "PublicationYear")">
+                            سال انتشار
+                        </option>
+                        <option value="TotalCopies"
+                                selected="@(filter.SortBy == "TotalCopies")">
+                            تعداد نسخه‌ها
+                        </option>
+                        <option value="AvailableCopies"
+                                selected="@(filter.SortBy == "AvailableCopies")">
+                            نسخه‌های موجود
+                        </option>
+                    </select>
+                </div>
+
+                <div class="admin-book-filter-field">
+                    <label for="PageSize">تعداد در هر صفحه</label>
+                    <select id="PageSize"
+                            name="PageSize"
+                            class="admin-book-input">
+                        <option value="10"
+                                selected="@(filter.PageSize == 10)">
+                            ۱۰ مورد
+                        </option>
+                        <option value="20"
+                                selected="@(filter.PageSize == 20)">
+                            ۲۰ مورد
+                        </option>
+                        <option value="50"
+                                selected="@(filter.PageSize == 50)">
+                            ۵۰ مورد
+                        </option>
+                    </select>
+                </div>
+
+                <div class="admin-book-filter-options">
+                    <label class="admin-book-checkbox-label">
+                        <input type="checkbox"
+                               name="HasAvailableCopies"
+                               value="true"
+                               checked="@filter.HasAvailableCopies" />
+                        <span>فقط کتاب‌های دارای نسخهٔ موجود</span>
+                    </label>
+
+                    <label class="admin-book-checkbox-label">
+                        <input type="checkbox"
+                               name="HasActiveReservations"
+                               value="true"
+                               checked="@filter.HasActiveReservations" />
+                        <span>فقط کتاب‌های دارای رزرو فعال</span>
+                    </label>
+
+                    <label class="admin-book-checkbox-label">
+                        <input type="checkbox"
+                               name="SortDescending"
+                               value="true"
+                               checked="@filter.SortDescending" />
+                        <span>مرتب‌سازی نزولی</span>
+                    </label>
+                </div>
+
+                <div class="admin-book-filter-actions">
+                    <button type="submit"
+                            class="admin-book-btn admin-book-btn-primary">
+                        اعمال فیلتر
+                    </button>
+
+                    <a asp-area="Admin"
+                       asp-controller="Book"
+                       asp-action="Index"
+                       class="admin-book-btn admin-book-btn-secondary">
+                        پاک کردن فیلترها
+                    </a>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <section class="admin-book-card admin-book-list-card">
+        <div class="admin-book-card-header admin-book-list-header">
+            <div>
+                <h2 class="admin-book-card-title">فهرست کتاب‌ها</h2>
+                <p class="admin-book-card-description">
+                    اطلاعات کتاب‌ها و وضعیت نسخه‌های آن‌ها
+                </p>
+            </div>
+
+            <span class="admin-book-count">
+                تعداد کل: @Model.TotalCount
+            </span>
+        </div>
+
+        @if (Model.Books == null || !Model.Books.Any())
+        {
+            <div class="admin-book-empty-state">
+                <div class="admin-book-empty-icon">📚</div>
+                <h3>کتابی پیدا نشد</h3>
+                <p>
+                    نتیجه‌ای برای فیلترهای انتخاب‌شده وجود ندارد.
+                    عبارت جست‌وجو یا فیلترها را تغییر دهید.
+                </p>
+
+                <a asp-area="Admin"
+                   asp-controller="Book"
+                   asp-action="Index"
+                   class="admin-book-btn admin-book-btn-secondary">
+                    نمایش همهٔ کتاب‌ها
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="admin-book-table-wrapper">
+                <table class="admin-book-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">شناسه</th>
+                            <th scope="col">عنوان کتاب</th>
+                            <th scope="col">نویسنده</th>
+                            <th scope="col">ناشر</th>
+                            <th scope="col">سال انتشار</th>
+                            <th scope="col">کل نسخه‌ها</th>
+                            <th scope="col">نسخه‌های موجود</th>
+                            <th scope="col">رزروهای فعال</th>
+                            <th scope="col">عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var book in Model.Books)
+                        {
+                            <tr>
+                                <td class="admin-book-id-cell">
+                                    @book.Id
+                                </td>
+
+                                <td class="admin-book-title-cell">
+                                    <span title="@book.Title">
+                                        @book.Title
+                                    </span>
+                                </td>
+
+                                <td>@book.Author</td>
+
+                                <td>
+                                    @(string.IsNullOrWhiteSpace(book.Publisher)
+                                        ? "—"
+                                        : book.Publisher)
+                                </td>
+
+                                <td>
+                                    @(book.PublicationYear.ToString() ?? "—")
+                                </td>
+
+                                <td>
+                                    <span class="admin-book-number-badge">
+                                        @book.TotalCopies
+                                    </span>
+                                </td>
+
+                                <td>
+                                    @if (book.AvailableCopies > 0)
+                                    {
+                                        <span class="admin-book-number-badge admin-book-badge-success">
+                                            @book.AvailableCopies
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="admin-book-number-badge admin-book-badge-danger">
+                                            ۰
+                                        </span>
+                                    }
+                                </td>
+
+                                <td>
+                                    <span class="admin-book-number-badge">
+                                        @book.ActiveReservations
+                                    </span>
+                                </td>
+
+                                <td>
+                                    <div class="admin-book-row-actions">
+                                        <a asp-area="Admin"
+                                           asp-controller="Book"
+                                           asp-action="Edit"
+                                           asp-route-id="@book.Id"
+                                           class="admin-book-edit-btn">
+                                            ویرایش
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <div class="admin-book-pagination">
+                    <div class="admin-book-pagination-info">
+                        صفحهٔ @currentPage از @totalPages
+                    </div>
+
+                    <nav aria-label="صفحه‌بندی کتاب‌ها">
+                        <ul class="admin-book-pagination-list">
+
+                            <li>
+                                @if (currentPage > 1)
+                                {
+                                    <a asp-area="Admin"
+                                       asp-controller="Book"
+                                       asp-action="Index"
+                                       asp-route-SearchTerm="@filter.SearchTerm"
+                                       asp-route-HasAvailableCopies="@filter.HasAvailableCopies"
+                                       asp-route-HasActiveReservations="@filter.HasActiveReservations"
+                                       asp-route-SortBy="@filter.SortBy"
+                                       asp-route-SortDescending="@filter.SortDescending"
+                                       asp-route-PageSize="@filter.PageSize"
+                                       asp-route-Page="@(currentPage - 1)"
+                                       class="admin-book-page-link">
+                                        قبلی
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="admin-book-page-link disabled">
+                                        قبلی
+                                    </span>
+                                }
+                            </li>
+
+                            @if (startPage > 1)
+                            {
+                                <li>
+                                    <a asp-area="Admin"
+                                       asp-controller="Book"
+                                       asp-action="Index"
+                                       asp-route-SearchTerm="@filter.SearchTerm"
+                                       asp-route-HasAvailableCopies="@filter.HasAvailableCopies"
+                                       asp-route-HasActiveReservations="@filter.HasActiveReservations"
+                                       asp-route-SortBy="@filter.SortBy"
+                                       asp-route-SortDescending="@filter.SortDescending"
+                                       asp-route-PageSize="@filter.PageSize"
+                                       asp-route-Page="1"
+                                       class="admin-book-page-link">
+                                        ۱
+                                    </a>
+                                </li>
+
+                                @if (startPage > 2)
+                                {
+                                    <li>
+                                        <span class="admin-book-pagination-ellipsis">…</span>
+                                    </li>
+                                }
+                            }
+
+                            @for (var page = startPage; page <= endPage; page++)
+                            {
+                                var pageNumber = page;
+
+                                <li>
+                                    @if (pageNumber == currentPage)
+                                    {
+                                        <span class="admin-book-page-link active"
+                                              aria-current="page">
+                                            @pageNumber
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <a asp-area="Admin"
+                                           asp-controller="Book"
+                                           asp-action="Index"
+                                           asp-route-SearchTerm="@filter.SearchTerm"
+                                           asp-route-HasAvailableCopies="@filter.HasAvailableCopies"
+                                           asp-route-HasActiveReservations="@filter.HasActiveReservations"
+                                           asp-route-SortBy="@filter.SortBy"
+                                           asp-route-SortDescending="@filter.SortDescending"
+                                           asp-route-PageSize="@filter.PageSize"
+                                           asp-route-Page="@pageNumber"
+                                           class="admin-book-page-link">
+                                            @pageNumber
+                                        </a>
+                                    }
+                                </li>
+                            }
+
+                            @if (endPage < totalPages)
+                            {
+                                @if (endPage < totalPages - 1)
+                                {
+                                    <li>
+                                        <span class="admin-book-pagination-ellipsis">…</span>
+                                    </li>
+                                }
+
+                                <li>
+                                    <a asp-area="Admin"
+                                       asp-controller="Book"
+                                       asp-action="Index"
+                                       asp-route-SearchTerm="@filter.SearchTerm"
+                                       asp-route-HasAvailableCopies="@filter.HasAvailableCopies"
+                                       asp-route-HasActiveReservations="@filter.HasActiveReservations"
+                                       asp-route-SortBy="@filter.SortBy"
+                                       asp-route-SortDescending="@filter.SortDescending"
+                                       asp-route-PageSize="@filter.PageSize"
+                                       asp-route-Page="@totalPages"
+                                       class="admin-book-page-link">
+                                        @totalPages
+                                    </a>
+                                </li>
+                            }
+
+                            <li>
+                                @if (currentPage < totalPages)
+                                {
+                                    <a asp-area="Admin"
+                                       asp-controller="Book"
+                                       asp-action="Index"
+                                       asp-route-SearchTerm="@filter.SearchTerm"
+                                       asp-route-HasAvailableCopies="@filter.HasAvailableCopies"
+                                       asp-route-HasActiveReservations="@filter.HasActiveReservations"
+                                       asp-route-SortBy="@filter.SortBy"
+                                       asp-route-SortDescending="@filter.SortDescending"
+                                       asp-route-PageSize="@filter.PageSize"
+                                       asp-route-Page="@(currentPage + 1)"
+                                       class="admin-book-page-link">
+                                        بعدی
+                                    </a>
+                                }
+                                else
+                                {
+                                    <span class="admin-book-page-link disabled">
+                                        بعدی
+                                    </span>
+                                }
+                            </li>
+
+                        </ul>
+                    </nav>
+                </div>
+            }
+        }
+    </section>
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/admin/book/index.css"
+          asp-append-version="true" />
+}

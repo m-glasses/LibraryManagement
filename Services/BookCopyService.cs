@@ -15,9 +15,8 @@ namespace LibraryManagement.Services
         public List<BookCopy> GetAvailableCopies()
         {
             var bookCopies = _context.BookCopies
-                .Where(bc => !bc.Loans.Any(l =>
-                    l.LoanStatus == LoanStatus.Active ||
-                    l.LoanStatus == LoanStatus.ReturnPending))
+                .Where(bc => !bc.Loans.Any(loan =>
+                    loan.LoanStatus != LoanStatus.Completed))
                     .ToList();
             return bookCopies;
 
