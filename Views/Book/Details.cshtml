@@ -6,17 +6,15 @@
 
 <div class="book-details-page">
 
-    @* Page header *@
-    <div class="book-page-header">
+    <header class="book-page-header">
         <div>
             <h1 class="book-page-title">جزئیات کتاب</h1>
             <p class="book-page-subtitle">
-                مشخصات و وضعیت موجودی کتاب
+                مشخصات کتاب و وضعیت نسخه‌های موجود در کتابخانه
             </p>
         </div>
-    </div>
+    </header>
 
-    @* Error message *@
     @if (TempData["ErrorMessage"] is string errorMessage)
     {
         <div class="book-error-message" role="alert">
@@ -26,7 +24,7 @@
 
     <div class="book-details-card">
 
-        @* Book information *@
+        @* Book Information *@
         <section class="book-details-section">
             <div class="book-details-section-header">
                 <h2>مشخصات کتاب</h2>
@@ -104,7 +102,7 @@
             </dl>
         </section>
 
-        @* Inventory information *@
+        @* Inventory Information *@
         <section class="book-details-section book-inventory-section">
             <div class="book-details-section-header">
                 <h2>وضعیت موجودی</h2>
@@ -145,13 +143,59 @@
 
     </div>
 
-    @* User actions *@
+    @* User Actions *@
     <div class="book-details-actions">
+
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            if (Model.AvailableCopies > 0)
+            {
+                <form asp-controller="Loan"
+                      asp-action="Borrow"
+                      method="post"
+                      class="book-borrow-form">
+
+                    <input type="hidden"
+                           name="bookId"
+                           value="@Model.Id" />
+
+                    <button type="submit" class="book-borrow-button">
+                        درخواست امانت کتاب
+                    </button>
+                </form>
+            }
+            else
+            {
+                <form asp-controller="Reservation"
+                      asp-action="Reserve"
+                      method="post"
+                      class="book-reserve-form">
+
+                    <input type="hidden"
+                           name="bookId"
+                           value="@Model.Id" />
+
+                    <button type="submit" class="book-reserve-button">
+                        رزرو کتاب
+                    </button>
+                </form>
+            }
+        }
+        else
+        {
+            <a asp-controller="Account"
+               asp-action="Login"
+               class="book-borrow-button">
+                برای امانت یا رزرو وارد شوید
+            </a>
+        }
+
         <a asp-controller="Book"
            asp-action="Index"
-           class="book-details-action">
+           class="book-back-link">
             بازگشت به فهرست کتاب‌ها
         </a>
+
     </div>
 
 </div>
