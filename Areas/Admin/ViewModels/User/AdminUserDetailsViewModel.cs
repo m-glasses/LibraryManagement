@@ -1,7 +1,7 @@
 ﻿using LibraryManagement.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.Areas.Admin.ViewModels
+namespace LibraryManagement.Areas.Admin.ViewModels.User
 {
     public class AdminUserDetailsViewModel
     {

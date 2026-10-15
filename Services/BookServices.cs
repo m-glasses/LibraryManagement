@@ -163,6 +163,32 @@ namespace LibraryManagement.Services
                 .FirstOrDefault();
         }
 
+        public BookUpdateResult AdminUpdateBook(AdminBookEditDto input)
+        {
+            ArgumentNullException.ThrowIfNull(input);
+
+            var book = _context.Books
+                .FirstOrDefault(book => book.Id == input.Id);
+
+            if (book is null)
+            {
+                return BookUpdateResult.NotFound;
+            }
+
+            book.Title = input.Title;
+            book.Author = input.Author;
+            book.Publisher = input.Publisher;
+            book.PublicationYear = input.PublicationYear;
+            book.PublicationSeason = input.PublicationSeason;
+            book.PageCount = input.PageCount;
+            book.Edition = input.Edition;
+            book.Volume = input.Volume;
+
+            _context.SaveChanges();
+
+            return BookUpdateResult.Success;
+        }
+
         private IQueryable<Book> ApplyBookFilters(
             IQueryable<Book> booksQuery,
             BookFilterDto filter)

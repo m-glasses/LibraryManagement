@@ -12,5 +12,6 @@ namespace LibraryManagement.Services.Interfaces
         UserBookDetailDto? GetBookDetails(int id);
 
         AdminBookDetailsDto? AdminGetBookDetails(int id);
+        BookUpdateResult AdminUpdateBook(AdminBookEditDto input);
     }
 }

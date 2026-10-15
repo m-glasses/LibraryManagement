@@ -1,10 +1,10 @@
-﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminUserIndexViewModel
+﻿@model LibraryManagement.Areas.Admin.ViewModels.User.AdminUserIndexViewModel
 
 @{
     ViewData["Title"] = "مدیریت کاربران";
 
     var filter = Model.Filter
-        ?? new LibraryManagement.Areas.Admin.ViewModels.AdminUserFilterViewModel();
+        ?? new LibraryManagement.Areas.Admin.ViewModels.User.AdminUserFilterViewModel();
 
     var currentPage = Math.Max(1, filter.Page);
     var totalPages = Model.TotalPages;

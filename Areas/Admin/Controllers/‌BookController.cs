@@ -2,6 +2,7 @@
 using LibraryManagement.Areas.Admin.ViewModels.Book;
 using LibraryManagement.DTO;
 using LibraryManagement.DTO.Book;
+using LibraryManagement.DTO.Book.Admin;
 using LibraryManagement.Helper;
 using LibraryManagement.Models;
 using LibraryManagement.Services;
@@ -144,6 +145,69 @@ namespace LibraryManagement.Areas.Admin.Controllers
             };
 
             return View(viewModel);
+        }
+
+        public IActionResult Edit(int id)
+        {
+            var book = _bookService.AdminGetBookDetails(id);
+
+            if(book is null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new AdminBookEditViewModel()
+            {
+                Id = book.Id,
+                Title= book.Title,
+                Author= book.Author,
+                Publisher = book.Publisher,
+                PublicationYear= book.PublicationYear,
+                PublicationSeason= book.PublicationSeason,
+                PageCount= book.PageCount,
+                Edition= book.Edition,
+                Volume= book.Volume,
+                
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(AdminBookEditViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var dto = new AdminBookEditDto
+            {
+                Id = viewModel.Id,
+                Title = viewModel.Title,
+                Author = viewModel.Author,
+                Publisher = viewModel.Publisher,
+                PublicationYear = viewModel.PublicationYear,
+                PublicationSeason = viewModel.PublicationSeason,
+                PageCount = viewModel.PageCount,
+                Edition = viewModel.Edition,
+                Volume = viewModel.Volume
+            };
+
+            var result = _bookService.AdminUpdateBook(dto);
+
+            switch (result)
+            {
+                case BookUpdateResult.Success:
+                    return RedirectToAction(nameof(Details) , new { bookId = viewModel.Id });
+
+                case BookUpdateResult.NotFound:
+                    return NotFound();
+
+                default:
+                    throw new InvalidOperationException($"Unexpected book update result: {result}");
+            }
         }
 
     }

@@ -1,4 +1,4 @@
-﻿using LibraryManagement.Areas.Admin.ViewModels;
+﻿using LibraryManagement.Areas.Admin.ViewModels.User;
 using LibraryManagement.DTO.User;
 using LibraryManagement.Helper;
 using LibraryManagement.Models;

@@ -1,0 +1,261 @@
+﻿
+/* ========================================
+   Admin - Book Edit
+   Shared visual language: Admin User Edit
+   ======================================== */
+
+.admin-book-edit-page {
+    width: 100%;
+    padding: var(--lm-space-8) var(--lm-space-4);
+}
+
+/* Page header */
+
+.admin-book-edit-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--lm-space-4);
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-book-edit-title {
+    margin: 0 0 var(--lm-space-2);
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-xl);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+.admin-book-edit-subtitle {
+    margin: 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+    line-height: 1.8;
+}
+
+/* Back link */
+
+.admin-book-edit-back-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: var(--lm-space-2) var(--lm-space-4);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius);
+    color: var(--lm-text);
+    background-color: var(--lm-surface);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+    .admin-book-edit-back-link:hover {
+        background-color: var(--lm-input-bg);
+        border-color: var(--lm-input-border);
+        color: var(--lm-text);
+    }
+
+/* Form card */
+
+.admin-book-edit-card {
+    width: 100%;
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-sm);
+}
+
+.admin-book-edit-card-header {
+    padding: var(--lm-space-4) var(--lm-space-6);
+    border-bottom: 1px solid var(--lm-border);
+}
+
+    .admin-book-edit-card-header h2 {
+        margin: 0;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-lg);
+        font-weight: var(--lm-font-weight-semibold);
+    }
+
+.admin-book-edit-card-body {
+    padding: var(--lm-space-6);
+}
+
+/* Form layout */
+
+.admin-book-edit-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--lm-space-4);
+}
+
+.admin-book-edit-field {
+    min-width: 0;
+}
+
+    .admin-book-edit-field label {
+        display: block;
+        margin-bottom: var(--lm-space-2);
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-sm);
+        font-weight: var(--lm-font-weight-medium);
+    }
+
+    .admin-book-edit-field .form-control,
+    .admin-book-edit-field .form-select {
+        width: 100%;
+        min-height: 40px;
+        padding: var(--lm-space-2) var(--lm-space-3);
+        border: 1px solid var(--lm-input-border);
+        border-radius: var(--lm-radius);
+        background-color: var(--lm-input-bg);
+        color: var(--lm-text);
+        font-family: var(--lm-font-family);
+        font-size: var(--lm-font-size-sm);
+        box-shadow: none;
+        transition: border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+    }
+
+        .admin-book-edit-field .form-control:focus,
+        .admin-book-edit-field .form-select:focus {
+            border-color: var(--lm-input-focus);
+            box-shadow: 0 0 0 2px rgba(32, 107, 196, .12);
+            outline: none;
+        }
+
+        .admin-book-edit-field .form-control.input-validation-error,
+        .admin-book-edit-field .form-select.input-validation-error {
+            border-color: var(--lm-danger);
+        }
+
+            .admin-book-edit-field .form-control.input-validation-error:focus,
+            .admin-book-edit-field .form-select.input-validation-error:focus {
+                box-shadow: 0 0 0 2px rgba(214, 57, 57, .12);
+            }
+
+    .admin-book-edit-field .text-danger {
+        display: block;
+        margin-top: var(--lm-space-1);
+        color: var(--lm-danger);
+        font-size: var(--lm-font-size-xs);
+        line-height: 1.8;
+    }
+
+/* Validation summary */
+
+.admin-book-edit-validation {
+    margin-bottom: var(--lm-space-4);
+    padding: var(--lm-space-3);
+    border: 1px solid rgba(214, 57, 57, .2);
+    border-radius: var(--lm-radius);
+    background-color: rgba(214, 57, 57, .06);
+    color: var(--lm-danger);
+    font-size: var(--lm-font-size-sm);
+    line-height: 1.8;
+}
+
+    .admin-book-edit-validation:empty,
+    .admin-book-edit-validation:has(ul:empty) {
+        display: none;
+    }
+
+    .admin-book-edit-validation ul {
+        margin: 0;
+        padding-right: var(--lm-space-5);
+    }
+
+/* Form actions */
+
+.admin-book-edit-actions {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: var(--lm-space-2);
+    margin-top: var(--lm-space-6);
+    padding-top: var(--lm-space-4);
+    border-top: 1px solid var(--lm-border);
+}
+
+.admin-book-edit-cancel,
+.admin-book-edit-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: var(--lm-space-2) var(--lm-space-4);
+    border: 1px solid transparent;
+    border-radius: var(--lm-button-radius);
+    font-family: inherit;
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+.admin-book-edit-cancel {
+    border-color: var(--lm-border);
+    background-color: transparent;
+    color: var(--lm-text);
+}
+
+    .admin-book-edit-cancel:hover {
+        background-color: var(--lm-input-bg);
+        color: var(--lm-text);
+    }
+
+.admin-book-edit-submit {
+    border-color: var(--lm-primary);
+    background-color: var(--lm-primary);
+    color: #fff;
+}
+
+    .admin-book-edit-submit:hover {
+        border-color: var(--lm-primary-hover);
+        background-color: var(--lm-primary-hover);
+        color: #fff;
+    }
+
+    /* Keyboard focus */
+
+    .admin-book-edit-back-link:focus-visible,
+    .admin-book-edit-cancel:focus-visible,
+    .admin-book-edit-submit:focus-visible {
+        outline: 3px solid var(--lm-primary-light);
+        outline-offset: 2px;
+    }
+
+/* Responsive */
+
+@media (max-width: 767.98px) {
+    .admin-book-edit-page {
+        padding: var(--lm-space-6) var(--lm-space-4);
+    }
+
+    .admin-book-edit-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .admin-book-edit-back-link {
+        width: fit-content;
+    }
+
+    .admin-book-edit-form-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-book-edit-actions {
+        flex-direction: column-reverse;
+        align-items: stretch;
+    }
+
+    .admin-book-edit-cancel,
+    .admin-book-edit-submit {
+        width: 100%;
+    }
+}

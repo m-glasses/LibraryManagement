@@ -1,0 +1,188 @@
+﻿@using LibraryManagement.Models
+@model LibraryManagement.Areas.Admin.ViewModels.Book.AdminBookEditViewModel
+
+@{
+    ViewData["Title"] = "ویرایش کتاب";
+}
+
+<div class="admin-book-edit-page">
+
+    <div class="admin-book-edit-header">
+
+        <div>
+            <h1 class="admin-book-edit-title">
+                ویرایش کتاب
+            </h1>
+
+            <p class="admin-book-edit-subtitle">
+                ویرایش اطلاعات کتاب
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Details"
+           asp-route-bookId="@Model.Id"
+           class="admin-book-edit-back-link">
+            بازگشت به جزئیات کتاب
+        </a>
+
+    </div>
+
+    <div class="admin-book-edit-card">
+
+        <div class="admin-book-edit-card-header">
+            <h2>مشخصات کتاب</h2>
+        </div>
+
+        <div class="admin-book-edit-card-body">
+
+            <form asp-area="Admin"
+                  asp-controller="Book"
+                  asp-action="Edit"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="admin-book-edit-validation"
+                     role="alert">
+                </div>
+
+                <div class="admin-book-edit-form-grid">
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="Title"></label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               autocomplete="off" />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="Author"></label>
+
+                        <input asp-for="Author"
+                               class="form-control"
+                               autocomplete="off" />
+
+                        <span asp-validation-for="Author"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="Publisher"></label>
+
+                        <input asp-for="Publisher"
+                               class="form-control"
+                               autocomplete="off" />
+
+                        <span asp-validation-for="Publisher"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="PublicationYear"></label>
+
+                        <input asp-for="PublicationYear"
+                               type="number"
+                               class="form-control" />
+
+                        <span asp-validation-for="PublicationYear"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="PublicationSeason"></label>
+
+                        <select asp-for="PublicationSeason"
+                                class="form-select">
+
+                            <option value="">انتخاب کنید</option>
+                            <option value="@((int)PublicationSeason.Spring)">بهار</option>
+                            <option value="@((int)PublicationSeason.Summer)">تابستان</option>
+                            <option value="@((int)PublicationSeason.Autumn)">پاییز</option>
+                            <option value="@((int)PublicationSeason.Winter)">زمستان</option>
+
+                        </select>
+
+                        <span asp-validation-for="PublicationSeason"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="PageCount"></label>
+
+                        <input asp-for="PageCount"
+                               type="number"
+                               class="form-control" />
+
+                        <span asp-validation-for="PageCount"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="Edition"></label>
+
+                        <input asp-for="Edition"
+                               type="number"
+                               class="form-control" />
+
+                        <span asp-validation-for="Edition"
+                              class="text-danger"></span>
+                    </div>
+
+                    <div class="admin-book-edit-field">
+                        <label asp-for="Volume"></label>
+
+                        <input asp-for="Volume"
+                               type="number"
+                               class="form-control" />
+
+                        <span asp-validation-for="Volume"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="admin-book-edit-actions">
+
+                    <a asp-area="Admin"
+                       asp-controller="Book"
+                       asp-action="Details"
+                       asp-route-bookId="@Model.Id"
+                       class="admin-book-edit-cancel">
+                        انصراف
+                    </a>
+
+                    <button type="submit"
+                            class="admin-book-edit-submit">
+                        ذخیره تغییرات
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/book/Edit.css"
+          asp-append-version="true" />
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
