@@ -4,7 +4,9 @@
 // Write your JavaScript code.
 document.addEventListener("DOMContentLoaded", function () {
 
-    const sidebar = document.getElementById("app-sidebar");
+    const sidebar =
+        document.getElementById("app-sidebar") ||
+        document.getElementById("admin-sidebar");
     const toggle = document.getElementById("sidebar-toggle");
 
     if (!sidebar || !toggle) {

@@ -37,13 +37,17 @@
    Mobile
    ---------------------------------------- */
 
+
 @media (max-width: 767.98px) {
 
     .page-wrapper {
         height: calc(100vh - var(--lm-navbar-height));
-        margin-right: 0;
         margin-top: var(--lm-navbar-height);
     }
+
+        .page-wrapper.has-sidebar {
+            margin-right: 0;
+        }
 
     .page-content {
         padding: var(--lm-space-4);
