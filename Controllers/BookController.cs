@@ -1,5 +1,4 @@
-﻿using LibraryManagement.Areas.Admin.ViewModels;
-using LibraryManagement.DTO.Book;
+﻿using LibraryManagement.DTO.Book;
 using LibraryManagement.Helper;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
@@ -58,6 +57,7 @@ namespace LibraryManagement.Controllers
                 inputViewModel.SortBy = null;
                 ModelState.Remove(nameof(inputViewModel.SortBy));
             }
+
             var queryDto = new BookListQueryDto
             {
                 SearchTerm = inputViewModel.SearchTerm?.Trim(),
@@ -71,15 +71,35 @@ namespace LibraryManagement.Controllers
 
             try
             {
-                var books = _bookService.GetBookList(queryDto);
-                return View(books);
+                var result = _bookService.GetBookList(queryDto);
+
+                var viewModel = new BookIndexViewModel
+                {
+                    Books = result.Books.Select(book => new BookListViewModel
+                    {
+                        Id = book.Id,
+                        Title = book.Title,
+                        Author = book.Author,
+                        Publisher = book.Publisher,
+                        PublicationYear = book.PublicationYear,
+                        TotalCopies = book.TotalCopies,
+                        AvailableCopies = book.AvailableCopies,
+                        ActiveReservations = book.ActiveReservations
+                    }).ToList(),
+
+                    Filter = inputViewModel,
+                    TotalCount = result.TotalCount,
+                    TotalPages = result.TotalPages
+                };
+
+                return View(viewModel);
             }
-            catch (InvalidOperationException ex)
+            catch (ArgumentException ex)
             {
                 TempData["ErrorMessage"] =
                     ErrorMessageHelper.Translate(ex.Message);
 
-                var viewModel = new AdminBookIndexViewModel
+                var viewModel = new BookIndexViewModel
                 {
                     Books = new List<BookListViewModel>(),
                     Filter = inputViewModel,
@@ -89,18 +109,52 @@ namespace LibraryManagement.Controllers
 
                 return View(viewModel);
             }
-            
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] =
+                    ErrorMessageHelper.Translate(ex.Message);
+
+                var viewModel = new BookIndexViewModel
+                {
+                    Books = new List<BookListViewModel>(),
+                    Filter = inputViewModel,
+                    TotalCount = 0,
+                    TotalPages = 0
+                };
+
+                return View(viewModel);
+            }            
         }
 
         // GET: BookController/Details/5
-        public IActionResult Details(int id)
+        public IActionResult Details(int bookId)
         {
-            var book = _bookService.GetBookDetails(id);
-            if (book == null)
+            if(bookId <= 0)
             {
                 return NotFound();
             }
-            return View(book);
+
+            var dto = _bookService.GetBookDetails(bookId);
+            if (dto == null)
+            {
+                return NotFound();
+            }
+            var viewModel = new BookDetailsViewModel()
+            {
+                Id = dto.Id,
+                Title = dto.Title,
+                Author = dto.Author,
+                Publisher = dto.Publisher,
+                PublicationYear = dto.PublicationYear,
+                PublicationSeason = dto.PublicationSeason,
+                PageCount = dto.PageCount,
+                Edition = dto.Edition,
+                Volume = dto.Volume,
+                TotalCopies = dto.TotalCopies,
+                AvailableCopies = dto.AvailableCopies,
+            };
+
+            return View(viewModel);
         }
 
         // GET: BookController/Create

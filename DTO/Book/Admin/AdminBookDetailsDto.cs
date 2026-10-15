@@ -16,5 +16,6 @@ namespace LibraryManagement.DTO.Book.Admin
         public int TotalCopies { get; set; }
         public int AvailableCopies { get; set; }
         public int ActiveReservations { get; set; }
+        public int ActiveLoans { get; set; }
     }
 }

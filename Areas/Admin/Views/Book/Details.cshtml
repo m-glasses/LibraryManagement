@@ -1,4 +1,4 @@
-﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminBookDetailsViewModel
+﻿@model LibraryManagement.Areas.Admin.ViewModels.Book.AdminBookDetailsViewModel
 
 @{
     ViewData["Title"] = "جزئیات کتاب";
@@ -24,9 +24,8 @@
 
     <div class="admin-book-details-card">
 
-        <!-- مشخصات کتاب -->
+        @* مشخصات کتاب *@
         <section class="admin-book-details-section">
-
             <div class="admin-book-details-section-header">
                 <h2>مشخصات کتاب</h2>
             </div>
@@ -106,12 +105,10 @@
                 </div>
 
             </dl>
-
         </section>
 
-        <!-- وضعیت موجودی -->
+        @* وضعیت موجودی *@
         <section class="admin-book-details-section admin-book-inventory-section">
-
             <div class="admin-book-details-section-header">
                 <h2>وضعیت موجودی</h2>
             </div>
@@ -152,12 +149,11 @@
                 </div>
 
             </dl>
-
         </section>
 
     </div>
 
-    <!-- عملیات مدیریتی -->
+    @* عملیات مدیریتی *@
     <div class="admin-book-details-actions">
 
         <a asp-area="Admin"

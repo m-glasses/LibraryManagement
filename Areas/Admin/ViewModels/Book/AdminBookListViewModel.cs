@@ -27,5 +27,6 @@ namespace LibraryManagement.Areas.Admin.ViewModels.Book
 
         [Display(Name = "تعداد رزروهای فعال")]
         public int ActiveReservations { get; set; }
+
     }
 }

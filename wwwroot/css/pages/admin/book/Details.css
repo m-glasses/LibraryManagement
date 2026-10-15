@@ -70,10 +70,6 @@
         overflow-wrap: anywhere;
     }
 
-    .admin-book-details-item:nth-last-child(-n + 3) {
-        border-bottom: 0;
-    }
-
 /* Inventory */
 
 .admin-book-inventory-grid {
@@ -102,10 +98,12 @@
     align-items: center;
     justify-content: center;
     width: fit-content;
+    max-width: 100%;
     padding: var(--lm-space-1) var(--lm-space-3);
     border-radius: var(--lm-radius-full);
     font-size: var(--lm-font-size-sm);
     font-weight: var(--lm-font-weight-medium);
+    line-height: 1.8;
 }
 
 .admin-book-status-available {
@@ -129,6 +127,7 @@
     border: 1px solid var(--lm-border);
     border-radius: var(--lm-radius-md);
     line-height: 1.8;
+    overflow-wrap: anywhere;
 }
 
 /* Actions */
@@ -153,8 +152,10 @@
     border-radius: var(--lm-button-radius);
     font-size: var(--lm-font-size-sm);
     font-weight: var(--lm-font-weight-medium);
+    line-height: 1.8;
     text-align: center;
     text-decoration: none;
+    overflow-wrap: anywhere;
     transition: var(--lm-transition-fast);
 }
 
@@ -187,14 +188,6 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
-    .admin-book-details-item:nth-last-child(-n + 3) {
-        border-bottom: 1px solid var(--lm-border);
-    }
-
-    .admin-book-details-item:nth-last-child(-n + 2) {
-        border-bottom: 0;
-    }
-
     .admin-book-inventory-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
     }
@@ -212,11 +205,8 @@
         grid-template-columns: minmax(0, 1fr);
     }
 
-    .admin-book-details-item,
-    .admin-book-details-item:nth-last-child(-n + 2),
-    .admin-book-details-item:nth-last-child(-n + 3) {
+    .admin-book-details-item {
         padding: var(--lm-space-3) 0;
-        border-bottom: 1px solid var(--lm-border);
     }
 
         .admin-book-details-item:last-child {

@@ -1,4 +1,4 @@
-﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminBookIndexViewModel
+﻿@model LibraryManagement.Areas.Admin.ViewModels.Book.AdminBookIndexViewModel
 
 @{
     ViewData["Title"] = "مدیریت کتاب‌ها";
@@ -27,6 +27,13 @@
         </a>
     </header>
 
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="admin-book-error-message" role="alert">
+            @errorMessage
+        </div>
+    }
+
     <section class="admin-book-filter-card"
              aria-labelledby="admin-book-filter-title">
 
@@ -34,6 +41,7 @@
             <h2 id="admin-book-filter-title" class="admin-book-filter-title">
                 جست‌وجو و فیلتر
             </h2>
+
             <p class="admin-book-filter-description">
                 کتاب‌ها را بر اساس مشخصات و وضعیت موجودی محدود کنید.
             </p>
@@ -61,17 +69,20 @@
                 <select id="HasAvailableCopies"
                         name="HasAvailableCopies"
                         class="admin-book-filter-input">
+
                     <option value=""
                             selected="@(filter.HasAvailableCopies is null)">
                         همه کتاب‌ها
                     </option>
+
                     <option value="true"
                             selected="@(filter.HasAvailableCopies == true)">
-                        دارای نسخهٔ موجود
+                        دارای نسخه موجود
                     </option>
+
                     <option value="false"
                             selected="@(filter.HasAvailableCopies == false)">
-                        بدون نسخهٔ موجود
+                        بدون نسخه موجود
                     </option>
                 </select>
             </div>
@@ -81,14 +92,17 @@
                 <select id="HasActiveReservations"
                         name="HasActiveReservations"
                         class="admin-book-filter-input">
+
                     <option value=""
                             selected="@(filter.HasActiveReservations is null)">
                         همه وضعیت‌ها
                     </option>
+
                     <option value="true"
                             selected="@(filter.HasActiveReservations == true)">
                         دارای رزرو فعال
                     </option>
+
                     <option value="false"
                             selected="@(filter.HasActiveReservations == false)">
                         بدون رزرو فعال
@@ -101,24 +115,34 @@
                 <select id="SortBy"
                         name="SortBy"
                         class="admin-book-filter-input">
+
+                    <option value=""
+                            selected="@(string.IsNullOrWhiteSpace(filter.SortBy))">
+                        پیش‌فرض
+                    </option>
+
                     <option value="Title"
-                            selected="@(filter.SortBy == "Title")">
+                            selected="@string.Equals(filter.SortBy, "Title", StringComparison.OrdinalIgnoreCase)">
                         عنوان
                     </option>
+
                     <option value="Author"
-                            selected="@(filter.SortBy == "Author")">
+                            selected="@string.Equals(filter.SortBy, "Author", StringComparison.OrdinalIgnoreCase)">
                         نویسنده
                     </option>
+
                     <option value="PublicationYear"
-                            selected="@(filter.SortBy == "PublicationYear")">
+                            selected="@string.Equals(filter.SortBy, "PublicationYear", StringComparison.OrdinalIgnoreCase)">
                         سال انتشار
                     </option>
+
                     <option value="TotalCopies"
-                            selected="@(filter.SortBy == "TotalCopies")">
+                            selected="@string.Equals(filter.SortBy, "TotalCopies", StringComparison.OrdinalIgnoreCase)">
                         تعداد نسخه‌ها
                     </option>
+
                     <option value="AvailableCopies"
-                            selected="@(filter.SortBy == "AvailableCopies")">
+                            selected="@string.Equals(filter.SortBy, "AvailableCopies", StringComparison.OrdinalIgnoreCase)">
                         نسخه‌های موجود
                     </option>
                 </select>
@@ -129,12 +153,18 @@
                 <select id="PageSize"
                         name="PageSize"
                         class="admin-book-filter-input">
-                    <option value="10"
-                            selected="@(filter.PageSize == 10)">۱۰</option>
-                    <option value="20"
-                            selected="@(filter.PageSize == 20)">۲۰</option>
-                    <option value="50"
-                            selected="@(filter.PageSize == 50)">۵۰</option>
+
+                    <option value="10" selected="@(filter.PageSize == 10)">
+                        ۱۰
+                    </option>
+
+                    <option value="20" selected="@(filter.PageSize == 20)">
+                        ۲۰
+                    </option>
+
+                    <option value="50" selected="@(filter.PageSize == 50)">
+                        ۵۰
+                    </option>
                 </select>
             </div>
 
@@ -143,10 +173,12 @@
                 <select id="SortDescending"
                         name="SortDescending"
                         class="admin-book-filter-input">
+
                     <option value="false"
                             selected="@(!filter.SortDescending)">
                         صعودی
                     </option>
+
                     <option value="true"
                             selected="@(filter.SortDescending)">
                         نزولی
@@ -179,6 +211,7 @@
                 <h2 id="admin-book-list-title" class="admin-book-list-title">
                     فهرست کتاب‌ها
                 </h2>
+
                 <p class="admin-book-list-description">
                     اطلاعات کتاب‌ها و وضعیت نسخه‌های آن‌ها
                 </p>
@@ -193,6 +226,7 @@
         {
             <div class="admin-book-empty-state">
                 <h3>کتابی پیدا نشد</h3>
+
                 <p>
                     نتیجه‌ای با معیارهای انتخاب‌شده پیدا نشد.
                     فیلترها را تغییر دهید یا پاک کنید.
@@ -274,21 +308,23 @@
                                 </td>
 
                                 <td>
-                                    <a asp-area="Admin"
-                                       asp-controller="Book"
-                                       asp-action="Edit"
-                                       asp-route-id="@book.Id"
-                                       class="admin-book-edit-link">
-                                        ویرایش
-                                    </a>
+                                    <div class="admin-book-row-actions">
+                                        <a asp-area="Admin"
+                                           asp-controller="Book"
+                                           asp-action="Edit"
+                                           asp-route-id="@book.Id"
+                                           class="admin-book-edit-link">
+                                            ویرایش
+                                        </a>
 
-                                    <a asp-area="Admin"
-                                       asp-controller="Book"
-                                       asp-action="Details"
-                                       asp-route-bookId="@book.Id"
-                                       class="admin-book-edit-link">
-                                        جزئیات
-                                    </a>
+                                        <a asp-area="Admin"
+                                           asp-controller="Book"
+                                           asp-action="Details"
+                                           asp-route-bookId="@book.Id"
+                                           class="admin-book-edit-link">
+                                            جزئیات
+                                        </a>
+                                    </div>
                                 </td>
                             </tr>
                         }
@@ -297,8 +333,13 @@
             </div>
 
             <footer class="admin-book-list-footer">
-                <span>صفحه @currentPage از @totalPages</span>
-                <span>@Model.Books.Count مورد در این صفحه</span>
+                <span>
+                    صفحه @currentPage از @totalPages
+                </span>
+
+                <span>
+                    @Model.Books.Count مورد در این صفحه
+                </span>
             </footer>
 
             @if (totalPages > 1)
@@ -324,12 +365,14 @@
                     }
                     else
                     {
-                        <span class="admin-book-pagination-link is-disabled">
+                        <span class="admin-book-pagination-link is-disabled"
+                              aria-disabled="true">
                             قبلی
                         </span>
                     }
 
-                    <span class="admin-book-pagination-current">
+                    <span class="admin-book-pagination-current"
+                          aria-current="page">
                         @currentPage / @totalPages
                     </span>
 
@@ -351,7 +394,8 @@
                     }
                     else
                     {
-                        <span class="admin-book-pagination-link is-disabled">
+                        <span class="admin-book-pagination-link is-disabled"
+                              aria-disabled="true">
                             بعدی
                         </span>
                     }

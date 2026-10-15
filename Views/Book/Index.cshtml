@@ -1,4 +1,4 @@
-@model IEnumerable<LibraryManagement.ViewModels.BookListViewModel>
+@model IEnumerable<LibraryManagement.ViewModels.Book.BookListViewModel>
 
 @{
     ViewData["Title"] = "کتاب‌ها";
@@ -6,6 +6,7 @@
 
 <div class="book-page">
 
+    @* Page header *@
     <div class="book-page-header">
         <div>
             <h1 class="book-page-title">کتاب‌ها</h1>
@@ -15,6 +16,7 @@
         </div>
     </div>
 
+    @* Book list *@
     <div class="book-list-card">
 
         <div class="table-responsive">
@@ -22,28 +24,28 @@
 
                 <thead>
                     <tr>
-                        <th>
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.Title)
                         </th>
-                        <th>
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.Author)
                         </th>
-                        <th>
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.Publisher)
                         </th>
-                        <th>
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.PublicationYear)
                         </th>
-                        <th>
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.TotalCopies)
                         </th>
-                        <th>
+                        <th scope="col">
                             @Html.DisplayNameFor(model => model.AvailableCopies)
                         </th>
-                        <th>
+                        <th scope="col">
                             وضعیت
                         </th>
-                        <th class="book-table-actions">
+                        <th scope="col" class="book-table-actions">
                             عملیات
                         </th>
                     </tr>
@@ -64,7 +66,9 @@
                                 </td>
 
                                 <td>
-                                    @item.Publisher
+                                    @(string.IsNullOrWhiteSpace(item.Publisher)
+                                        ? "ثبت نشده"
+                                        : item.Publisher)
                                 </td>
 
                                 <td>
@@ -78,6 +82,7 @@
                                 <td>
                                     @item.AvailableCopies
                                 </td>
+
                                 <td>
                                     @if (item.AvailableCopies > 0)
                                     {
@@ -106,7 +111,7 @@
                     else
                     {
                         <tr>
-                            <td colspan="7">
+                            <td colspan="8">
                                 <div class="book-empty-state">
                                     <div class="book-empty-icon">
                                         <img src="~/images/icons/book.svg"
@@ -130,11 +135,11 @@
         </div>
 
     </div>
-    
+
 </div>
 
 @section Styles {
-    <link rel="stylesheet" href="~/css/pages/book/index.css" asp-append-version="true" />
+    <link rel="stylesheet"
+          href="~/css/pages/book/index.css"
+          asp-append-version="true" />
 }
-
-

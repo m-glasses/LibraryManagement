@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagement.Areas.Admin.ViewModels.Book
 {
-    public class BookIndexViewModel
+    public class AdminBookIndexViewModel
     {
         public List<AdminBookListViewModel> Books { get; set; } = new();
 

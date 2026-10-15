@@ -1,6 +1,11 @@
-﻿.book-page {
+﻿/* ================================
+   Book Index Page
+================================ */
+.book-page {
     padding: var(--lm-space-6) 0;
 }
+
+/* Page Header */
 
 .book-page-header {
     margin-bottom: var(--lm-space-5);
@@ -20,23 +25,17 @@
     font-size: var(--lm-font-size);
 }
 
-
-/* =========================
-   Book List Card
-   ========================= */
+/* Book List Card */
 
 .book-list-card {
     overflow: hidden;
-    background-color: var(--lm-surface);
     border: 1px solid var(--lm-border);
     border-radius: var(--lm-radius-xl);
+    background-color: var(--lm-surface);
     box-shadow: var(--lm-shadow-sm);
 }
 
-
-/* =========================
-   Book Table
-   ========================= */
+/* Book Table */
 
 .book-table {
     width: 100%;
@@ -46,15 +45,12 @@
     font-size: var(--lm-font-size);
 }
 
-
-    /* =========================
-   Table Header
-   ========================= */
+    /* Table Header */
 
     .book-table thead th {
         padding: 0.85rem var(--lm-space-4);
-        background-color: var(--lm-primary-light);
         border-bottom: 1px solid #cfe0f5;
+        background-color: var(--lm-primary-light);
         color: #315b87;
         font-size: var(--lm-font-size);
         font-weight: var(--lm-font-weight-semibold);
@@ -64,10 +60,7 @@
         vertical-align: middle;
     }
 
-
-    /* =========================
-   Table Body
-   ========================= */
+    /* Table Body */
 
     .book-table tbody td {
         padding: var(--lm-space-4);
@@ -92,20 +85,14 @@
             border-bottom: 0;
         }
 
-
-/* =========================
-   Book Title
-   ========================= */
+/* Book Title */
 
 .book-title {
     color: var(--lm-text);
     font-weight: var(--lm-font-weight-semibold);
 }
 
-
-/* =========================
-   Table Actions
-   ========================= */
+/* Table Actions */
 
 .book-table-actions {
     text-align: center;
@@ -115,8 +102,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 32px;
     min-width: 64px;
+    min-height: 32px;
     padding: var(--lm-space-1) var(--lm-space-3);
     border: 1px solid var(--lm-border);
     border-radius: var(--lm-button-radius);
@@ -140,10 +127,7 @@
         outline-offset: 2px;
     }
 
-
-/* =========================
-   Book Status
-   ========================= */
+/* Book Status */
 
 .book-status {
     display: inline-flex;
@@ -167,10 +151,7 @@
     color: var(--lm-danger);
 }
 
-
-/* =========================
-   Empty State
-   ========================= */
+/* Empty State */
 
 .book-empty-state {
     padding: var(--lm-space-12) var(--lm-space-4);
@@ -207,13 +188,9 @@
     font-size: var(--lm-font-size);
 }
 
-
-/* =========================
-   Responsive
-   ========================= */
+/* Responsive */
 
 @media (max-width: 767.98px) {
-
     .book-page {
         padding: var(--lm-space-4) 0;
     }
@@ -243,5 +220,4 @@
         padding: var(--lm-space-10) var(--lm-space-4);
     }
 }
-
 

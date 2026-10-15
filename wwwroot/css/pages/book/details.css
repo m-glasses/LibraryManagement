@@ -43,9 +43,9 @@
 
 .book-details-card {
     overflow: hidden;
-    background-color: var(--lm-surface);
     border: 1px solid var(--lm-border);
     border-radius: var(--lm-radius-xl);
+    background-color: var(--lm-surface);
     box-shadow: var(--lm-shadow-sm);
 }
 
@@ -68,7 +68,6 @@
 }
 
     .book-details-section-header::before {
-        content: "";
         position: absolute;
         top: 0.2rem;
         right: 0;
@@ -76,6 +75,7 @@
         height: 1.1rem;
         border-radius: var(--lm-radius-sm);
         background-color: var(--lm-primary);
+        content: "";
     }
 
     .book-details-section-header h2 {
@@ -128,7 +128,7 @@
     font-size: var(--lm-font-size);
     font-weight: var(--lm-font-weight-medium);
     line-height: var(--lm-line-height);
-    word-break: break-word;
+    overflow-wrap: anywhere;
 }
 
 /* Highlight Book Title */
@@ -242,7 +242,7 @@
     transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
 }
 
-/* Borrow Button — Primary */
+/* Borrow Button */
 
 .book-borrow-button {
     border: 1px solid var(--lm-primary);
@@ -265,7 +265,7 @@
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
     }
 
-/* Reserve Button — Warning */
+/* Reserve Button */
 
 .book-reserve-button {
     border: 1px solid var(--lm-warning);
@@ -276,6 +276,7 @@
     .book-reserve-button:hover {
         border-color: #dd5d05;
         background-color: #dd5d05;
+        color: #ffffff;
     }
 
     .book-reserve-button:focus-visible {
@@ -287,7 +288,7 @@
         box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12);
     }
 
-/* Back Button — Secondary */
+/* Back Button */
 
 .book-back-link {
     border: 1px solid var(--lm-border);
@@ -309,7 +310,6 @@
 /* Responsive */
 
 @media (max-width: 767.98px) {
-
     .book-details-page {
         padding: var(--lm-space-4) 0;
     }
@@ -338,7 +338,11 @@
         border-left: 0;
     }
 
-    .book-details-item + .book-details-item {
+    .book-details-item:nth-child(n + 2) {
+        border-top: 1px solid var(--lm-border);
+    }
+
+    .book-details-item:nth-child(n + 3) {
         border-top: 1px solid var(--lm-border);
     }
 
@@ -347,8 +351,8 @@
     }
 
     .book-inventory-item + .book-inventory-item {
-        border-right: 0;
         border-top: 1px solid var(--lm-border);
+        border-right: 0;
     }
 
     .book-details-actions {
@@ -369,5 +373,4 @@
         width: 100%;
     }
 }
-
 

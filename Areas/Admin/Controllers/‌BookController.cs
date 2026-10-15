@@ -1,4 +1,5 @@
 ﻿using LibraryManagement.Areas.Admin.ViewModels;
+using LibraryManagement.Areas.Admin.ViewModels.Book;
 using LibraryManagement.DTO;
 using LibraryManagement.DTO.Book;
 using LibraryManagement.Helper;
@@ -8,7 +9,6 @@ using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using LibraryManagement.ViewModels.Book;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -23,11 +23,10 @@ namespace LibraryManagement.Areas.Admin.Controllers
         }
 
 
-        public IActionResult Index(BookFilterViewModel inputViewModel)
+        public IActionResult Index(AdminBookFilterViewModel inputViewModel)
         {
             ArgumentNullException.ThrowIfNull(inputViewModel);
 
-            // Validate pagination values
             if (inputViewModel.Page < 1)
             {
                 inputViewModel.Page = 1;
@@ -40,7 +39,6 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 ModelState.Remove(nameof(inputViewModel.PageSize));
             }
 
-            // Allow only supported sorting fields
             string[] allowedSortFields =
             [
                 "Title",
@@ -72,11 +70,11 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
             try
             {
-                var result = _bookService.GetAllBooks(queryDto);
+                var result = _bookService.GetBookList(queryDto);
 
-                var viewModel = new BookIndexViewModel
+                var viewModel = new AdminBookIndexViewModel
                 {
-                    Books = result.Books.Select(book => new BookListViewModel
+                    Books = result.Books.Select(book => new AdminBookListViewModel
                     {
                         Id = book.Id,
                         Title = book.Title,
@@ -95,22 +93,26 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
                 return View(viewModel);
             }
+            catch (ArgumentException ex)
+            {
+                TempData["ErrorMessage"] =
+                    ErrorMessageHelper.Translate(ex.Message);
+            }
             catch (InvalidOperationException ex)
             {
                 TempData["ErrorMessage"] =
                     ErrorMessageHelper.Translate(ex.Message);
-
-                var viewModel = new BookIndexViewModel
-                {
-                    Books = new List<BookListViewModel>(),
-                    Filter = inputViewModel,
-                    TotalCount = 0,
-                    TotalPages = 0
-                };
-
-                return View(viewModel);
             }
+
+            return View(new AdminBookIndexViewModel
+            {
+                Books = [],
+                Filter = inputViewModel,
+                TotalCount = 0,
+                TotalPages = 0
+            });
         }
+
 
 
 
@@ -137,11 +139,13 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 Volume = dto.Volume,
                 TotalCopies = dto.TotalCopies,
                 AvailableCopies = dto.AvailableCopies,
-                ActiveReservations = dto.ActiveReservations
+                ActiveReservations = dto.ActiveReservations,
+                ActiveLoans = dto.ActiveLoans
             };
 
             return View(viewModel);
         }
+
     }
     
    
