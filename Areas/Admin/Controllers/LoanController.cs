@@ -7,8 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
-    [Area("Admin")]
-    [Authorize(Roles = "Admin")]
+    [Area(Roles.Admin)]
+    [Authorize(Roles = Roles.Admin)]
     public class LoanController : Controller
     {
         private readonly ILoanService _loanService;

@@ -1,5 +1,9 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Areas.Admin.ViewModels;
+using LibraryManagement.DTO.Book;
+using LibraryManagement.Helper;
+using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
+using LibraryManagement.ViewModels.Book;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,12 +20,77 @@ namespace LibraryManagement.Controllers
             _loanService = loanService;
             _userManager = userManager;
         }
+
+
         // GET: BookController
-        //public IActionResult Index()
-        //{
-        //    var books = _bookService.GetBookList();
-        //    return View(books);
-        //}
+        public IActionResult Index(BookFilterViewModel inputViewModel)
+        {
+            ArgumentNullException.ThrowIfNull(inputViewModel);
+
+            // Validate pagination values
+            if (inputViewModel.Page < 1)
+            {
+                inputViewModel.Page = 1;
+                ModelState.Remove(nameof(inputViewModel.Page));
+            }
+
+            if (inputViewModel.PageSize is not (10 or 20 or 50))
+            {
+                inputViewModel.PageSize = 20;
+                ModelState.Remove(nameof(inputViewModel.PageSize));
+            }
+
+            // Allow only supported sorting fields
+            string[] allowedSortFields =
+            [
+                "Title",
+                "Author",
+                "PublicationYear",
+                "TotalCopies",
+                "AvailableCopies"
+            ];
+
+            if (!string.IsNullOrWhiteSpace(inputViewModel.SortBy) &&
+                !allowedSortFields.Contains(
+                    inputViewModel.SortBy,
+                    StringComparer.OrdinalIgnoreCase))
+            {
+                inputViewModel.SortBy = null;
+                ModelState.Remove(nameof(inputViewModel.SortBy));
+            }
+            var queryDto = new BookListQueryDto
+            {
+                SearchTerm = inputViewModel.SearchTerm?.Trim(),
+                HasAvailableCopies = inputViewModel.HasAvailableCopies,
+                HasActiveReservations = inputViewModel.HasActiveReservations,
+                SortBy = inputViewModel.SortBy,
+                SortDescending = inputViewModel.SortDescending,
+                Page = inputViewModel.Page,
+                PageSize = inputViewModel.PageSize
+            };
+
+            try
+            {
+                var books = _bookService.GetBookList(queryDto);
+                return View(books);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] =
+                    ErrorMessageHelper.Translate(ex.Message);
+
+                var viewModel = new AdminBookIndexViewModel
+                {
+                    Books = new List<BookListViewModel>(),
+                    Filter = inputViewModel,
+                    TotalCount = 0,
+                    TotalPages = 0
+                };
+
+                return View(viewModel);
+            }
+            
+        }
 
         // GET: BookController/Details/5
         public IActionResult Details(int id)

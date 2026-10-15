@@ -8,6 +8,7 @@ using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using LibraryManagement.ViewModels.Book;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -22,7 +23,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
         }
 
 
-        public IActionResult Index(AdminBookFilterViewModel inputViewModel)
+        public IActionResult Index(BookFilterViewModel inputViewModel)
         {
             ArgumentNullException.ThrowIfNull(inputViewModel);
 
@@ -73,7 +74,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 var result = _bookService.GetAllBooks(queryDto);
 
-                var viewModel = new AdminBookIndexViewModel
+                var viewModel = new BookIndexViewModel
                 {
                     Books = result.Books.Select(book => new BookListViewModel
                     {
@@ -99,7 +100,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 TempData["ErrorMessage"] =
                     ErrorMessageHelper.Translate(ex.Message);
 
-                var viewModel = new AdminBookIndexViewModel
+                var viewModel = new BookIndexViewModel
                 {
                     Books = new List<BookListViewModel>(),
                     Filter = inputViewModel,
@@ -115,7 +116,31 @@ namespace LibraryManagement.Areas.Admin.Controllers
 
         public IActionResult Details(int bookId)
         {
-            return View();
+            if (bookId <= 0)
+                return NotFound();
+
+            var dto = _bookService.AdminGetBookDetails(bookId);
+
+            if (dto is null)
+                return NotFound();
+
+            var viewModel = new AdminBookDetailsViewModel
+            {
+                Id = dto.Id,
+                Title = dto.Title,
+                Author = dto.Author,
+                Publisher = dto.Publisher,
+                PublicationYear = dto.PublicationYear,
+                PublicationSeason = dto.PublicationSeason,
+                PageCount = dto.PageCount,
+                Edition = dto.Edition,
+                Volume = dto.Volume,
+                TotalCopies = dto.TotalCopies,
+                AvailableCopies = dto.AvailableCopies,
+                ActiveReservations = dto.ActiveReservations
+            };
+
+            return View(viewModel);
         }
     }
     

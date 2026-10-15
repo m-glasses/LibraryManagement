@@ -1,13 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using LibraryManagement.Models;
+using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.Areas.Admin.ViewModels
+namespace LibraryManagement.Areas.Admin.ViewModels.Book
 {
-    public class BookListViewModel
+    public class AdminBookDetailsViewModel
     {
-        [Display(Name = "شناسه کتاب")]
+        [Display(Name = "شناسه")]
         public int Id { get; set; }
 
-        [Display(Name = "عنوان کتاب")]
+        [Display(Name = "عنوان")]
         public string Title { get; set; } = string.Empty;
 
         [Display(Name = "نویسنده")]
@@ -19,6 +20,18 @@ namespace LibraryManagement.Areas.Admin.ViewModels
         [Display(Name = "سال انتشار")]
         public int PublicationYear { get; set; }
 
+        [Display(Name = "فصل انتشار")]
+        public PublicationSeason? PublicationSeason { get; set; }
+
+        [Display(Name = "تعداد صفحات")]
+        public int PageCount { get; set; }
+
+        [Display(Name = "نوبت چاپ")]
+        public int Edition { get; set; }
+
+        [Display(Name = "جلد")]
+        public int Volume { get; set; }
+
         [Display(Name = "تعداد کل نسخه‌ها")]
         public int TotalCopies { get; set; }
 
@@ -27,5 +40,8 @@ namespace LibraryManagement.Areas.Admin.ViewModels
 
         [Display(Name = "تعداد رزروهای فعال")]
         public int ActiveReservations { get; set; }
+
+        [Display(Name = "امانت های فعال")]
+        public int ActiveLoans { get; set; }
     }
 }

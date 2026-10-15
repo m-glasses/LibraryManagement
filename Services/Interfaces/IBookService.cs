@@ -1,6 +1,6 @@
 ﻿using LibraryManagement.DTO.Book;
 using LibraryManagement.Models;
-using LibraryManagement.ViewModels;
+using LibraryManagement.ViewModels.Book;
 
 namespace LibraryManagement.Services.Interfaces
 {
@@ -9,6 +9,7 @@ namespace LibraryManagement.Services.Interfaces
         List<BookListViewModel> GetBookList(BookFilterDto filter);
         BookDetailsViewModel? GetBookDetails(int id);
         BookListResult GetAllBooks(BookListQueryDto input);
+        BookDetailsDto? AdminGetBookDetails(int id);
 
     }
 }

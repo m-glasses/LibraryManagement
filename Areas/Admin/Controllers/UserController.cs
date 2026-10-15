@@ -123,7 +123,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 return NotFound();
             }
 
-            int currentUserId = int.Parse(_userManager.GetUserId(User));
+            int currentUserId = int.Parse(_userManager.GetUserId(User)!);
 
             var viewModel = new AdminUserDetailsViewModel
             {

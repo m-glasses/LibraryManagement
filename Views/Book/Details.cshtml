@@ -1,79 +1,70 @@
-﻿@model BookDetailsViewModel
+﻿@model LibraryManagement.Areas.Admin.ViewModels.AdminBookDetailsViewModel
 
 @{
-    ViewData["Title"] = "اطلاعات کتاب";
+    ViewData["Title"] = "جزئیات کتاب";
 }
 
-<div class="book-details-page">
+<div class="admin-book-details-page">
 
-    <div class="book-page-header">
+    <div class="admin-book-page-header">
         <div>
-            <h1 class="book-page-title">اطلاعات کتاب</h1>
-            <p class="book-page-subtitle">
-                جزئیات و وضعیت موجودی کتاب
+            <h1 class="admin-book-page-title">جزئیات کتاب</h1>
+            <p class="admin-book-page-subtitle">
+                مشخصات و وضعیت موجودی کتاب
             </p>
         </div>
     </div>
 
     @if (TempData["ErrorMessage"] is string errorMessage)
     {
-        <div class="book-error-message" role="alert">
+        <div class="admin-book-error-message" role="alert">
             @errorMessage
         </div>
     }
 
-    <div class="book-details-card">
+    <div class="admin-book-details-card">
 
-        <section class="book-details-section">
+        <!-- مشخصات کتاب -->
+        <section class="admin-book-details-section">
 
-            <div class="book-details-section-header">
+            <div class="admin-book-details-section-header">
                 <h2>مشخصات کتاب</h2>
             </div>
 
-            <div class="book-details-grid">
+            <dl class="admin-book-details-grid">
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.Title)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.Title
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Id)</dt>
+                    <dd>@Model.Id</dd>
                 </div>
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.Author)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.Author
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Title)</dt>
+                    <dd>@Model.Title</dd>
                 </div>
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.Publisher)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.Publisher
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Author)</dt>
+                    <dd>@Model.Author</dd>
                 </div>
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.PublicationYear)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.PublicationYear
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Publisher)</dt>
+                    <dd>
+                        @(string.IsNullOrWhiteSpace(Model.Publisher)
+                            ? "ثبت نشده"
+                            : Model.Publisher)
+                    </dd>
                 </div>
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.PublicationSeason)
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.PublicationYear)</dt>
+                    <dd>@Model.PublicationYear</dd>
+                </div>
 
-                    <span class="book-details-value">
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.PublicationSeason)</dt>
+                    <dd>
                         @switch (Model.PublicationSeason)
                         {
                             case PublicationSeason.Spring:
@@ -96,140 +87,107 @@
                                 @:ثبت نشده
                                 break;
                         }
-                    </span>
+                    </dd>
                 </div>
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.PageCount)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.PageCount
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.PageCount)</dt>
+                    <dd>@Model.PageCount</dd>
                 </div>
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.Edition)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.Edition
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Edition)</dt>
+                    <dd>@Model.Edition</dd>
                 </div>
 
-                <div class="book-details-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.Volume)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.Volume
-                    </span>
+                <div class="admin-book-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Volume)</dt>
+                    <dd>@Model.Volume</dd>
                 </div>
 
-            </div>
+            </dl>
 
         </section>
 
-        <section class="book-details-section book-inventory-section">
+        <!-- وضعیت موجودی -->
+        <section class="admin-book-details-section admin-book-inventory-section">
 
-            <div class="book-details-section-header">
+            <div class="admin-book-details-section-header">
                 <h2>وضعیت موجودی</h2>
             </div>
 
-            <div class="book-inventory-grid">
+            <dl class="admin-book-inventory-grid">
 
-                <div class="book-inventory-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.TotalCopies)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.TotalCopies
-                    </span>
+                <div class="admin-book-inventory-item">
+                    <dt>@Html.DisplayNameFor(model => model.TotalCopies)</dt>
+                    <dd>@Model.TotalCopies</dd>
                 </div>
 
-                <div class="book-inventory-item">
-                    <span class="book-details-label">
-                        @Html.DisplayNameFor(model => model.AvailableCopies)
-                    </span>
-                    <span class="book-details-value">
-                        @Model.AvailableCopies
-                    </span>
+                <div class="admin-book-inventory-item">
+                    <dt>@Html.DisplayNameFor(model => model.AvailableCopies)</dt>
+                    <dd>@Model.AvailableCopies</dd>
                 </div>
 
-                <div class="book-inventory-item">
-                    <span class="book-details-label">
-                        وضعیت
-                    </span>
-
-                    <span class="book-details-value">
+                <div class="admin-book-inventory-item">
+                    <dt>وضعیت</dt>
+                    <dd>
                         @if (Model.AvailableCopies > 0)
                         {
-                            <span class="book-status book-status-available">
+                            <span class="admin-book-status admin-book-status-available">
                                 موجود
                             </span>
                         }
                         else
                         {
-                            <span class="book-status book-status-unavailable">
+                            <span class="admin-book-status admin-book-status-unavailable">
                                 ناموجود
                             </span>
                         }
-                    </span>
+                    </dd>
                 </div>
 
-            </div>
+                <div class="admin-book-inventory-item">
+                    <dt>@Html.DisplayNameFor(model => model.ActiveReservations)</dt>
+                    <dd>@Model.ActiveReservations</dd>
+                </div>
+
+            </dl>
 
         </section>
 
     </div>
 
-    <div class="book-details-actions">
+    <!-- عملیات مدیریتی -->
+    <div class="admin-book-details-actions">
 
-        @if (Model.AvailableCopies > 0)
-        {
-            <form asp-controller="Loan"
-                  asp-action="Borrow"
-                  method="post"
-                  class="book-borrow-form">
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="admin-book-details-action admin-book-details-action-primary">
+            ویرایش کتاب
+        </a>
 
-                @Html.AntiForgeryToken()
+        <a asp-area="Admin"
+           asp-controller="BookCopy"
+           asp-action="Index"
+           asp-route-bookId="@Model.Id"
+           class="admin-book-details-action">
+            مشاهده نسخه‌های کتاب
+        </a>
 
-                <input type="hidden"
-                       name="bookId"
-                       value="@Model.Id" />
+        <a asp-area="Admin"
+           asp-controller="Reservation"
+           asp-action="Index"
+           asp-route-bookId="@Model.Id"
+           class="admin-book-details-action">
+            مشاهده رزروهای کتاب
+        </a>
 
-                <button type="submit"
-                        data-confirm="آیا از امانت گرفتن این کتاب مطمئن هستید؟"
-                        class="book-borrow-button">
-                    امانت گرفتن کتاب
-                </button>
-
-            </form>
-        }
-        else
-        {
-            <form asp-controller="Reservation"
-                  asp-action="Reserve"
-                  method="post"
-                  class="book-reserve-form">
-
-                @Html.AntiForgeryToken()
-
-                <input type="hidden"
-                       name="bookId"
-                       value="@Model.Id" />
-
-                <button type="submit"
-                        data-confirm="آیا از رزرو این کتاب مطمئن هستید؟"
-                        class="book-reserve-button">
-                    رزرو کتاب
-                </button>
-
-            </form>
-        }
-
-        <a asp-action="Index"
-           class="book-back-link">
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Index"
+           class="admin-book-details-action">
             بازگشت به فهرست کتاب‌ها
         </a>
 
@@ -239,7 +197,6 @@
 
 @section Styles {
     <link rel="stylesheet"
-          href="~/css/pages/book/details.css"
+          href="~/css/pages/admin/book/details.css"
           asp-append-version="true" />
 }
-

@@ -1,15 +1,13 @@
 ﻿/* ========================================
    Admin - Book Index
+   Shared visual language: Admin Loan List
    ======================================== */
 .admin-book-page {
-    display: flex;
-    flex-direction: column;
-    gap: var(--lm-space-5);
-    min-width: 0;
+    width: 100%;
     color: var(--lm-text);
 }
 
-/* ---------- Page Header ---------- */
+/* Page header */
 
 .admin-book-page-header {
     display: flex;
@@ -17,84 +15,86 @@
     justify-content: space-between;
     flex-wrap: wrap;
     gap: var(--lm-space-4);
+    margin-bottom: var(--lm-space-6);
 }
 
 .admin-book-page-title {
     margin: 0;
     color: var(--lm-text);
     font-size: var(--lm-font-size-2xl);
-    font-weight: 700;
-    line-height: 1.6;
+    font-weight: var(--lm-font-weight-bold);
+    line-height: var(--lm-line-height-tight);
 }
 
 .admin-book-page-subtitle {
-    margin: var(--lm-space-1) 0 0;
+    margin: var(--lm-space-2) 0 0;
     color: var(--lm-text-muted);
-    font-size: var(--lm-font-size-sm);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-normal);
     line-height: 1.8;
 }
 
-.admin-book-btn {
+.admin-book-create-link,
+.admin-book-filter-submit,
+.admin-book-filter-reset,
+.admin-book-edit-link,
+.admin-book-pagination-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: var(--lm-space-2);
-    min-height: 40px;
+    min-height: 38px;
     padding: var(--lm-space-2) var(--lm-space-4);
     border: 1px solid transparent;
-    border-radius: var(--lm-radius-md);
-    font-family: inherit;
+    border-radius: var(--lm-button-radius);
+    font-family: var(--lm-font-family);
     font-size: var(--lm-font-size-sm);
-    font-weight: 600;
+    font-weight: var(--lm-font-weight-medium);
     line-height: 1.5;
-    text-align: center;
     text-decoration: none;
     white-space: nowrap;
-    cursor: pointer;
-    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast);
 }
 
-    .admin-book-btn:focus-visible,
-    .admin-book-edit-btn:focus-visible,
-    .admin-book-page-link:focus-visible {
-        outline: 3px solid var(--lm-primary-light);
-        outline-offset: 2px;
-    }
-
-.admin-book-btn-primary {
+.admin-book-create-link,
+.admin-book-filter-submit {
     background-color: var(--lm-primary);
     border-color: var(--lm-primary);
     color: #fff;
 }
 
-    .admin-book-btn-primary:hover {
+.admin-book-create-link {
+    min-height: 40px;
+}
+
+    .admin-book-create-link span {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    .admin-book-create-link:hover,
+    .admin-book-filter-submit:hover {
         background-color: var(--lm-primary-hover);
         border-color: var(--lm-primary-hover);
         color: #fff;
     }
 
-.admin-book-btn-secondary {
+.admin-book-filter-reset {
     background-color: var(--lm-surface);
     border-color: var(--lm-border);
     color: var(--lm-text);
 }
 
-    .admin-book-btn-secondary:hover {
+    .admin-book-filter-reset:hover {
         background-color: var(--lm-background);
         border-color: var(--lm-border);
         color: var(--lm-text);
     }
 
-.admin-book-btn-icon {
-    font-size: 1.25rem;
-    font-weight: 400;
-    line-height: 1;
-}
+/* Cards */
 
-/* ---------- Cards ---------- */
-
-.admin-book-card {
-    min-width: 0;
+.admin-book-filter-card,
+.admin-book-list-card {
     overflow: hidden;
     background-color: var(--lm-surface);
     border: 1px solid var(--lm-border);
@@ -102,174 +102,145 @@
     box-shadow: var(--lm-shadow-sm);
 }
 
-.admin-book-card-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: var(--lm-space-3);
+.admin-book-filter-card {
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-book-filter-header,
+.admin-book-list-header {
     padding: var(--lm-space-4) var(--lm-space-5);
-    background-color: var(--lm-surface);
     border-bottom: 1px solid var(--lm-border);
 }
 
-.admin-book-card-title {
+.admin-book-filter-title,
+.admin-book-list-title {
     margin: 0;
     color: var(--lm-text);
-    font-size: var(--lm-font-size-md);
-    font-weight: 700;
+    font-size: var(--lm-font-size-lg);
+    font-weight: var(--lm-font-weight-semibold);
     line-height: 1.7;
 }
 
-.admin-book-card-description {
+.admin-book-filter-description,
+.admin-book-list-description {
     margin: var(--lm-space-1) 0 0;
     color: var(--lm-text-muted);
     font-size: var(--lm-font-size-sm);
-    line-height: 1.7;
+    line-height: 1.8;
 }
 
-.admin-book-card-body {
+/* Filter form */
+
+.admin-book-filter-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    gap: var(--lm-space-4);
     padding: var(--lm-space-5);
 }
 
-/* ---------- Filter Form ---------- */
-
-.admin-book-filter-form {
-    display: flex;
-    flex-direction: column;
-    gap: var(--lm-space-4);
-}
-
-.admin-book-filter-field {
+.admin-book-filter-group {
     display: flex;
     flex-direction: column;
     gap: var(--lm-space-2);
     min-width: 0;
 }
 
-    .admin-book-filter-field label {
+    .admin-book-filter-group label {
         color: var(--lm-text);
         font-size: var(--lm-font-size-sm);
-        font-weight: 600;
+        font-weight: var(--lm-font-weight-medium);
     }
 
-.admin-book-input {
-    display: block;
+.admin-book-filter-input {
     width: 100%;
-    min-height: 42px;
+    min-height: 40px;
     padding: var(--lm-space-2) var(--lm-space-3);
     background-color: var(--lm-surface);
     border: 1px solid var(--lm-border);
-    border-radius: var(--lm-radius-md);
+    border-radius: var(--lm-input-radius);
     color: var(--lm-text);
-    font-family: inherit;
+    font-family: var(--lm-font-family);
     font-size: var(--lm-font-size-sm);
-    line-height: 1.6;
     transition: border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
 }
 
-    .admin-book-input::placeholder {
-        color: var(--lm-text-muted);
-        opacity: 0.8;
-    }
-
-    .admin-book-input:focus {
+    .admin-book-filter-input:focus {
         border-color: var(--lm-primary);
         outline: none;
         box-shadow: 0 0 0 3px var(--lm-primary-light);
     }
 
-.admin-book-filter-options {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: var(--lm-space-3) var(--lm-space-5);
-    padding-top: var(--lm-space-1);
+.admin-book-search-group {
+    grid-column: span 2;
 }
-
-.admin-book-checkbox-label {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--lm-space-2);
-    margin: 0;
-    color: var(--lm-text);
-    font-size: var(--lm-font-size-sm);
-    font-weight: 400;
-    line-height: 1.8;
-    cursor: pointer;
-}
-
-    .admin-book-checkbox-label input {
-        width: 16px;
-        height: 16px;
-        margin: 0;
-        accent-color: var(--lm-primary);
-        cursor: pointer;
-    }
 
 .admin-book-filter-actions {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
     gap: var(--lm-space-2);
-    padding-top: var(--lm-space-2);
+    grid-column: 1 / -1;
+    padding-top: var(--lm-space-3);
     border-top: 1px solid var(--lm-border);
 }
 
-/* ---------- List Header ---------- */
+/* List header */
 
 .admin-book-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
     gap: var(--lm-space-3);
 }
 
-.admin-book-count {
+.admin-book-list-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    min-height: 30px;
     padding: var(--lm-space-1) var(--lm-space-3);
     background-color: var(--lm-primary-light);
     border-radius: var(--lm-radius-full);
     color: var(--lm-primary);
     font-size: var(--lm-font-size-sm);
-    font-weight: 600;
+    font-weight: var(--lm-font-weight-medium);
     white-space: nowrap;
 }
 
-/* ---------- Table ---------- */
+/* Table */
 
 .admin-book-table-wrapper {
     width: 100%;
     overflow-x: auto;
     overscroll-behavior-x: contain;
-    scrollbar-width: thin;
-    scrollbar-color: var(--lm-border) transparent;
 }
 
 .admin-book-table {
     width: 100%;
-    min-width: 1050px;
+    min-width: 950px;
     margin: 0;
-    border-collapse: separate;
-    border-spacing: 0;
+    border-collapse: collapse;
     color: var(--lm-text);
-    font-size: var(--lm-font-size-sm);
+    font-size: var(--lm-font-size);
     text-align: right;
 }
 
-    .admin-book-table thead th {
+    .admin-book-table th {
         padding: var(--lm-space-3) var(--lm-space-4);
         background-color: var(--lm-background);
         border-bottom: 1px solid var(--lm-border);
-        color: var(--lm-text-muted);
-        font-size: var(--lm-font-size-xs);
-        font-weight: 700;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-sm);
+        font-weight: var(--lm-font-weight-bold);
         line-height: 1.8;
+        text-align: right;
         white-space: nowrap;
     }
 
-    .admin-book-table tbody td {
-        padding: var(--lm-space-3) var(--lm-space-4);
-        background-color: var(--lm-surface);
+    .admin-book-table td {
+        padding: var(--lm-space-4);
         border-bottom: 1px solid var(--lm-border);
         vertical-align: middle;
         line-height: 1.8;
@@ -283,34 +254,26 @@
         transition: background-color var(--lm-transition-fast);
     }
 
-        .admin-book-table tbody tr:hover td {
+        .admin-book-table tbody tr:hover {
             background-color: var(--lm-background);
         }
 
-.admin-book-id-cell {
+.admin-book-id {
     color: var(--lm-text-muted);
     font-variant-numeric: tabular-nums;
 }
 
 .admin-book-title-cell {
-    max-width: 240px;
-    font-weight: 600;
+    min-width: 180px;
+    max-width: 280px;
+    font-weight: var(--lm-font-weight-medium);
 }
 
-    .admin-book-title-cell span {
-        display: block;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
-
-/* ---------- Number Badges ---------- */
-
-.admin-book-number-badge {
+.admin-book-copy-count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 32px;
+    min-width: 34px;
     min-height: 28px;
     padding: var(--lm-space-1) var(--lm-space-2);
     background-color: var(--lm-background);
@@ -318,236 +281,166 @@
     border-radius: var(--lm-radius-md);
     color: var(--lm-text);
     font-size: var(--lm-font-size-sm);
-    font-weight: 600;
+    font-weight: var(--lm-font-weight-medium);
     font-variant-numeric: tabular-nums;
 }
 
-.admin-book-badge-success {
-    background-color: #e8f7ec;
-    border-color: #c7ecd0;
-    color: #218838;
+.admin-book-copy-available {
+    background-color: #eaf7ed;
+    border-color: #d1ead7;
+    color: var(--lm-success);
 }
 
-.admin-book-badge-danger {
+.admin-book-copy-unavailable {
     background-color: #fdecec;
-    border-color: #f7cccc;
+    border-color: #f4d0d0;
     color: var(--lm-danger);
 }
 
-/* ---------- Row Actions ---------- */
-
-.admin-book-row-actions {
-    display: flex;
-    align-items: center;
-    gap: var(--lm-space-2);
-}
-
-.admin-book-edit-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 34px;
+.admin-book-edit-link {
+    min-height: 32px;
     padding: var(--lm-space-1) var(--lm-space-3);
-    background-color: var(--lm-primary-light);
-    border: 1px solid transparent;
-    border-radius: var(--lm-radius-md);
+    border-color: var(--lm-primary);
     color: var(--lm-primary);
-    font-size: var(--lm-font-size-sm);
-    font-weight: 600;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background-color var(--lm-transition-fast), color var(--lm-transition-fast);
 }
 
-    .admin-book-edit-btn:hover {
+    .admin-book-edit-link:hover {
         background-color: var(--lm-primary);
         color: #fff;
     }
 
-/* ---------- Empty State ---------- */
+/* Footer and pagination */
 
-.admin-book-empty-state {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--lm-space-3);
-    padding: var(--lm-space-8) var(--lm-space-5);
-    text-align: center;
-}
-
-.admin-book-empty-icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 64px;
-    height: 64px;
-    background-color: var(--lm-background);
-    border-radius: var(--lm-radius-full);
-    font-size: 1.75rem;
-}
-
-.admin-book-empty-state h3 {
-    margin: 0;
-    color: var(--lm-text);
-    font-size: var(--lm-font-size-lg);
-    font-weight: 700;
-}
-
-.admin-book-empty-state p {
-    max-width: 440px;
-    margin: 0 0 var(--lm-space-2);
-    color: var(--lm-text-muted);
-    font-size: var(--lm-font-size-sm);
-    line-height: 1.9;
-}
-
-/* ---------- Pagination ---------- */
-
-.admin-book-pagination {
+.admin-book-list-footer {
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
     gap: var(--lm-space-3);
-    padding: var(--lm-space-4) var(--lm-space-5);
+    padding: var(--lm-space-3) var(--lm-space-5);
     border-top: 1px solid var(--lm-border);
-}
-
-.admin-book-pagination-info {
     color: var(--lm-text-muted);
     font-size: var(--lm-font-size-sm);
 }
 
-.admin-book-pagination-list {
+.admin-book-pagination {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
-    gap: var(--lm-space-1);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-}
-
-.admin-book-page-link {
-    display: inline-flex;
-    align-items: center;
     justify-content: center;
-    min-width: 36px;
-    min-height: 36px;
-    padding: var(--lm-space-1) var(--lm-space-2);
-    background-color: var(--lm-surface);
-    border: 1px solid var(--lm-border);
-    border-radius: var(--lm-radius-md);
-    color: var(--lm-text);
-    font-family: inherit;
-    font-size: var(--lm-font-size-sm);
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast);
+    flex-wrap: wrap;
+    gap: var(--lm-space-3);
+    margin-top: var(--lm-space-4);
 }
 
-    .admin-book-page-link:hover:not(.disabled, .active) {
+.admin-book-pagination-link {
+    background-color: var(--lm-surface);
+    border-color: var(--lm-border);
+    color: var(--lm-text);
+}
+
+    .admin-book-pagination-link:hover {
         background-color: var(--lm-background);
         border-color: var(--lm-primary);
         color: var(--lm-primary);
     }
 
-    .admin-book-page-link.active {
-        background-color: var(--lm-primary);
-        border-color: var(--lm-primary);
-        color: #fff;
-        font-weight: 700;
-    }
-
-    .admin-book-page-link.disabled {
+    .admin-book-pagination-link.is-disabled {
         background-color: var(--lm-background);
         color: var(--lm-text-muted);
         cursor: not-allowed;
-        opacity: 0.65;
+        opacity: .65;
     }
 
-.admin-book-pagination-ellipsis {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 24px;
-    min-height: 36px;
+.admin-book-pagination-current {
     color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
 }
 
-/* ---------- Responsive ---------- */
+/* Empty state */
 
-@media (min-width: 768px) {
-    .admin-book-filter-form {
-        display: grid;
-        grid-template-columns: minmax(220px, 2fr) repeat(2, minmax(150px, 1fr));
-        align-items: end;
-        column-gap: var(--lm-space-4);
-        row-gap: var(--lm-space-4);
+.admin-book-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--lm-space-3);
+    padding: var(--lm-space-8) var(--lm-space-5);
+    text-align: center;
+}
+
+    .admin-book-empty-state h3 {
+        margin: 0;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-lg);
+        font-weight: var(--lm-font-weight-semibold);
     }
 
-    .admin-book-filter-options,
-    .admin-book-filter-actions {
+    .admin-book-empty-state p {
+        max-width: 440px;
+        margin: 0 0 var(--lm-space-2);
+        color: var(--lm-text-muted);
+        font-size: var(--lm-font-size-sm);
+        line-height: 1.9;
+    }
+
+/* Focus */
+
+.admin-book-create-link:focus-visible,
+.admin-book-filter-submit:focus-visible,
+.admin-book-filter-reset:focus-visible,
+.admin-book-edit-link:focus-visible,
+.admin-book-pagination-link:focus-visible {
+    outline: 3px solid var(--lm-primary-light);
+    outline-offset: 2px;
+}
+
+/* Responsive */
+
+@media (max-width: 991.98px) {
+    .admin-book-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-book-search-group {
         grid-column: 1 / -1;
     }
 }
 
-@media (max-width: 767.98px) {
-    .admin-book-page {
-        gap: var(--lm-space-4);
-    }
-
+@media (max-width: 575.98px) {
     .admin-book-page-header {
-        align-items: stretch;
-        flex-direction: column;
-    }
-
-        .admin-book-page-header > .admin-book-btn {
-            align-self: flex-start;
-        }
-
-    .admin-book-page-title {
-        font-size: var(--lm-font-size-xl);
-    }
-
-    .admin-book-card-header,
-    .admin-book-card-body {
-        padding: var(--lm-space-4);
-    }
-
-    .admin-book-pagination {
         align-items: flex-start;
         flex-direction: column;
+    }
+
+    .admin-book-filter-header,
+    .admin-book-list-header {
         padding: var(--lm-space-4);
     }
 
-    .admin-book-pagination-list {
-        gap: var(--lm-space-1);
+    .admin-book-filter-form {
+        grid-template-columns: minmax(0, 1fr);
+        padding: var(--lm-space-4);
     }
-}
 
-@media (max-width: 480px) {
+    .admin-book-search-group,
+    .admin-book-filter-actions {
+        grid-column: auto;
+    }
+
     .admin-book-filter-actions {
         align-items: stretch;
         flex-direction: column;
     }
 
-        .admin-book-filter-actions .admin-book-btn {
+        .admin-book-filter-actions > * {
             width: 100%;
         }
 
-    .admin-book-filter-options {
-        align-items: flex-start;
-        flex-direction: column;
+    .admin-book-list-footer {
+        padding: var(--lm-space-3) var(--lm-space-4);
     }
 
-    .admin-book-list-header {
-        align-items: flex-start;
-        flex-direction: column;
-    }
-
-    .admin-book-count {
-        align-self: flex-start;
+    .admin-book-page-title {
+        font-size: var(--lm-font-size-xl);
     }
 }
+

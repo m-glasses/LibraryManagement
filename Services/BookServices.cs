@@ -1,8 +1,9 @@
 ﻿using LibraryManagement.Data;
 using LibraryManagement.DTO.Book;
+using LibraryManagement.DTO.Book.Admin;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
-using LibraryManagement.ViewModels;
+using LibraryManagement.ViewModels.Book;
 using Microsoft.EntityFrameworkCore;
 
 namespace LibraryManagement.Services
@@ -39,9 +40,23 @@ namespace LibraryManagement.Services
         }
 
 
-        public List<BookListViewModel> GetBookList(BookFilterDto filter)
+        public List<BookListViewModel> GetBookList(BookListQueryDto input)
         {
-            ArgumentNullException.ThrowIfNull(filter);
+            ArgumentNullException.ThrowIfNull(input);
+
+            if (input.Page < 1)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.Page),
+                    "Page must be greater than zero.");
+            }
+
+            if (input.PageSize < 1 || input.PageSize > 50)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.PageSize),
+                    "PageSize must be between 1 and 50.");
+            }
 
             IQueryable<Book> booksQuery = _context.Books.AsNoTracking();
 
@@ -132,6 +147,40 @@ namespace LibraryManagement.Services
                 PageSize = input.PageSize,
                 TotalCount = totalCount
             };
+        }
+
+        public AdminBookDetailsDto? AdminGetBookDetails(int id)
+        {
+            if (id <= 0)
+                return null;
+
+            var book = _context.Books
+                .AsNoTracking()
+                .Where(book => book.Id == id)
+                .Select(book => new AdminBookDetailsDto
+                {
+                    Id = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    Publisher = book.Publisher,
+                    PublicationSeason = book.PublicationSeason,
+                    PublicationYear = book.PublicationYear,
+                    PageCount = book.PageCount,
+                    Edition = book.Edition,
+                    Volume = book.Volume,
+
+                    TotalCopies = book.BookCopies.Count(),
+
+                    AvailableCopies = book.BookCopies.Count(bookCopy =>
+                        !bookCopy.Loans.Any(loan =>
+                            loan.LoanStatus != LoanStatus.Completed)),
+
+                    ActiveReservations = book.Reservations.Count(reservation =>
+                        reservation.ReservationStatus == ReservationStatus.Active)
+                })
+                .FirstOrDefault();
+
+            return book;
         }
 
 

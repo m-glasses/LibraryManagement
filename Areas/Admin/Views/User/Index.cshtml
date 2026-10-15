@@ -5,6 +5,9 @@
 
     var filter = Model.Filter
         ?? new LibraryManagement.Areas.Admin.ViewModels.AdminUserFilterViewModel();
+
+    var currentPage = Math.Max(1, filter.Page);
+    var totalPages = Model.TotalPages;
 }
 
 <div class="admin-user-page">
@@ -13,7 +16,7 @@
         <div>
             <h1 class="admin-user-page-title">مدیریت کاربران</h1>
             <p class="admin-user-page-subtitle">
-                فهرست کاربران ثبت‌شده و وضعیت حساب‌های آن‌ها
+                فهرست کاربران، نقش‌ها و وضعیت کیف‌پول آن‌ها
             </p>
         </div>
 
@@ -26,13 +29,17 @@
         </a>
     </header>
 
-    <section class="admin-user-filter-card" aria-label="فیلتر کاربران">
-        <div class="admin-user-filter-header">
-            <h2 class="admin-user-filter-title">جستجو و فیلتر</h2>
+    <section class="admin-user-filter-card"
+             aria-labelledby="admin-user-filter-title">
+
+        <header class="admin-user-filter-header">
+            <h2 id="admin-user-filter-title" class="admin-user-filter-title">
+                جست‌وجو و فیلتر
+            </h2>
             <p class="admin-user-filter-description">
-                کاربران را بر اساس مشخصات و وضعیت مالی فیلتر کن.
+                کاربران را بر اساس مشخصات، نقش و وضعیت مالی پیدا کنید.
             </p>
-        </div>
+        </header>
 
         <form asp-area="Admin"
               asp-controller="User"
@@ -41,21 +48,21 @@
               class="admin-user-filter-form">
 
             <div class="admin-user-filter-group admin-user-search-group">
-                <label for="SearchTerm" class="admin-user-filter-label">
-                    جستجو
-                </label>
+                <label for="SearchTerm">جست‌وجو</label>
                 <input id="SearchTerm"
                        name="SearchTerm"
                        type="search"
                        value="@filter.SearchTerm"
                        class="admin-user-filter-input"
-                       placeholder="نام، ایمیل یا شماره همراه..."
+                       placeholder="نام، ایمیل یا شماره همراه"
                        autocomplete="off" />
             </div>
 
             <div class="admin-user-filter-group">
-                <label for="Role" class="admin-user-filter-label">نقش کاربر</label>
-                <select id="Role" name="Role" class="admin-user-filter-input">
+                <label for="Role">نقش کاربر</label>
+                <select id="Role"
+                        name="Role"
+                        class="admin-user-filter-input">
                     <option value="" selected="@(string.IsNullOrEmpty(filter.Role))">
                         همه نقش‌ها
                     </option>
@@ -69,9 +76,11 @@
             </div>
 
             <div class="admin-user-filter-group">
-                <label for="IsDebtor" class="admin-user-filter-label">وضعیت مالی</label>
-                <select id="IsDebtor" name="IsDebtor" class="admin-user-filter-input">
-                    <option value="" selected="@(filter.IsDebtor == null)">
+                <label for="IsDebtor">وضعیت مالی</label>
+                <select id="IsDebtor"
+                        name="IsDebtor"
+                        class="admin-user-filter-input">
+                    <option value="" selected="@(filter.IsDebtor is null)">
                         همه وضعیت‌ها
                     </option>
                     <option value="true" selected="@(filter.IsDebtor == true)">
@@ -84,10 +93,10 @@
             </div>
 
             <div class="admin-user-filter-group">
-                <label for="PageSize" class="admin-user-filter-label">
-                    تعداد در هر صفحه
-                </label>
-                <select id="PageSize" name="PageSize" class="admin-user-filter-input">
+                <label for="PageSize">تعداد در هر صفحه</label>
+                <select id="PageSize"
+                        name="PageSize"
+                        class="admin-user-filter-input">
                     <option value="10" selected="@(filter.PageSize == 10)">۱۰</option>
                     <option value="20" selected="@(filter.PageSize == 20)">۲۰</option>
                     <option value="50" selected="@(filter.PageSize == 50)">۵۰</option>
@@ -100,7 +109,7 @@
 
             <div class="admin-user-filter-actions">
                 <button type="submit" class="admin-user-filter-submit">
-                    جستجو
+                    اعمال فیلتر
                 </button>
 
                 <a asp-area="Admin"
@@ -113,37 +122,43 @@
         </form>
     </section>
 
-    @if (Model.Users.Count == 0)
-    {
-        <section class="admin-user-empty-state">
-            <div class="admin-user-empty-icon" aria-hidden="true">—</div>
-            <h2 class="admin-user-empty-title">کاربری پیدا نشد</h2>
-            <p>کاربری با معیارهای انتخاب‌شده پیدا نشد. فیلترها را تغییر بده یا پاک کن.</p>
+    <section class="admin-user-list-card"
+             aria-labelledby="admin-user-list-title">
 
-            <a asp-area="Admin"
-               asp-controller="User"
-               asp-action="Index"
-               class="admin-user-empty-reset">
-                نمایش همه کاربران
-            </a>
-        </section>
-    }
-    else
-    {
-        <section class="admin-user-list-card">
-            <header class="admin-user-list-header">
-                <div>
-                    <h2 class="admin-user-list-title">فهرست کاربران</h2>
-                    <p class="admin-user-list-description">
-                        اطلاعات حساب، نقش و موجودی کیف‌پول کاربران
-                    </p>
-                </div>
+        <header class="admin-user-list-header">
+            <div>
+                <h2 id="admin-user-list-title" class="admin-user-list-title">
+                    فهرست کاربران
+                </h2>
+                <p class="admin-user-list-description">
+                    مشخصات حساب، نقش و موجودی کیف‌پول
+                </p>
+            </div>
 
-                <span class="admin-user-list-count">
-                    @Model.TotalCount کاربر
-                </span>
-            </header>
+            <span class="admin-user-list-count">
+                @Model.TotalCount کاربر
+            </span>
+        </header>
 
+        @if (Model.Users.Count == 0)
+        {
+            <div class="admin-user-empty-state">
+                <h3>کاربری پیدا نشد</h3>
+                <p>
+                    کاربری با معیارهای انتخاب‌شده وجود ندارد.
+                    فیلترها را تغییر دهید یا پاک کنید.
+                </p>
+
+                <a asp-area="Admin"
+                   asp-controller="User"
+                   asp-action="Index"
+                   class="admin-user-filter-reset">
+                    نمایش همه کاربران
+                </a>
+            </div>
+        }
+        else
+        {
             <div class="table-responsive admin-user-table-wrapper">
                 <table class="admin-user-table">
                     <thead>
@@ -159,11 +174,11 @@
                                    asp-route-IsDebtor="@filter.IsDebtor"
                                    asp-route-PageSize="@filter.PageSize"
                                    asp-route-Page="1"
-                                   asp-route-SortBy="FullName"
-                                   asp-route-SortDescending="@(filter.SortBy == "FullName" && !filter.SortDescending)"
+                                   asp-route-SortBy="Name"
+                                   asp-route-SortDescending="@(filter.SortBy == "Name" && !filter.SortDescending)"
                                    class="admin-user-sort-link">
                                     نام و نام خانوادگی
-                                    @if (filter.SortBy == "FullName")
+                                    @if (filter.SortBy == "Name")
                                     {
                                         <span aria-hidden="true">
                                             @(filter.SortDescending ? "▼" : "▲")
@@ -220,7 +235,7 @@
                             </th>
 
                             <th scope="col">وضعیت مالی</th>
-                            <th scope="col" class="admin-user-table-actions">عملیات</th>
+                            <th scope="col">عملیات</th>
                         </tr>
                     </thead>
 
@@ -235,10 +250,12 @@
                                 </td>
 
                                 <td class="admin-user-email">
-                                    @user.Email
+                                    @(string.IsNullOrWhiteSpace(user.Email)
+                                        ? "—"
+                                        : user.Email)
                                 </td>
 
-                                <td class="admin-user-phone">
+                                <td>
                                     @(string.IsNullOrWhiteSpace(user.PhoneNumber)
                                         ? "—"
                                         : user.PhoneNumber)
@@ -270,7 +287,7 @@
                                     }
                                 </td>
 
-                                <td class="admin-user-table-actions">
+                                <td>
                                     <a asp-area="Admin"
                                        asp-controller="User"
                                        asp-action="Details"
@@ -286,37 +303,14 @@
             </div>
 
             <footer class="admin-user-list-footer">
-                <span>صفحه @filter.Page از @Model.TotalPages</span>
+                <span>صفحه @currentPage از @totalPages</span>
                 <span>@Model.Users.Count مورد در این صفحه</span>
             </footer>
-        </section>
 
-        @if (Model.TotalPages > 1)
-        {
-            <nav class="admin-user-pagination" aria-label="صفحه‌بندی کاربران">
-                @if (filter.Page > 1)
-                {
-                    <a asp-area="Admin"
-                       asp-controller="User"
-                       asp-action="Index"
-                       asp-route-SearchTerm="@filter.SearchTerm"
-                       asp-route-Role="@filter.Role"
-                       asp-route-IsDebtor="@filter.IsDebtor"
-                       asp-route-PageSize="@filter.PageSize"
-                       asp-route-SortBy="@filter.SortBy"
-                       asp-route-SortDescending="@filter.SortDescending"
-                       asp-route-Page="@(filter.Page - 1)"
-                       class="admin-user-pagination-link">
-                        قبلی
-                    </a>
-                }
-                else
-                {
-                    <span class="admin-user-pagination-link is-disabled">قبلی</span>
-                }
-
-                <div class="admin-user-pagination-pages">
-                    @for (var pageNumber = 1; pageNumber <= Model.TotalPages; pageNumber++)
+            @if (totalPages > 1)
+            {
+                <nav class="admin-user-pagination" aria-label="صفحه‌بندی کاربران">
+                    @if (currentPage > 1)
                     {
                         <a asp-area="Admin"
                            asp-controller="User"
@@ -327,37 +321,44 @@
                            asp-route-PageSize="@filter.PageSize"
                            asp-route-SortBy="@filter.SortBy"
                            asp-route-SortDescending="@filter.SortDescending"
-                           asp-route-Page="@pageNumber"
-                           aria-current="@(pageNumber == filter.Page ? "page" : null)"
-                           class="admin-user-pagination-link @(pageNumber == filter.Page ? "active" : "")">
-                            @pageNumber
+                           asp-route-Page="@(currentPage - 1)"
+                           class="admin-user-pagination-link">
+                            قبلی
                         </a>
                     }
-                </div>
+                    else
+                    {
+                        <span class="admin-user-pagination-link is-disabled">قبلی</span>
+                    }
 
-                @if (filter.Page < Model.TotalPages)
-                {
-                    <a asp-area="Admin"
-                       asp-controller="User"
-                       asp-action="Index"
-                       asp-route-SearchTerm="@filter.SearchTerm"
-                       asp-route-Role="@filter.Role"
-                       asp-route-IsDebtor="@filter.IsDebtor"
-                       asp-route-PageSize="@filter.PageSize"
-                       asp-route-SortBy="@filter.SortBy"
-                       asp-route-SortDescending="@filter.SortDescending"
-                       asp-route-Page="@(filter.Page + 1)"
-                       class="admin-user-pagination-link">
-                        بعدی
-                    </a>
-                }
-                else
-                {
-                    <span class="admin-user-pagination-link is-disabled">بعدی</span>
-                }
-            </nav>
+                    <span class="admin-user-pagination-current">
+                        @currentPage / @totalPages
+                    </span>
+
+                    @if (currentPage < totalPages)
+                    {
+                        <a asp-area="Admin"
+                           asp-controller="User"
+                           asp-action="Index"
+                           asp-route-SearchTerm="@filter.SearchTerm"
+                           asp-route-Role="@filter.Role"
+                           asp-route-IsDebtor="@filter.IsDebtor"
+                           asp-route-PageSize="@filter.PageSize"
+                           asp-route-SortBy="@filter.SortBy"
+                           asp-route-SortDescending="@filter.SortDescending"
+                           asp-route-Page="@(currentPage + 1)"
+                           class="admin-user-pagination-link">
+                            بعدی
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="admin-user-pagination-link is-disabled">بعدی</span>
+                    }
+                </nav>
+            }
         }
-    }
+    </section>
 </div>
 
 @section Styles {
