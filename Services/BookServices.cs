@@ -189,6 +189,30 @@ namespace LibraryManagement.Services
             return BookUpdateResult.Success;
         }
 
+
+        public int AdminCreateBook(AdminBookCreateDto input)
+        {
+            ArgumentNullException.ThrowIfNull(input);
+
+            var book = new Book
+            {
+                Title = input.Title,
+                Author = input.Author,
+                Publisher = input.Publisher,
+                PublicationYear = input.PublicationYear,
+                PublicationSeason = input.PublicationSeason,
+                PageCount = input.PageCount,
+                Edition = input.Edition,
+                Volume = input.Volume
+            };
+
+            _context.Books.Add(book);
+            _context.SaveChanges();
+
+            return book.Id;
+        }
+
+
         private IQueryable<Book> ApplyBookFilters(
             IQueryable<Book> booksQuery,
             BookFilterDto filter)

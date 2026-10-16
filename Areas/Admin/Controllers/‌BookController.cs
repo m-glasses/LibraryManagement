@@ -1,14 +1,9 @@
-﻿using LibraryManagement.Areas.Admin.ViewModels;
-using LibraryManagement.Areas.Admin.ViewModels.Book;
-using LibraryManagement.DTO;
+﻿using LibraryManagement.Areas.Admin.ViewModels.Book;
 using LibraryManagement.DTO.Book;
 using LibraryManagement.DTO.Book.Admin;
 using LibraryManagement.Helper;
-using LibraryManagement.Models;
-using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LibraryManagement.Areas.Admin.Controllers
@@ -17,12 +12,18 @@ namespace LibraryManagement.Areas.Admin.Controllers
     [Authorize(Roles = Roles.Admin)]
     public class BookController : Controller
     {
+        #region Fields and Constructor
+
         private readonly IBookService _bookService;
+
         public BookController(IBookService bookService)
         {
             _bookService = bookService;
         }
 
+        #endregion
+
+        #region Index
 
         public IActionResult Index(AdminBookFilterViewModel inputViewModel)
         {
@@ -114,18 +115,23 @@ namespace LibraryManagement.Areas.Admin.Controllers
             });
         }
 
+        #endregion
 
-
+        #region Details
 
         public IActionResult Details(int bookId)
         {
             if (bookId <= 0)
+            {
                 return NotFound();
+            }
 
             var dto = _bookService.AdminGetBookDetails(bookId);
 
             if (dto is null)
+            {
                 return NotFound();
+            }
 
             var viewModel = new AdminBookDetailsViewModel
             {
@@ -147,27 +153,67 @@ namespace LibraryManagement.Areas.Admin.Controllers
             return View(viewModel);
         }
 
+        #endregion
+
+        #region Create
+
+        [HttpGet]
+        public IActionResult Create()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(AdminBookCreateViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var dto = new AdminBookCreateDto
+            {
+                Title = viewModel.Title,
+                Author = viewModel.Author,
+                Publisher = viewModel.Publisher,
+                PublicationYear = viewModel.PublicationYear,
+                PublicationSeason = viewModel.PublicationSeason,
+                PageCount = viewModel.PageCount,
+                Edition = viewModel.Edition,
+                Volume = viewModel.Volume
+            };
+
+            int bookId = _bookService.AdminCreateBook(dto);
+
+            return RedirectToAction(nameof(Details), new { bookId });
+        }
+
+        #endregion
+
+        #region Edit
+
+        [HttpGet]
         public IActionResult Edit(int id)
         {
             var book = _bookService.AdminGetBookDetails(id);
 
-            if(book is null)
+            if (book is null)
             {
                 return NotFound();
             }
 
-            var viewModel = new AdminBookEditViewModel()
+            var viewModel = new AdminBookEditViewModel
             {
                 Id = book.Id,
-                Title= book.Title,
-                Author= book.Author,
+                Title = book.Title,
+                Author = book.Author,
                 Publisher = book.Publisher,
-                PublicationYear= book.PublicationYear,
-                PublicationSeason= book.PublicationSeason,
-                PageCount= book.PageCount,
-                Edition= book.Edition,
-                Volume= book.Volume,
-                
+                PublicationYear = book.PublicationYear,
+                PublicationSeason = book.PublicationSeason,
+                PageCount = book.PageCount,
+                Edition = book.Edition,
+                Volume = book.Volume
             };
 
             return View(viewModel);
@@ -200,18 +246,19 @@ namespace LibraryManagement.Areas.Admin.Controllers
             switch (result)
             {
                 case BookUpdateResult.Success:
-                    return RedirectToAction(nameof(Details) , new { bookId = viewModel.Id });
+                    return RedirectToAction(
+                        nameof(Details),
+                        new { bookId = viewModel.Id });
 
                 case BookUpdateResult.NotFound:
                     return NotFound();
 
                 default:
-                    throw new InvalidOperationException($"Unexpected book update result: {result}");
+                    throw new InvalidOperationException(
+                        $"Unexpected book update result: {result}");
             }
         }
 
+        #endregion
     }
-    
-   
 }
-

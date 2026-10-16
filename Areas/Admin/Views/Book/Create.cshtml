@@ -1,0 +1,225 @@
+﻿@using LibraryManagement.Models
+@model LibraryManagement.Areas.Admin.ViewModels.Book.AdminBookCreateViewModel
+
+@{
+    ViewData["Title"] = "افزودن کتاب";
+}
+
+<div class="admin-book-create-page">
+
+    @* Page header *@
+    <header class="admin-book-create-header">
+        <div>
+            <h1 class="admin-book-create-title">
+                افزودن کتاب
+            </h1>
+
+            <p class="admin-book-create-subtitle">
+                اطلاعات کتاب جدید را وارد کنید تا به فهرست کتابخانه اضافه شود.
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Index"
+           class="admin-book-create-back-link">
+            بازگشت به فهرست کتاب‌ها
+        </a>
+    </header>
+
+    @* Create form card *@
+    <section class="admin-book-create-card"
+             aria-labelledby="admin-book-create-form-title">
+
+        <header class="admin-book-create-card-header">
+            <h2 id="admin-book-create-form-title">
+                مشخصات کتاب
+            </h2>
+
+            <p>
+                فیلدهای الزامی را تکمیل کنید.
+            </p>
+        </header>
+
+        <div class="admin-book-create-card-body">
+
+            <form asp-area="Admin"
+                  asp-controller="Book"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <div asp-validation-summary="ModelOnly"
+                     class="admin-book-create-validation"
+                     role="alert">
+                </div>
+
+                <div class="admin-book-create-form-grid">
+
+                    @* Title *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="Title"></label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               autocomplete="off"
+                               maxlength="200"
+                               autofocus />
+
+                        <span asp-validation-for="Title"
+                              class="text-danger"></span>
+                    </div>
+
+                    @* Author *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="Author"></label>
+
+                        <input asp-for="Author"
+                               class="form-control"
+                               autocomplete="off"
+                               maxlength="100" />
+
+                        <span asp-validation-for="Author"
+                              class="text-danger"></span>
+                    </div>
+
+                    @* Publisher *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="Publisher"></label>
+
+                        <input asp-for="Publisher"
+                               class="form-control"
+                               autocomplete="off"
+                               maxlength="100" />
+
+                        <span asp-validation-for="Publisher"
+                              class="text-danger"></span>
+                    </div>
+
+                    @* Publication year *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="PublicationYear"></label>
+
+                        <input asp-for="PublicationYear"
+                               type="number"
+                               class="form-control"
+                               inputmode="numeric" />
+
+                        <span asp-validation-for="PublicationYear"
+                              class="text-danger"></span>
+                    </div>
+
+                    @* Publication season *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="PublicationSeason"></label>
+
+                        <select asp-for="PublicationSeason"
+                                class="form-select">
+
+                            <option value="">انتخاب فصل (اختیاری)</option>
+
+                            <option value="@((int)PublicationSeason.Spring)">
+                                بهار
+                            </option>
+
+                            <option value="@((int)PublicationSeason.Summer)">
+                                تابستان
+                            </option>
+
+                            <option value="@((int)PublicationSeason.Autumn)">
+                                پاییز
+                            </option>
+
+                            <option value="@((int)PublicationSeason.Winter)">
+                                زمستان
+                            </option>
+
+                        </select>
+
+                        <span asp-validation-for="PublicationSeason"
+                              class="text-danger"></span>
+                    </div>
+
+                    @* Page count *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="PageCount"></label>
+
+                        <input asp-for="PageCount"
+                               type="number"
+                               class="form-control"
+                               min="1"
+                               max="10000"
+                               inputmode="numeric" />
+
+                        <span asp-validation-for="PageCount"
+                              class="text-danger"></span>
+                    </div>
+
+                    @* Edition *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="Edition"></label>
+
+                        <input asp-for="Edition"
+                               type="number"
+                               class="form-control"
+                               min="1"
+                               max="1000"
+                               inputmode="numeric" />
+
+                        <span asp-validation-for="Edition"
+                              class="text-danger"></span>
+                    </div>
+
+                    @* Volume *@
+                    <div class="admin-book-create-field">
+                        <label asp-for="Volume"></label>
+
+                        <input asp-for="Volume"
+                               type="number"
+                               class="form-control"
+                               min="1"
+                               max="100"
+                               inputmode="numeric" />
+
+                        <span asp-validation-for="Volume"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                @* Form actions *@
+                <div class="admin-book-create-actions">
+
+                    <a asp-area="Admin"
+                       asp-controller="Book"
+                       asp-action="Index"
+                       class="admin-book-create-cancel">
+                        انصراف
+                    </a>
+
+                    <button type="submit"
+                            class="admin-book-create-submit">
+                        افزودن کتاب
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </section>
+
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/book/Create.css"
+          asp-append-version="true" />
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}
