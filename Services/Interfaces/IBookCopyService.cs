@@ -9,5 +9,6 @@ namespace LibraryManagement.Services.Interfaces
         BookCopiesListResult GetBookCopiesList(BookCopiesFilterDto input);
         AdminBookCopyDetailDto? GetBookCopyDetails(int id);
         BookCopyUpdateResult AdminUpdateBookCopy(BookCopyEditDto input);
+        int AdminCreateBookCopy(BookCopyCreateDto input);
     }
 }

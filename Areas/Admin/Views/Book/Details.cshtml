@@ -163,7 +163,13 @@
            class="admin-book-details-action admin-book-details-action-primary">
             ویرایش کتاب
         </a>
-
+        <a asp-area="Admin"
+           asp-controller="BookCopy"
+           asp-action="Create"
+           asp-route-bookId="@Model.Id"
+           class="admin-book-details-action admin-book-details-action-primary">
+            افزودن نسخه جدید
+        </a>
         <a asp-area="Admin"
            asp-controller="BookCopy"
            asp-action="Index"
@@ -179,7 +185,7 @@
            class="admin-book-details-action">
             مشاهده رزروهای کتاب
         </a>
-
+       
         <a asp-area="Admin"
            asp-controller="Book"
            asp-action="Index"

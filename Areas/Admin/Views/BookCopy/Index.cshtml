@@ -21,6 +21,7 @@
         <a asp-area="Admin"
            asp-controller="BookCopy"
            asp-action="Create"
+           asp-route-bookId="@filter.BookId"
            class="admin-book-copy-create-link">
             <span aria-hidden="true">+</span>
             افزودن نسخهٔ کتاب
@@ -53,6 +54,13 @@
               asp-action="Index"
               method="get"
               class="admin-book-copy-filter-form">
+
+            @if (filter.BookId.HasValue)
+            {
+                <input type="hidden"
+                       name="BookId"
+                       value="@filter.BookId.Value" />
+            }
 
             <div class="admin-book-copy-filter-group admin-book-copy-search-group">
                 <label for="SearchTerm">جست‌وجو</label>
@@ -171,6 +179,7 @@
                 <a asp-area="Admin"
                    asp-controller="BookCopy"
                    asp-action="Index"
+                   asp-route-bookId="@filter.BookId"
                    class="admin-book-copy-filter-reset">
                     پاک کردن فیلترها
                 </a>
@@ -211,8 +220,9 @@
                 <a asp-area="Admin"
                    asp-controller="BookCopy"
                    asp-action="Index"
+                   asp-route-bookId="@filter.BookId"
                    class="admin-book-copy-filter-reset">
-                    نمایش همه نسخه‌ها
+                    پاک کردن فیلترها
                 </a>
             </div>
         }
@@ -354,6 +364,7 @@
                             <a asp-area="Admin"
                                asp-controller="BookCopy"
                                asp-action="Index"
+                               asp-route-BookId="@filter.BookId"
                                asp-route-SearchTerm="@filter.SearchTerm"
                                asp-route-Status="@filter.Status"
                                asp-route-SortBy="@filter.SortBy"
@@ -370,6 +381,7 @@
                             <a asp-area="Admin"
                                asp-controller="BookCopy"
                                asp-action="Index"
+                               asp-route-BookId="@filter.BookId"
                                asp-route-SearchTerm="@filter.SearchTerm"
                                asp-route-Status="@filter.Status"
                                asp-route-SortBy="@filter.SortBy"

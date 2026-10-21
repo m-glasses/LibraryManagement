@@ -7,6 +7,10 @@ namespace LibraryManagement.Areas.Admin.ViewModels.BookCopies
         [Display(Name = "عبارت جستجو")]
         public string? SearchTerm { get; set; }
 
+        [Display(Name = "شناسه کتاب")]
+        [Range(1, int.MaxValue, ErrorMessage = "شناسه کتاب معتبر نیست.")]
+        public int? BookId { get; set; }
+
         [Display(Name = "شماره صفحه")]
         [Range(1, int.MaxValue, ErrorMessage = "شماره صفحه باید حداقل ۱ باشد.")]
         public int Page { get; set; } = 1;

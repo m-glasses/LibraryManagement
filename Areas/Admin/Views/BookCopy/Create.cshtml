@@ -1,0 +1,126 @@
+﻿@model LibraryManagement.Areas.Admin.ViewModels.BookCopies.BookCopyCreateViewModel
+
+@{
+    ViewData["Title"] = "افزودن نسخه جدید";
+}
+
+<div class="admin-book-copy-create-page">
+
+    <div class="admin-book-copy-create-header">
+        <div>
+            <h1 class="admin-book-copy-create-title">
+                افزودن نسخه جدید
+            </h1>
+
+            <p class="admin-book-copy-create-subtitle">
+                ثبت یک نسخه فیزیکی جدید برای کتاب انتخاب‌شده
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Details"
+           asp-route-bookId="@Model.BookId"
+           class="admin-book-copy-create-back-link">
+            بازگشت به جزئیات کتاب
+        </a>
+    </div>
+
+    <div class="admin-book-copy-create-card">
+
+        <div class="admin-book-copy-create-card-header">
+            <h2>مشخصات نسخه جدید</h2>
+            <p>اطلاعات کتاب انتخاب‌شده را بررسی و شماره اموال را وارد کنید.</p>
+        </div>
+
+        <div class="admin-book-copy-create-card-body">
+
+            <form asp-area="Admin"
+                  asp-controller="BookCopy"
+                  asp-action="Create"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="BookId" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="admin-book-copy-create-validation"
+                     role="alert">
+                </div>
+
+                <div class="admin-book-copy-create-form-grid">
+
+                    <div class="admin-book-copy-create-field">
+                        <label asp-for="Title"></label>
+
+                        <input asp-for="Title"
+                               class="form-control"
+                               readonly />
+
+                        <span class="admin-book-copy-create-field-note">
+                            عنوان کتاب قابل تغییر نیست.
+                        </span>
+                    </div>
+
+                    <div class="admin-book-copy-create-field">
+                        <label asp-for="Author"></label>
+
+                        <input asp-for="Author"
+                               class="form-control"
+                               readonly />
+
+                        <span class="admin-book-copy-create-field-note">
+                            نویسنده کتاب قابل تغییر نیست.
+                        </span>
+                    </div>
+
+                    <div class="admin-book-copy-create-field admin-book-copy-create-inventory-field">
+                        <label asp-for="InventoryNumber"></label>
+
+                        <input asp-for="InventoryNumber"
+                               class="form-control"
+                               autocomplete="off"
+                               maxlength="50"
+                               autofocus />
+
+                        <span asp-validation-for="InventoryNumber"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="admin-book-copy-create-actions">
+
+                    <a asp-area="Admin"
+                       asp-controller="Book"
+                       asp-action="Details"
+                       asp-route-bookId="@Model.BookId"
+                       class="admin-book-copy-create-cancel">
+                        انصراف
+                    </a>
+
+                    <button type="submit"
+                            class="admin-book-copy-create-submit">
+                        ثبت نسخه
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+    </div>
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/bookCopy/Create.css"
+          asp-append-version="true" />
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

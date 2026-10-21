@@ -255,26 +255,31 @@ namespace LibraryManagement.Services
 
 
 
-        public int AdminCreateBook(AdminBookCreateDto input)
+        public int AdminCreateBookCopy(BookCopyCreateDto input)
         {
             ArgumentNullException.ThrowIfNull(input);
 
-            var book = new Book
+            bool bookExists = _context.Books.Any(book => book.Id == input.BookId);
+
+            if (!bookExists)
+                throw new KeyNotFoundException("The specified book was not found.");
+
+            bool inventoryNumberExists = _context.BookCopies.Any(bookCopy =>
+                bookCopy.InventoryNumber == input.InventoryNumber);
+
+            if (inventoryNumberExists)
+                throw new InvalidOperationException("The inventory number already exists.");
+
+            var bookCopy = new BookCopy
             {
-                Title = input.Title,
-                Author = input.Author,
-                Publisher = input.Publisher,
-                PublicationYear = input.PublicationYear,
-                PublicationSeason = input.PublicationSeason,
-                PageCount = input.PageCount,
-                Edition = input.Edition,
-                Volume = input.Volume
+                BookId = input.BookId,
+                InventoryNumber = input.InventoryNumber
             };
 
-            _context.Books.Add(book);
+            _context.BookCopies.Add(bookCopy);
             _context.SaveChanges();
 
-            return book.Id;
+            return bookCopy.Id;
         }
 
 
@@ -282,6 +287,12 @@ namespace LibraryManagement.Services
         {
             ArgumentNullException.ThrowIfNull(bookCopiesQuery);
             ArgumentNullException.ThrowIfNull(filter);
+
+            if (filter.BookId.HasValue)
+            {
+                bookCopiesQuery = bookCopiesQuery.Where(
+                    bookCopy => bookCopy.BookId == filter.BookId.Value);
+            }
 
             if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
             {

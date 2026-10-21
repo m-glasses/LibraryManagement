@@ -4,6 +4,7 @@ using LibraryManagement.DTO.Book;
 using LibraryManagement.DTO.Book.Admin;
 using LibraryManagement.DTO.BookCopies;
 using LibraryManagement.Helper;
+using LibraryManagement.Models;
 using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
@@ -16,9 +17,11 @@ namespace LibraryManagement.Areas.Admin.Controllers
     public class BookCopyController : Controller
     {
         private readonly IBookCopyService _bookCopyServices;
-        public BookCopyController(IBookCopyService bookCopyService)
+        private readonly IBookService _bookService;
+        public BookCopyController(IBookCopyService bookCopyService , IBookService bookService)
         {
             _bookCopyServices = bookCopyService;
+            _bookService = bookService;
         }
 
 
@@ -67,6 +70,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             var queryDto = new BookCopiesFilterDto
             {
                 SearchTerm = inputViewModel.SearchTerm?.Trim(),
+                BookId = inputViewModel.BookId,
                 Status = inputViewModel.Status,
                 SortBy = inputViewModel.SortBy,
                 SortDescending = inputViewModel.SortDescending,
@@ -225,6 +229,65 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 default:
                     throw new InvalidOperationException(
                         $"Unexpected bookCopy update result: {result}");
+            }
+        }
+
+        #endregion
+
+        #region Create
+
+        [HttpGet]
+        public IActionResult Create(int bookId)
+        {
+            if (bookId <= 0)
+                return NotFound();
+
+            var book = _bookService.GetById(bookId);
+
+            if (book is null)
+                return NotFound();
+
+            var viewModel = new BookCopyCreateViewModel
+            {
+                BookId = book.Id,
+                Title = book.Title,
+                Author = book.Author
+            };
+
+            return View(viewModel);
+        }
+
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Create(BookCopyCreateViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+                return View(viewModel);
+
+            var dto = new BookCopyCreateDto
+            {
+                BookId = viewModel.BookId,
+                InventoryNumber = viewModel.InventoryNumber,
+            };
+
+            try
+            {
+                int bookCopyId = _bookCopyServices.AdminCreateBookCopy(dto);
+
+                return RedirectToAction(nameof(Details), new { bookCopyId });
+            }
+            catch (InvalidOperationException ex)
+            {
+                ModelState.AddModelError(
+                    nameof(viewModel.InventoryNumber),
+                    ErrorMessageHelper.Translate(ex.Message));
+
+                return View(viewModel);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
             }
         }
 

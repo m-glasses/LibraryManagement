@@ -5,6 +5,7 @@ namespace LibraryManagement.DTO.BookCopies
     public class BookCopiesFilterDto
     {
         public string? SearchTerm { get; set; }
+        public int? BookId { get; set; }
         public BookCopyStatus? Status { get; set; }
         public string? SortBy { get; set; }
         public bool SortDescending { get; set; } = false;
