@@ -7,5 +7,6 @@ namespace LibraryManagement.Services.Interfaces
     {
         List<BookCopy> GetAvailableCopies();
         BookCopiesListResult GetBookCopiesList(BookCopiesFilterDto input);
+        AdminBookCopyDetailDto? GetBookCopyDetails(int id);
     }
 }

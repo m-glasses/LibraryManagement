@@ -1,0 +1,277 @@
+﻿
+/* ========================================
+   Admin - Book Copy Details
+   Shared visual language: Admin Book Details
+   ======================================== */
+
+.admin-book-copy-details-page {
+    width: 100%;
+    color: var(--lm-text);
+}
+
+/* Page header */
+
+.admin-book-copy-details-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--lm-space-4);
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-book-copy-details-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-2xl);
+    font-weight: var(--lm-font-weight-bold);
+    line-height: var(--lm-line-height-tight);
+}
+
+.admin-book-copy-details-subtitle {
+    margin: var(--lm-space-2) 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size);
+    line-height: 1.8;
+}
+
+/* Main card */
+
+.admin-book-copy-details-card {
+    overflow: hidden;
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-sm);
+}
+
+/* Sections */
+
+.admin-book-copy-details-section {
+    padding: var(--lm-space-5);
+}
+
+    .admin-book-copy-details-section + .admin-book-copy-details-section {
+        border-top: 1px solid var(--lm-border);
+    }
+
+.admin-book-copy-details-section-header {
+    margin-bottom: var(--lm-space-4);
+}
+
+    .admin-book-copy-details-section-header h2 {
+        margin: 0;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-lg);
+        font-weight: var(--lm-font-weight-semibold);
+        line-height: var(--lm-line-height-tight);
+    }
+
+/* Information grid */
+
+.admin-book-copy-details-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0 var(--lm-space-4);
+    margin: 0;
+}
+
+.admin-book-copy-details-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--lm-space-2);
+    min-width: 0;
+    padding: var(--lm-space-4) 0;
+    border-bottom: 1px solid var(--lm-border);
+}
+
+    .admin-book-copy-details-item dt {
+        margin: 0;
+        color: var(--lm-text-muted);
+        font-size: var(--lm-font-size-sm);
+        font-weight: var(--lm-font-weight-medium);
+        line-height: 1.8;
+    }
+
+    .admin-book-copy-details-item dd {
+        margin: 0;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size);
+        font-weight: var(--lm-font-weight-medium);
+        line-height: 1.8;
+        overflow-wrap: anywhere;
+    }
+
+/* Book link */
+
+.admin-book-copy-details-book-link {
+    color: var(--lm-primary);
+    text-decoration: none;
+    text-underline-offset: 3px;
+}
+
+    .admin-book-copy-details-book-link:hover {
+        text-decoration: underline;
+    }
+
+/* Copy status */
+
+.admin-book-copy-details-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    max-width: 100%;
+    padding: var(--lm-space-1) var(--lm-space-3);
+    border: 1px solid transparent;
+    border-radius: var(--lm-radius-full);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: 1.8;
+}
+
+.admin-book-copy-details-status-available {
+    color: var(--lm-success);
+    background-color: #eaf7ed;
+    border-color: #d1ead7;
+}
+
+.admin-book-copy-details-status-borrowed {
+    color: var(--lm-primary);
+    background-color: var(--lm-primary-light);
+}
+
+.admin-book-copy-details-status-pending {
+    color: #8a5a00;
+    background-color: #fff4d6;
+    border-color: #f0dfad;
+}
+
+.admin-book-copy-details-status-unknown {
+    color: var(--lm-text-muted);
+    background-color: var(--lm-background);
+    border-color: var(--lm-border);
+}
+
+/* Empty loan history */
+
+.admin-book-copy-details-empty {
+    margin: 0;
+    padding: var(--lm-space-4);
+    color: var(--lm-text-muted);
+    background-color: var(--lm-background);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-md);
+    font-size: var(--lm-font-size-sm);
+    line-height: 1.9;
+}
+
+/* Error message */
+
+.admin-book-copy-details-error {
+    margin-bottom: var(--lm-space-4);
+    padding: var(--lm-space-3) var(--lm-space-4);
+    color: var(--lm-danger);
+    background-color: var(--lm-background);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-md);
+    line-height: 1.8;
+    overflow-wrap: anywhere;
+}
+
+/* Actions */
+
+.admin-book-copy-details-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--lm-space-3);
+    margin-top: var(--lm-space-5);
+}
+
+.admin-book-copy-details-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 40px;
+    padding: var(--lm-space-2) var(--lm-space-4);
+    color: var(--lm-text);
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-button-radius);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: 1.8;
+    text-align: center;
+    text-decoration: none;
+    overflow-wrap: anywhere;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+    .admin-book-copy-details-action:hover {
+        color: var(--lm-primary);
+        border-color: var(--lm-primary);
+    }
+
+.admin-book-copy-details-action-primary {
+    color: #fff;
+    background-color: var(--lm-primary);
+    border-color: var(--lm-primary);
+}
+
+    .admin-book-copy-details-action-primary:hover {
+        color: #fff;
+        background-color: var(--lm-primary-hover);
+        border-color: var(--lm-primary-hover);
+    }
+
+/* Keyboard focus */
+
+.admin-book-copy-details-action:focus-visible,
+.admin-book-copy-details-book-link:focus-visible {
+    outline: 3px solid var(--lm-primary-light);
+    outline-offset: 2px;
+}
+
+/* Tablet */
+
+@media (max-width: 991.98px) {
+    .admin-book-copy-details-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+/* Mobile */
+
+@media (max-width: 575.98px) {
+    .admin-book-copy-details-title {
+        font-size: var(--lm-font-size-xl);
+    }
+
+    .admin-book-copy-details-section {
+        padding: var(--lm-space-4);
+    }
+
+    .admin-book-copy-details-grid {
+        grid-template-columns: minmax(0, 1fr);
+    }
+
+    .admin-book-copy-details-item {
+        padding: var(--lm-space-3) 0;
+    }
+
+        .admin-book-copy-details-item:last-child {
+            border-bottom: 0;
+        }
+
+    .admin-book-copy-details-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-book-copy-details-action {
+        width: 100%;
+    }
+}

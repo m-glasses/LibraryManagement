@@ -1,8 +1,6 @@
 ﻿using LibraryManagement.Areas.Admin.ViewModels.BookCopies;
 using LibraryManagement.Data;
-using LibraryManagement.DTO.Book;
 using LibraryManagement.DTO.Book.Admin;
-using LibraryManagement.DTO.Book.User;
 using LibraryManagement.DTO.BookCopies;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
@@ -50,13 +48,13 @@ namespace LibraryManagement.Services
                 .AsNoTracking();
 
             // 1. Apply filters.
-            bookCopiesQuery = ApplyBookFilters(bookCopiesQuery, input);
+            bookCopiesQuery = ApplyBookCopyFilters(bookCopiesQuery, input);
 
             // 2. Count filtered results before pagination.
             var totalCount = bookCopiesQuery.Count();
 
             // 3. Apply sorting.
-            bookCopiesQuery = ApplyBookSorting(
+            bookCopiesQuery = ApplyBookCopySorting(
                 bookCopiesQuery,
                 input.SortBy,
                 input.SortDescending);
@@ -123,39 +121,64 @@ namespace LibraryManagement.Services
             };
         }
 
-        public UserBookDetailDto? GetBookDetails(int id)
+        public AdminBookCopyDetailDto? GetBookCopyDetails(int id)
         {
             if (id <= 0)
             {
                 return null;
             }
 
-            return _context.Books
+            return _context.BookCopies
                 .AsNoTracking()
-                .Where(book => book.Id == id)
-                .Select(book => new UserBookDetailDto
+                .Where(bookCopy => bookCopy.Id == id)
+                .Select(bookCopy => new
                 {
-                    Id = book.Id,
-                    Title = book.Title,
-                    Author = book.Author,
-                    Publisher = book.Publisher,
-                    PublicationYear = book.PublicationYear,
-                    PublicationSeason = book.PublicationSeason,
-                    PageCount = book.PageCount,
-                    Edition = book.Edition,
-                    Volume = book.Volume,
-
-                    TotalCopies = book.BookCopies.Count(),
-
-                    AvailableCopies = book.BookCopies.Count(
-                        bookCopy => !bookCopy.Loans.Any(
-                            loan => loan.LoanStatus == LoanStatus.Active ||
-                                    loan.LoanStatus == LoanStatus.ReturnPending)),
-                    ActiveReservations = book.Reservations.Count(reservation => reservation.ReservationStatus == ReservationStatus.Active)
-
-
+                    BookCopy = bookCopy,
+                    LastLoan = bookCopy.Loans
+                        .OrderByDescending(loan => loan.StartDate)
+                        .Select(loan => new
+                        {
+                            loan.StartDate,
+                            loan.DueDate,
+                            BorrowerName = loan.User.Name
+                        }).FirstOrDefault()
                 })
-                .FirstOrDefault();
+                .Select(item => new AdminBookCopyDetailDto
+                {
+                    Id = item.BookCopy.Id,
+                    BookId = item.BookCopy.BookId,
+                    Title = item.BookCopy.Book.Title,
+                    Author = item.BookCopy.Book.Author,
+                    Publisher = item.BookCopy.Book.Publisher,
+                    PublicationYear = item.BookCopy.Book.PublicationYear,
+                    PublicationSeason = item.BookCopy.Book.PublicationSeason,
+                    PageCount = item.BookCopy.Book.PageCount,
+                    Edition = item.BookCopy.Book.Edition,
+                    Volume = item.BookCopy.Book.Volume,
+                    InventoryNumber = item.BookCopy.InventoryNumber,
+
+                    Status = item.BookCopy.Loans.Any(loan =>
+                        loan.LoanStatus == LoanStatus.ReturnPending)
+                            ? BookCopyStatus.ReturnPending
+                            : item.BookCopy.Loans.Any(loan =>
+                                loan.LoanStatus == LoanStatus.Active)
+                                    ? BookCopyStatus.Borrowed
+                                    : BookCopyStatus.Available,
+
+                    LastLoanStartDate = item.LastLoan == null
+                        ? null
+                        : item.LastLoan.StartDate,
+
+                    LastLoanDueDate = item.LastLoan == null
+                        ? null
+                        : item.LastLoan.DueDate,
+
+                    LastBorrowerName = item.LastLoan == null
+                        ? null
+                        : item.LastLoan.BorrowerName
+
+
+                }).FirstOrDefault();
         }
 
         public AdminBookDetailsDto? AdminGetBookDetails(int id)
@@ -251,7 +274,7 @@ namespace LibraryManagement.Services
         }
 
 
-        private IQueryable<BookCopy> ApplyBookFilters(IQueryable<BookCopy> bookCopiesQuery,BookCopiesFilterDto filter)
+        private IQueryable<BookCopy> ApplyBookCopyFilters(IQueryable<BookCopy> bookCopiesQuery,BookCopiesFilterDto filter)
         {
             ArgumentNullException.ThrowIfNull(bookCopiesQuery);
             ArgumentNullException.ThrowIfNull(filter);
@@ -289,7 +312,7 @@ namespace LibraryManagement.Services
             return bookCopiesQuery;
         }
 
-        private IQueryable<BookCopy> ApplyBookSorting(IQueryable<BookCopy> bookCopiesQuery, string? sortBy,bool sortDescending)
+        private IQueryable<BookCopy> ApplyBookCopySorting(IQueryable<BookCopy> bookCopiesQuery, string? sortBy,bool sortDescending)
         {
             ArgumentNullException.ThrowIfNull(bookCopiesQuery);
 

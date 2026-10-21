@@ -1,0 +1,258 @@
+﻿@model LibraryManagement.Areas.Admin.ViewModels.BookCopies.AdminBookCopyDetailsViewModel
+@using LibraryManagement.Areas.Admin.ViewModels.BookCopies
+@using LibraryManagement.Models
+
+@{
+    ViewData["Title"] = "جزئیات نسخه کتاب";
+}
+
+<div class="admin-book-copy-details-page">
+
+    <header class="admin-book-copy-details-header">
+        <div>
+            <h1 class="admin-book-copy-details-title">جزئیات نسخه کتاب</h1>
+            <p class="admin-book-copy-details-subtitle">
+                مشخصات نسخه فیزیکی، اطلاعات کتاب و آخرین وضعیت امانت
+            </p>
+        </div>
+    </header>
+
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="admin-book-copy-details-error" role="alert">
+            @errorMessage
+        </div>
+    }
+
+    <div class="admin-book-copy-details-card">
+
+        @* اطلاعات اختصاصی نسخه *@
+        <section class="admin-book-copy-details-section">
+            <header class="admin-book-copy-details-section-header">
+                <h2>مشخصات نسخه</h2>
+            </header>
+
+            <dl class="admin-book-copy-details-grid">
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Id)</dt>
+                    <dd>@Model.Id</dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.BookId)</dt>
+                    <dd>
+                        <a asp-area="Admin"
+                           asp-controller="Book"
+                           asp-action="Details"
+                           asp-route-bookId="@Model.BookId"
+                           class="admin-book-copy-details-book-link">
+                            @Model.BookId
+                        </a>
+                    </dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.InventoryNumber)</dt>
+                    <dd>
+                        @(string.IsNullOrWhiteSpace(Model.InventoryNumber)
+                            ? "ثبت نشده"
+                            : Model.InventoryNumber)
+                    </dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Status)</dt>
+                    <dd>
+                        @switch (Model.Status)
+                        {
+                            case BookCopyStatus.Available:
+                                <span class="admin-book-copy-details-status admin-book-copy-details-status-available">
+                                    موجود
+                                </span>
+                                break;
+
+                            case BookCopyStatus.Borrowed:
+                                <span class="admin-book-copy-details-status admin-book-copy-details-status-borrowed">
+                                    امانت داده‌شده
+                                </span>
+                                break;
+
+                            case BookCopyStatus.ReturnPending:
+                                <span class="admin-book-copy-details-status admin-book-copy-details-status-pending">
+                                    در انتظار تأیید بازگشت
+                                </span>
+                                break;
+
+                            default:
+                                <span class="admin-book-copy-details-status admin-book-copy-details-status-unknown">
+                                    نامشخص
+                                </span>
+                                break;
+                        }
+                    </dd>
+                </div>
+
+            </dl>
+        </section>
+
+        @* اطلاعات کتاب اصلی *@
+        <section class="admin-book-copy-details-section">
+            <header class="admin-book-copy-details-section-header">
+                <h2>مشخصات کتاب</h2>
+            </header>
+
+            <dl class="admin-book-copy-details-grid">
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Title)</dt>
+                    <dd>@Model.Title</dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Author)</dt>
+                    <dd>@Model.Author</dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Publisher)</dt>
+                    <dd>
+                        @(string.IsNullOrWhiteSpace(Model.Publisher)
+                            ? "ثبت نشده"
+                            : Model.Publisher)
+                    </dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.PublicationYear)</dt>
+                    <dd>@Model.PublicationYear</dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.PublicationSeason)</dt>
+                    <dd>
+                        @switch (Model.PublicationSeason)
+                        {
+                            case PublicationSeason.Spring:
+                                @:بهار
+                                break;
+                            case PublicationSeason.Summer:
+                                @:تابستان
+                                break;
+                            case PublicationSeason.Autumn:
+                                @:پاییز
+                                break;
+                            case PublicationSeason.Winter:
+                                @:زمستان
+                                break;
+                            default:
+                                @:ثبت نشده
+                                break;
+                        }
+                    </dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.PageCount)</dt>
+                    <dd>@Model.PageCount</dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Edition)</dt>
+                    <dd>@Model.Edition</dd>
+                </div>
+
+                <div class="admin-book-copy-details-item">
+                    <dt>@Html.DisplayNameFor(model => model.Volume)</dt>
+                    <dd>@Model.Volume</dd>
+                </div>
+
+            </dl>
+        </section>
+
+        @* آخرین سابقه امانت *@
+        <section class="admin-book-copy-details-section">
+            <header class="admin-book-copy-details-section-header">
+                <h2>آخرین سابقه امانت</h2>
+            </header>
+
+            @if (Model.LastLoanStartDate.HasValue)
+            {
+                <dl class="admin-book-copy-details-grid">
+
+                    <div class="admin-book-copy-details-item">
+                        <dt>@Html.DisplayNameFor(model => model.LastBorrowerName)</dt>
+                        <dd>
+                            @(string.IsNullOrWhiteSpace(Model.LastBorrowerName)
+                                ? "نامشخص"
+                                : Model.LastBorrowerName)
+                        </dd>
+                    </div>
+
+                    <div class="admin-book-copy-details-item">
+                        <dt>@Html.DisplayNameFor(model => model.LastLoanStartDate)</dt>
+                        <dd>@Model.LastLoanStartDate.Value.ToPersianDate()</dd>
+                    </div>
+
+                    <div class="admin-book-copy-details-item">
+                        <dt>@Html.DisplayNameFor(model => model.LastLoanDueDate)</dt>
+                        <dd>
+                            @if (Model.LastLoanDueDate.HasValue)
+                            {
+                                @Model.LastLoanDueDate.Value.ToPersianDate()
+                            }
+                            else
+                            {
+                                <span>ثبت نشده</span>
+                            }
+                        </dd>
+                    </div>
+
+                </dl>
+            }
+            else
+            {
+                <p class="admin-book-copy-details-empty">
+                    این نسخه هنوز سابقه امانت ندارد.
+                </p>
+            }
+        </section>
+
+    </div>
+
+    @* عملیات مدیریتی *@
+    <nav class="admin-book-copy-details-actions"
+         aria-label="عملیات نسخه کتاب">
+
+        <a asp-area="Admin"
+           asp-controller="BookCopy"
+           asp-action="Edit"
+           asp-route-id="@Model.Id"
+           class="admin-book-copy-details-action admin-book-copy-details-action-primary">
+            ویرایش نسخه
+        </a>
+
+        <a asp-area="Admin"
+           asp-controller="Book"
+           asp-action="Details"
+           asp-route-bookId="@Model.BookId"
+           class="admin-book-copy-details-action">
+            مشاهده کتاب اصلی
+        </a>
+
+        <a asp-area="Admin"
+           asp-controller="BookCopy"
+           asp-action="Index"
+           class="admin-book-copy-details-action">
+            بازگشت به فهرست نسخه‌ها
+        </a>
+
+    </nav>
+
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/admin/bookCopy/details.css"
+          asp-append-version="true" />
+}

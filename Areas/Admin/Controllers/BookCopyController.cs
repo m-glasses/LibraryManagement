@@ -3,6 +3,7 @@ using LibraryManagement.Areas.Admin.ViewModels.BookCopies;
 using LibraryManagement.DTO.Book;
 using LibraryManagement.DTO.BookCopies;
 using LibraryManagement.Helper;
+using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -122,5 +123,45 @@ namespace LibraryManagement.Areas.Admin.Controllers
         }
 
         #endregion Index
+
+        #region Details
+
+        public IActionResult Details(int bookCopyId)
+        {
+            if (bookCopyId <= 0)
+            {
+                return NotFound();
+            }
+
+            var dto = _bookCopyServices.GetBookCopyDetails(bookCopyId);
+
+            if (dto is null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new AdminBookCopyDetailsViewModel
+            {
+                Id = dto.Id,
+                BookId = dto.BookId,
+                Title = dto.Title,
+                Author = dto.Author,
+                Publisher = dto.Publisher,
+                PublicationYear = dto.PublicationYear,
+                PublicationSeason = dto.PublicationSeason,
+                PageCount = dto.PageCount,
+                Edition = dto.Edition,
+                Volume = dto.Volume,
+                InventoryNumber= dto.InventoryNumber,
+                Status = dto.Status,
+                LastBorrowerName = dto.LastBorrowerName,
+                LastLoanDueDate = dto.LastLoanDueDate,
+                LastLoanStartDate = dto.LastLoanStartDate,
+            };
+
+            return View(viewModel);
+        }
+
+        #endregion
     }
 }
