@@ -1,6 +1,7 @@
 ﻿using LibraryManagement.Areas.Admin.ViewModels.Book;
 using LibraryManagement.Areas.Admin.ViewModels.BookCopies;
 using LibraryManagement.DTO.Book;
+using LibraryManagement.DTO.Book.Admin;
 using LibraryManagement.DTO.BookCopies;
 using LibraryManagement.Helper;
 using LibraryManagement.Services;
@@ -160,6 +161,71 @@ namespace LibraryManagement.Areas.Admin.Controllers
             };
 
             return View(viewModel);
+        }
+
+        #endregion
+
+        #region Edit
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var bookCopy = _bookCopyServices.GetBookCopyDetails(id);
+
+            if (bookCopy is null)
+            {
+                return NotFound();
+            }
+
+            var viewModel = new AdminBookCopyEditViewModel
+            {
+                Id = bookCopy.Id,
+                InventoryNumber = bookCopy.InventoryNumber,
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit(AdminBookCopyEditViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(viewModel);
+            }
+
+            var dto = new BookCopyEditDto
+            {
+                Id = viewModel.Id,
+                InventoryNumber = viewModel.InventoryNumber,
+            };
+
+            var result = _bookCopyServices.AdminUpdateBookCopy(dto);
+
+            switch (result)
+            {
+                case BookCopyUpdateResult.Success:
+                    return RedirectToAction(
+                        nameof(Details),
+                        new { bookCopyId = viewModel.Id });
+
+                case BookCopyUpdateResult.NotFound:
+                    return NotFound();
+
+
+                case BookCopyUpdateResult.InventoryNumberAlreadyExists:
+                    ModelState.AddModelError(
+                        nameof(viewModel.InventoryNumber),
+                        "این شماره اموال قبلاً برای نسخه دیگری ثبت شده است.");
+
+                    return View(viewModel);
+
+
+                default:
+                    throw new InvalidOperationException(
+                        $"Unexpected bookCopy update result: {result}");
+            }
         }
 
         #endregion

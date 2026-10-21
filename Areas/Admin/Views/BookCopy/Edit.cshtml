@@ -1,0 +1,113 @@
+﻿@model LibraryManagement.Areas.Admin.ViewModels.BookCopies.AdminBookCopyEditViewModel
+
+@{
+    ViewData["Title"] = "ویرایش نسخه کتاب";
+}
+
+<div class="admin-book-copy-edit-page">
+
+    <div class="admin-book-copy-edit-header">
+
+        <div>
+            <h1 class="admin-book-copy-edit-title">
+                ویرایش نسخه کتاب
+            </h1>
+
+            <p class="admin-book-copy-edit-subtitle">
+                اصلاح شماره اموال نسخه فیزیکی کتاب
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="BookCopy"
+           asp-action="Details"
+           asp-route-bookCopyId="@Model.Id"
+           class="admin-book-copy-edit-back-link">
+            بازگشت به جزئیات نسخه
+        </a>
+
+    </div>
+
+    <div class="admin-book-copy-edit-card">
+
+        <div class="admin-book-copy-edit-card-header">
+            <h2>مشخصات نسخه</h2>
+        </div>
+
+        <div class="admin-book-copy-edit-card-body">
+
+            <form asp-area="Admin"
+                  asp-controller="BookCopy"
+                  asp-action="Edit"
+                  method="post">
+
+                @Html.AntiForgeryToken()
+
+                <input asp-for="Id" type="hidden" />
+
+                <div asp-validation-summary="ModelOnly"
+                     class="admin-book-copy-edit-validation"
+                     role="alert">
+                </div>
+
+                <div class="admin-book-copy-edit-form-grid">
+
+                    <div class="admin-book-copy-edit-field">
+                        <label asp-for="Id"></label>
+
+                        <input id="display-id"
+                               value="@Model.Id"
+                               class="form-control"
+                               readonly />
+                    </div>
+
+                    <div class="admin-book-copy-edit-field">
+                        <label asp-for="InventoryNumber"></label>
+
+                        <input asp-for="InventoryNumber"
+                               class="form-control"
+                               autocomplete="off"
+                               maxlength="50" />
+
+                        <span asp-validation-for="InventoryNumber"
+                              class="text-danger"></span>
+                    </div>
+
+                </div>
+
+                <div class="admin-book-copy-edit-actions">
+
+                    <a asp-area="Admin"
+                       asp-controller="BookCopy"
+                       asp-action="Details"
+                       asp-route-bookCopyId="@Model.Id"
+                       class="admin-book-copy-edit-cancel">
+                        انصراف
+                    </a>
+
+                    <button type="submit"
+                            class="admin-book-copy-edit-submit">
+                        ذخیره تغییرات
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+</div>
+
+@section Styles
+{
+    <link rel="stylesheet"
+          href="~/css/pages/admin/bookCopy/Edit.css"
+          asp-append-version="true" />
+}
+
+@section Scripts
+{
+    <partial name="_ValidationScriptsPartial" />
+}

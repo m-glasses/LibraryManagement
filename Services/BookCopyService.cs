@@ -224,31 +224,35 @@ namespace LibraryManagement.Services
                 .FirstOrDefault();
         }
 
-        public BookUpdateResult AdminUpdateBook(AdminBookEditDto input)
+
+        public BookCopyUpdateResult AdminUpdateBookCopy(BookCopyEditDto input)
         {
             ArgumentNullException.ThrowIfNull(input);
 
-            var book = _context.Books
-                .FirstOrDefault(book => book.Id == input.Id);
+            var bookCopy = _context.BookCopies
+                .FirstOrDefault(bookCopy => bookCopy.Id == input.Id);
 
-            if (book is null)
+            if (bookCopy is null)
             {
-                return BookUpdateResult.NotFound;
+                return BookCopyUpdateResult.NotFound;
             }
 
-            book.Title = input.Title;
-            book.Author = input.Author;
-            book.Publisher = input.Publisher;
-            book.PublicationYear = input.PublicationYear;
-            book.PublicationSeason = input.PublicationSeason;
-            book.PageCount = input.PageCount;
-            book.Edition = input.Edition;
-            book.Volume = input.Volume;
+            bool inventoryNumberExists = _context.BookCopies.Any(bookCopy =>
+                bookCopy.InventoryNumber == input.InventoryNumber &&
+                bookCopy.Id != input.Id);
+
+            if (inventoryNumberExists)
+            {
+                return BookCopyUpdateResult.InventoryNumberAlreadyExists;
+            }
+
+            bookCopy.InventoryNumber = input.InventoryNumber;
 
             _context.SaveChanges();
 
-            return BookUpdateResult.Success;
+            return BookCopyUpdateResult.Success;
         }
+
 
 
         public int AdminCreateBook(AdminBookCreateDto input)
