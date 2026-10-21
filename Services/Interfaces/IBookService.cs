@@ -7,7 +7,7 @@ namespace LibraryManagement.Services.Interfaces
 {
     public interface IBookService : IGenericService<Book>
     {
-        BookListResult GetBookList(BookListQueryDto input);
+        BookListResult GetBookList(BookFilterDto input);
 
         UserBookDetailDto? GetBookDetails(int id);
 

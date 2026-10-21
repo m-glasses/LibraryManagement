@@ -59,7 +59,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 ModelState.Remove(nameof(inputViewModel.SortBy));
             }
 
-            var queryDto = new BookListQueryDto
+            var queryDto = new BookFilterDto
             {
                 SearchTerm = inputViewModel.SearchTerm?.Trim(),
                 HasAvailableCopies = inputViewModel.HasAvailableCopies,

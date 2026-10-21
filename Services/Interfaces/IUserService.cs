@@ -5,7 +5,7 @@ namespace LibraryManagement.Services.Interfaces
 {
     public interface IUserService
     {
-        UserListResult GetAllUsers(UserListQueryDto input);
+        UserListResult GetAllUsers(UserFilterDto input);
         UserDetailsDto? GetUserDetails(int id);
         Task Deactivate(int userId);
         void Activate(int userId);

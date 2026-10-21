@@ -1,6 +1,6 @@
 ﻿namespace LibraryManagement.DTO.User
 {
-    public class UserListQueryDto
+    public class UserFilterDto
     {
         public string? SearchTerm { get; set; }
         public string? Role { get; set; }

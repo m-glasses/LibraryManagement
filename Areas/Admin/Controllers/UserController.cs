@@ -59,7 +59,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
                 ModelState.Remove(nameof(inputViewModel.SortBy));
             }
 
-            var queryDto = new UserListQueryDto
+            var queryDto = new UserFilterDto
             {
                 SearchTerm = inputViewModel.SearchTerm?.Trim(),
                 Role = inputViewModel.Role,

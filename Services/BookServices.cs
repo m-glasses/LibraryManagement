@@ -18,7 +18,7 @@ namespace LibraryManagement.Services
             _context = context;
         }
 
-        public BookListResult GetBookList(BookListQueryDto input)
+        public BookListResult GetBookList(BookFilterDto input)
         {
             ArgumentNullException.ThrowIfNull(input);
 

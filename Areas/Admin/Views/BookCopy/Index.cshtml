@@ -1,0 +1,395 @@
+﻿@model LibraryManagement.Areas.Admin.ViewModels.BookCopies.AdminBookCopiesIndexViewModel
+
+@{
+    ViewData["Title"] = "مدیریت نسخه‌های کتاب";
+
+    var filter = Model.Filter;
+    var currentPage = Math.Max(1, filter.Page);
+    var totalPages = Model.TotalPages;
+}
+
+<div class="admin-book-copy-page">
+
+    <header class="admin-book-copy-page-header">
+        <div>
+            <h1 class="admin-book-copy-page-title">مدیریت نسخه‌های کتاب</h1>
+            <p class="admin-book-copy-page-subtitle">
+                مدیریت نسخه‌های فیزیکی کتاب‌ها، شماره اموال و وضعیت آن‌ها
+            </p>
+        </div>
+
+        <a asp-area="Admin"
+           asp-controller="BookCopy"
+           asp-action="Create"
+           class="admin-book-copy-create-link">
+            <span aria-hidden="true">+</span>
+            افزودن نسخهٔ کتاب
+        </a>
+    </header>
+
+    @if (TempData["ErrorMessage"] is string errorMessage)
+    {
+        <div class="admin-book-copy-error-message" role="alert">
+            @errorMessage
+        </div>
+    }
+
+    <section class="admin-book-copy-filter-card"
+             aria-labelledby="admin-book-copy-filter-title">
+
+        <header class="admin-book-copy-section-header">
+            <h2 id="admin-book-copy-filter-title"
+                class="admin-book-copy-section-title">
+                جست‌وجو و فیلتر
+            </h2>
+
+            <p class="admin-book-copy-section-description">
+                نسخه‌ها را بر اساس مشخصات کتاب، شماره اموال یا وضعیت فیلتر کنید.
+            </p>
+        </header>
+
+        <form asp-area="Admin"
+              asp-controller="BookCopy"
+              asp-action="Index"
+              method="get"
+              class="admin-book-copy-filter-form">
+
+            <div class="admin-book-copy-filter-group admin-book-copy-search-group">
+                <label for="SearchTerm">جست‌وجو</label>
+                <input id="SearchTerm"
+                       name="SearchTerm"
+                       type="search"
+                       value="@filter.SearchTerm"
+                       class="admin-book-copy-filter-input"
+                       placeholder="عنوان، نویسنده یا شماره اموال"
+                       autocomplete="off" />
+            </div>
+
+            <div class="admin-book-copy-filter-group">
+                <label for="Status">وضعیت نسخه</label>
+                <select id="Status"
+                        name="Status"
+                        class="admin-book-copy-filter-input">
+
+                    <option value=""
+                            selected="@(filter.Status is null)">
+                        همه وضعیت‌ها
+                    </option>
+
+                    <option value="Available"
+                            selected="@(filter.Status?.ToString() == "Available")">
+                        موجود
+                    </option>
+
+                    <option value="Borrowed"
+                            selected="@(filter.Status?.ToString() == "Borrowed")">
+                        امانت داده‌شده
+                    </option>
+
+                    <option value="ReturnPending"
+                            selected="@(filter.Status?.ToString() == "ReturnPending")">
+                        در انتظار تأیید بازگشت
+                    </option>
+                </select>
+            </div>
+
+            <div class="admin-book-copy-filter-group">
+                <label for="SortBy">مرتب‌سازی بر اساس</label>
+                <select id="SortBy"
+                        name="SortBy"
+                        class="admin-book-copy-filter-input">
+
+                    <option value=""
+                            selected="@string.IsNullOrWhiteSpace(filter.SortBy)">
+                        پیش‌فرض
+                    </option>
+
+                    <option value="Title"
+                            selected="@string.Equals(filter.SortBy, "Title", StringComparison.OrdinalIgnoreCase)">
+                        عنوان کتاب
+                    </option>
+
+                    <option value="Author"
+                            selected="@string.Equals(filter.SortBy, "Author", StringComparison.OrdinalIgnoreCase)">
+                        نویسنده
+                    </option>
+
+                    <option value="Publisher"
+                            selected="@string.Equals(filter.SortBy, "Publisher", StringComparison.OrdinalIgnoreCase)">
+                        ناشر
+                    </option>
+
+                    <option value="Status"
+                            selected="@string.Equals(filter.SortBy, "Status", StringComparison.OrdinalIgnoreCase)">
+                        وضعیت نسخه
+                    </option>
+
+                    <option value="InventoryNumber"
+                            selected="@string.Equals(filter.SortBy, "InventoryNumber", StringComparison.OrdinalIgnoreCase)">
+                        شماره اموال
+                    </option>
+                </select>
+            </div>
+
+            <div class="admin-book-copy-filter-group">
+                <label for="PageSize">تعداد در هر صفحه</label>
+                <select id="PageSize"
+                        name="PageSize"
+                        class="admin-book-copy-filter-input">
+
+                    <option value="10" selected="@(filter.PageSize == 10)">۱۰</option>
+                    <option value="20" selected="@(filter.PageSize == 20)">۲۰</option>
+                    <option value="50" selected="@(filter.PageSize == 50)">۵۰</option>
+                </select>
+            </div>
+
+            <div class="admin-book-copy-filter-group">
+                <label for="SortDescending">جهت مرتب‌سازی</label>
+                <select id="SortDescending"
+                        name="SortDescending"
+                        class="admin-book-copy-filter-input">
+
+                    <option value="false"
+                            selected="@(!filter.SortDescending)">
+                        صعودی
+                    </option>
+
+                    <option value="true"
+                            selected="@(filter.SortDescending)">
+                        نزولی
+                    </option>
+                </select>
+            </div>
+
+            <input type="hidden" name="Page" value="1" />
+
+            <div class="admin-book-copy-filter-actions">
+                <button type="submit" class="admin-book-copy-filter-submit">
+                    اعمال فیلتر
+                </button>
+
+                <a asp-area="Admin"
+                   asp-controller="BookCopy"
+                   asp-action="Index"
+                   class="admin-book-copy-filter-reset">
+                    پاک کردن فیلترها
+                </a>
+            </div>
+        </form>
+    </section>
+
+    <section class="admin-book-copy-list-card"
+             aria-labelledby="admin-book-copy-list-title">
+
+        <header class="admin-book-copy-section-header admin-book-copy-list-header">
+            <div>
+                <h2 id="admin-book-copy-list-title"
+                    class="admin-book-copy-section-title">
+                    فهرست نسخه‌ها
+                </h2>
+
+                <p class="admin-book-copy-section-description">
+                    از بخش عملیات می‌توانید جزئیات نسخه یا کتاب را ببینید یا نسخه را ویرایش کنید.
+                </p>
+            </div>
+
+            <span class="admin-book-copy-list-count">
+                @Model.TotalCount نسخه
+            </span>
+        </header>
+
+        @if (Model.BookCopies.Count == 0)
+        {
+            <div class="admin-book-copy-empty-state">
+                <h3>نسخه‌ای پیدا نشد</h3>
+
+                <p>
+                    با معیارهای انتخاب‌شده نسخه‌ای پیدا نشد.
+                    فیلترها را تغییر دهید یا پاک کنید.
+                </p>
+
+                <a asp-area="Admin"
+                   asp-controller="BookCopy"
+                   asp-action="Index"
+                   class="admin-book-copy-filter-reset">
+                    نمایش همه نسخه‌ها
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive admin-book-copy-table-wrapper">
+                <table class="admin-book-copy-table">
+                    <thead>
+                        <tr>
+                            <th scope="col">شناسه</th>
+                            <th scope="col">عنوان کتاب</th>
+                            <th scope="col">نویسنده</th>
+                            <th scope="col">ناشر</th>
+                            <th scope="col">شماره اموال</th>
+                            <th scope="col">وضعیت نسخه</th>
+                            <th scope="col">آخرین امانت‌گیرنده</th>
+                            <th scope="col">عملیات</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        @foreach (var bookCopy in Model.BookCopies)
+                        {
+                            var status = bookCopy.Status.ToString();
+
+                            <tr>
+                                <td class="admin-book-copy-id">
+                                    @bookCopy.Id
+                                </td>
+
+                                <td class="admin-book-copy-title-cell">
+                                    <span class="admin-book-copy-book-title">
+                                        @bookCopy.Title
+                                    </span>
+                                </td>
+
+                                <td>@bookCopy.Author</td>
+                                <td>@bookCopy.Publisher</td>
+
+                                <td>
+                                    @if (string.IsNullOrWhiteSpace(bookCopy.InventoryNumber))
+                                    {
+                                        <span class="admin-book-copy-muted">ثبت نشده</span>
+                                    }
+                                    else
+                                    {
+                                        @bookCopy.InventoryNumber
+                                    }
+                                </td>
+
+                                <td>
+                                    @switch (status)
+                                    {
+                                        case "Available":
+                                            <span class="admin-book-copy-status admin-book-copy-status-available">
+                                                موجود
+                                            </span>
+                                            break;
+
+                                        case "Borrowed":
+                                            <span class="admin-book-copy-status admin-book-copy-status-borrowed">
+                                                امانت داده‌شده
+                                            </span>
+                                            break;
+
+                                        case "ReturnPending":
+                                            <span class="admin-book-copy-status admin-book-copy-status-pending">
+                                                در انتظار تأیید بازگشت
+                                            </span>
+                                            break;
+
+                                        default:
+                                            <span class="admin-book-copy-status admin-book-copy-status-unknown">
+                                                @status
+                                            </span>
+                                            break;
+                                    }
+                                </td>
+
+                                <td>
+                                    @if (string.IsNullOrWhiteSpace(bookCopy.LastBorrowerName))
+                                    {
+                                        <span class="admin-book-copy-muted">—</span>
+                                    }
+                                    else
+                                    {
+                                        @bookCopy.LastBorrowerName
+                                    }
+                                </td>
+
+                                <td>
+                                    <div class="admin-book-copy-row-actions">
+
+                                        <a asp-area="Admin"
+                                           asp-controller="BookCopy"
+                                           asp-action="Details"
+                                           asp-route-id="@bookCopy.Id"
+                                           class="admin-book-copy-action-link admin-book-copy-details-link">
+                                            جزئیات نسخه
+                                        </a>
+
+                                        <a asp-area="Admin"
+                                           asp-controller="BookCopy"
+                                           asp-action="Edit"
+                                           asp-route-id="@bookCopy.Id"
+                                           class="admin-book-copy-action-link admin-book-copy-edit-link">
+                                            ویرایش نسخه
+                                        </a>
+
+                                        <a asp-area="Admin"
+                                           asp-controller="Book"
+                                           asp-action="Details"
+                                           asp-route-bookId="@bookCopy.BookId"
+                                           class="admin-book-copy-action-link admin-book-copy-book-link">
+                                            جزئیات کتاب
+                                        </a>
+
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            @if (totalPages > 1)
+            {
+                <nav class="admin-book-copy-pagination"
+                     aria-label="صفحه‌بندی نسخه‌های کتاب">
+
+                    <span class="admin-book-copy-pagination-info">
+                        صفحه @currentPage از @totalPages
+                    </span>
+
+                    <div class="admin-book-copy-pagination-actions">
+
+                        @if (currentPage > 1)
+                        {
+                            <a asp-area="Admin"
+                               asp-controller="BookCopy"
+                               asp-action="Index"
+                               asp-route-SearchTerm="@filter.SearchTerm"
+                               asp-route-Status="@filter.Status"
+                               asp-route-SortBy="@filter.SortBy"
+                               asp-route-SortDescending="@filter.SortDescending"
+                               asp-route-PageSize="@filter.PageSize"
+                               asp-route-Page="@(currentPage - 1)"
+                               class="admin-book-copy-pagination-link">
+                                صفحه قبل
+                            </a>
+                        }
+
+                        @if (currentPage < totalPages)
+                        {
+                            <a asp-area="Admin"
+                               asp-controller="BookCopy"
+                               asp-action="Index"
+                               asp-route-SearchTerm="@filter.SearchTerm"
+                               asp-route-Status="@filter.Status"
+                               asp-route-SortBy="@filter.SortBy"
+                               asp-route-SortDescending="@filter.SortDescending"
+                               asp-route-PageSize="@filter.PageSize"
+                               asp-route-Page="@(currentPage + 1)"
+                               class="admin-book-copy-pagination-link">
+                                صفحه بعد
+                            </a>
+                        }
+
+                    </div>
+                </nav>
+            }
+        }
+    </section>
+</div>
+
+@section Styles {
+    <link rel="stylesheet"
+          href="~/css/pages/admin/bookCopy/index.css"
+          asp-append-version="true" />
+}

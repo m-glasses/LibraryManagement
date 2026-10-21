@@ -1,0 +1,503 @@
+﻿/* ========================================
+   Admin - Book Copy Index
+   Shared visual language: Admin Book / Loan
+   ======================================== */
+
+.admin-book-copy-page {
+    width: 100%;
+    color: var(--lm-text);
+}
+
+/* Page header */
+
+.admin-book-copy-page-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--lm-space-4);
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-book-copy-page-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-2xl);
+    font-weight: var(--lm-font-weight-bold);
+    line-height: var(--lm-line-height-tight);
+}
+
+.admin-book-copy-page-subtitle {
+    margin: var(--lm-space-2) 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size);
+    font-weight: var(--lm-font-weight-normal);
+    line-height: 1.8;
+}
+
+/* Shared actions */
+
+.admin-book-copy-create-link,
+.admin-book-copy-filter-submit,
+.admin-book-copy-filter-reset,
+.admin-book-copy-action-link,
+.admin-book-copy-pagination-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--lm-space-2);
+    min-height: 36px;
+    padding: var(--lm-space-2) var(--lm-space-3);
+    border: 1px solid transparent;
+    border-radius: var(--lm-button-radius);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: 1.6;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast);
+}
+
+.admin-book-copy-create-link,
+.admin-book-copy-filter-submit {
+    color: #fff;
+    background-color: var(--lm-primary);
+    border-color: var(--lm-primary);
+}
+
+.admin-book-copy-create-link {
+    min-height: 40px;
+    padding-inline: var(--lm-space-4);
+}
+
+    .admin-book-copy-create-link span {
+        font-size: 1.2rem;
+        line-height: 1;
+    }
+
+    .admin-book-copy-create-link:hover,
+    .admin-book-copy-filter-submit:hover {
+        color: #fff;
+        background-color: var(--lm-primary-hover);
+        border-color: var(--lm-primary-hover);
+    }
+
+.admin-book-copy-filter-reset {
+    color: var(--lm-text);
+    background-color: var(--lm-surface);
+    border-color: var(--lm-border);
+}
+
+    .admin-book-copy-filter-reset:hover {
+        color: var(--lm-text);
+        background-color: var(--lm-background);
+        border-color: var(--lm-border);
+    }
+
+/* Feedback */
+
+.admin-book-copy-error-message {
+    margin-bottom: var(--lm-space-5);
+    padding: var(--lm-space-3) var(--lm-space-4);
+    color: var(--lm-danger);
+    background-color: #fff5f5;
+    border: 1px solid #f3c5c5;
+    border-radius: var(--lm-radius-lg);
+    font-size: var(--lm-font-size);
+    line-height: 1.8;
+}
+
+/* Cards */
+
+.admin-book-copy-filter-card,
+.admin-book-copy-list-card {
+    overflow: hidden;
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-sm);
+}
+
+.admin-book-copy-filter-card {
+    margin-bottom: var(--lm-space-6);
+}
+
+.admin-book-copy-section-header {
+    padding: var(--lm-space-4) var(--lm-space-5);
+    border-bottom: 1px solid var(--lm-border);
+}
+
+.admin-book-copy-section-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-lg);
+    font-weight: var(--lm-font-weight-semibold);
+    line-height: 1.7;
+}
+
+.admin-book-copy-section-description {
+    margin: var(--lm-space-1) 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+    line-height: 1.8;
+}
+
+/* Filter form */
+
+.admin-book-copy-filter-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    align-items: end;
+    gap: var(--lm-space-4);
+    padding: var(--lm-space-5);
+}
+
+.admin-book-copy-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--lm-space-2);
+    min-width: 0;
+}
+
+    .admin-book-copy-filter-group label {
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-sm);
+        font-weight: var(--lm-font-weight-medium);
+    }
+
+.admin-book-copy-filter-input {
+    width: 100%;
+    min-width: 0;
+    min-height: 40px;
+    padding: var(--lm-space-2) var(--lm-space-3);
+    color: var(--lm-text);
+    background-color: var(--lm-surface);
+    border: 1px solid var(--lm-input-border);
+    border-radius: var(--lm-radius);
+    font-family: var(--lm-font-family);
+    font-size: var(--lm-font-size-sm);
+    line-height: 1.6;
+    transition: border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
+
+    .admin-book-copy-filter-input::placeholder {
+        color: var(--lm-input-placeholder);
+    }
+
+    .admin-book-copy-filter-input:focus {
+        outline: none;
+        border-color: var(--lm-input-focus);
+        box-shadow: 0 0 0 3px rgb(32 107 196 / 12%);
+    }
+
+.admin-book-copy-filter-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--lm-space-2);
+    grid-column: 1 / -1;
+    padding-top: var(--lm-space-1);
+}
+
+.admin-book-copy-filter-submit {
+    min-height: 40px;
+    padding-inline: var(--lm-space-5);
+}
+
+/* List header */
+
+.admin-book-copy-list-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--lm-space-3);
+}
+
+.admin-book-copy-list-count {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 30px;
+    padding: var(--lm-space-1) var(--lm-space-3);
+    color: var(--lm-text-muted);
+    background-color: var(--lm-background);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius);
+    font-size: var(--lm-font-size-sm);
+    white-space: nowrap;
+}
+
+/* Table */
+
+.admin-book-copy-table-wrapper {
+    width: 100%;
+}
+
+.admin-book-copy-table {
+    width: 100%;
+    margin: 0;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-sm);
+    vertical-align: middle;
+}
+
+    .admin-book-copy-table thead th {
+        padding: var(--lm-space-3) var(--lm-space-4);
+        color: var(--lm-text-muted);
+        background-color: var(--lm-background);
+        border-bottom: 1px solid var(--lm-border);
+        font-size: var(--lm-font-size-sm);
+        font-weight: var(--lm-font-weight-semibold);
+        text-align: right;
+        white-space: nowrap;
+    }
+
+    .admin-book-copy-table tbody td {
+        padding: var(--lm-space-4);
+        border-bottom: 1px solid var(--lm-border);
+        text-align: right;
+        line-height: 1.8;
+    }
+
+    .admin-book-copy-table tbody tr:last-child td {
+        border-bottom: none;
+    }
+
+    .admin-book-copy-table tbody tr {
+        transition: background-color var(--lm-transition-fast);
+    }
+
+        .admin-book-copy-table tbody tr:hover {
+            background-color: #f9fafb;
+        }
+
+.admin-book-copy-id {
+    color: var(--lm-text-muted);
+    font-variant-numeric: tabular-nums;
+}
+
+.admin-book-copy-title-cell {
+    min-width: 150px;
+}
+
+.admin-book-copy-book-title {
+    color: var(--lm-text);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+.admin-book-copy-muted {
+    color: var(--lm-text-muted);
+}
+
+/* Status badges */
+
+.admin-book-copy-status {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 26px;
+    padding: var(--lm-space-1) var(--lm-space-2);
+    border: 1px solid transparent;
+    border-radius: var(--lm-radius);
+    font-size: var(--lm-font-size-xs);
+    font-weight: var(--lm-font-weight-medium);
+    line-height: 1.6;
+    white-space: nowrap;
+}
+
+.admin-book-copy-status-available {
+    color: #218739;
+    background-color: #eaf7ed;
+    border-color: #c8e9cf;
+}
+
+.admin-book-copy-status-borrowed {
+    color: #b45309;
+    background-color: #fff4e5;
+    border-color: #f7dfbd;
+}
+
+.admin-book-copy-status-pending {
+    color: #9a6700;
+    background-color: #fff8db;
+    border-color: #f0e2a6;
+}
+
+.admin-book-copy-status-unknown {
+    color: var(--lm-text-muted);
+    background-color: var(--lm-background);
+    border-color: var(--lm-border);
+}
+
+/* Row actions */
+
+.admin-book-copy-row-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: var(--lm-space-2);
+    min-width: 290px;
+}
+
+.admin-book-copy-action-link {
+    min-height: 32px;
+    padding: var(--lm-space-1) var(--lm-space-2);
+    font-size: var(--lm-font-size-xs);
+}
+
+.admin-book-copy-details-link {
+    color: var(--lm-primary);
+    background-color: var(--lm-primary-light);
+    border-color: #d4e5f8;
+}
+
+    .admin-book-copy-details-link:hover {
+        color: #fff;
+        background-color: var(--lm-primary);
+        border-color: var(--lm-primary);
+    }
+
+.admin-book-copy-edit-link {
+    color: #9a6700;
+    background-color: #fff8db;
+    border-color: #f0e2a6;
+}
+
+    .admin-book-copy-edit-link:hover {
+        color: #fff;
+        background-color: #b78103;
+        border-color: #b78103;
+    }
+
+.admin-book-copy-book-link {
+    color: var(--lm-text);
+    background-color: var(--lm-surface);
+    border-color: var(--lm-border);
+}
+
+    .admin-book-copy-book-link:hover {
+        color: var(--lm-text);
+        background-color: var(--lm-background);
+        border-color: #c7ccd3;
+    }
+
+/* Empty state */
+
+.admin-book-copy-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: var(--lm-space-10) var(--lm-space-5);
+    text-align: center;
+}
+
+    .admin-book-copy-empty-state h3 {
+        margin: 0;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-lg);
+        font-weight: var(--lm-font-weight-semibold);
+    }
+
+    .admin-book-copy-empty-state p {
+        max-width: 480px;
+        margin: var(--lm-space-2) 0 var(--lm-space-4);
+        color: var(--lm-text-muted);
+        font-size: var(--lm-font-size-sm);
+        line-height: 1.9;
+    }
+
+/* Pagination */
+
+.admin-book-copy-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: var(--lm-space-3);
+    padding: var(--lm-space-4) var(--lm-space-5);
+    border-top: 1px solid var(--lm-border);
+}
+
+.admin-book-copy-pagination-info {
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+}
+
+.admin-book-copy-pagination-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--lm-space-2);
+}
+
+.admin-book-copy-pagination-link {
+    color: var(--lm-text);
+    background-color: var(--lm-surface);
+    border-color: var(--lm-border);
+}
+
+    .admin-book-copy-pagination-link:hover {
+        color: var(--lm-primary);
+        background-color: var(--lm-primary-light);
+        border-color: #d4e5f8;
+    }
+
+/* Responsive */
+
+@media (max-width: 992px) {
+    .admin-book-copy-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .admin-book-copy-row-actions {
+        min-width: 270px;
+    }
+}
+
+@media (max-width: 576px) {
+    .admin-book-copy-page-header {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .admin-book-copy-create-link {
+        align-self: flex-start;
+    }
+
+    .admin-book-copy-filter-form {
+        grid-template-columns: minmax(0, 1fr);
+        padding: var(--lm-space-4);
+    }
+
+    .admin-book-copy-filter-actions {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+        .admin-book-copy-filter-actions > * {
+            width: 100%;
+        }
+
+    .admin-book-copy-section-header {
+        padding: var(--lm-space-4);
+    }
+
+    .admin-book-copy-pagination {
+        align-items: stretch;
+        flex-direction: column;
+        padding: var(--lm-space-4);
+    }
+
+    .admin-book-copy-pagination-actions {
+        width: 100%;
+    }
+
+    .admin-book-copy-pagination-link {
+        flex: 1;
+    }
+}

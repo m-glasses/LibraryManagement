@@ -150,7 +150,7 @@ namespace LibraryManagement.Services
 
 
 
-        public UserListResult GetAllUsers(UserListQueryDto input)
+        public UserListResult GetAllUsers(UserFilterDto input)
         {
             ArgumentNullException.ThrowIfNull(input);
 
