@@ -65,6 +65,13 @@
                 "Book not available" =>
                     "این کتاب در حال حاضر قابل امانت نیست.",
 
+                // Book Copies
+                "The specified book was not found." =>
+                    "کتاب انتخاب‌شده پیدا نشد.",
+
+                "The inventory number already exists." =>
+                    "این شماره اموال قبلاً ثبت شده است.",
+
                 // Reservations
                 "You already have this book on loan" =>
                     "این کتاب در حال حاضر در امانت شماست.",

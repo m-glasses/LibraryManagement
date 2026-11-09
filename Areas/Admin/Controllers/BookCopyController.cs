@@ -9,6 +9,7 @@ using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LibraryManagement.Areas.Admin.Controllers
 {
@@ -237,24 +238,34 @@ namespace LibraryManagement.Areas.Admin.Controllers
         #region Create
 
         [HttpGet]
-        public IActionResult Create(int bookId)
+        public IActionResult Create(int? bookId)
         {
-            if (bookId <= 0)
-                return NotFound();
-
-            var book = _bookService.GetById(bookId);
-
-            if (book is null)
-                return NotFound();
-
-            var viewModel = new BookCopyCreateViewModel
+            if (bookId.HasValue)
             {
-                BookId = book.Id,
-                Title = book.Title,
-                Author = book.Author
-            };
+                if (bookId <= 0)
+                    return NotFound();
 
-            return View(viewModel);
+                var book = _bookService.GetById(bookId.Value);
+
+                if (book is null)
+                    return NotFound();
+
+                var viewModel = new BookCopyCreateViewModel
+                {
+                    BookId = book.Id,
+                    Title = book.Title,
+                    Author = book.Author,
+                    IsBookPreselected = true
+                };
+
+                return View(viewModel);
+            }
+
+            var createViewModel = new BookCopyCreateViewModel();
+
+            PopulateBooksDropdown(createViewModel);
+
+            return View(createViewModel);
         }
 
 
@@ -262,13 +273,23 @@ namespace LibraryManagement.Areas.Admin.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(BookCopyCreateViewModel viewModel)
         {
+            if (!viewModel.BookId.HasValue || viewModel.BookId <= 0)
+            {
+                ModelState.AddModelError(
+                    nameof(viewModel.BookId),
+                    "انتخاب کتاب الزامی است.");
+            }
+
             if (!ModelState.IsValid)
+            {
+                PrepareCreateViewModel(viewModel);
                 return View(viewModel);
+            }
 
             var dto = new BookCopyCreateDto
             {
-                BookId = viewModel.BookId,
-                InventoryNumber = viewModel.InventoryNumber,
+                BookId = viewModel.BookId!.Value,
+                InventoryNumber = viewModel.InventoryNumber
             };
 
             try
@@ -283,12 +304,45 @@ namespace LibraryManagement.Areas.Admin.Controllers
                     nameof(viewModel.InventoryNumber),
                     ErrorMessageHelper.Translate(ex.Message));
 
+                PrepareCreateViewModel(viewModel);
                 return View(viewModel);
             }
             catch (KeyNotFoundException)
             {
                 return NotFound();
             }
+        }
+
+        private void PrepareCreateViewModel(BookCopyCreateViewModel viewModel)
+        {
+            if (viewModel.IsBookPreselected && viewModel.BookId.HasValue)
+            {
+                var book = _bookService.GetById(viewModel.BookId.Value);
+
+                if (book is not null)
+                {
+                    viewModel.Title = book.Title;
+                    viewModel.Author = book.Author;
+                }
+
+                return;
+            }
+
+            PopulateBooksDropdown(viewModel);
+        }
+
+        private void PopulateBooksDropdown(BookCopyCreateViewModel viewModel)
+        {
+           var books = _bookService.GetAll();
+
+            viewModel.Books = books
+                .Select(book => new SelectListItem
+                {
+                    Value = book.Id.ToString(),
+                    Text = book.Title
+                })
+                .ToList();
+
         }
 
         #endregion

@@ -1,12 +1,12 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace LibraryManagement.Areas.Admin.ViewModels.BookCopies
 {
     public class BookCopyCreateViewModel
     {
         [Display(Name = "کتاب")]
-        [Range(1, int.MaxValue, ErrorMessage = "انتخاب کتاب الزامی است.")]
-        public int BookId { get; set; }
+        public int? BookId { get; set; }
 
         [Display(Name = "شماره اموال")]
         [Required(ErrorMessage = "وارد کردن شماره اموال الزامی است.")]
@@ -18,5 +18,9 @@ namespace LibraryManagement.Areas.Admin.ViewModels.BookCopies
 
         [Display(Name = "نویسنده")]
         public string Author { get; set; } = string.Empty;
+
+        public List<SelectListItem> Books { get; set; } = [];
+
+        public bool IsBookPreselected { get; set; }
     }
 }

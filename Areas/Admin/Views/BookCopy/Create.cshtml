@@ -13,24 +13,36 @@
             </h1>
 
             <p class="admin-book-copy-create-subtitle">
-                ثبت یک نسخه فیزیکی جدید برای کتاب انتخاب‌شده
+                ثبت یک نسخه فیزیکی جدید برای کتاب
             </p>
         </div>
 
-        <a asp-area="Admin"
-           asp-controller="Book"
-           asp-action="Details"
-           asp-route-bookId="@Model.BookId"
-           class="admin-book-copy-create-back-link">
-            بازگشت به جزئیات کتاب
-        </a>
+        @if (Model.IsBookPreselected)
+        {
+            <a asp-area="Admin"
+               asp-controller="Book"
+               asp-action="Details"
+               asp-route-bookId="@Model.BookId"
+               class="admin-book-copy-create-back-link">
+                بازگشت به جزئیات کتاب
+            </a>
+        }
+        else
+        {
+            <a asp-area="Admin"
+               asp-controller="BookCopy"
+               asp-action="Index"
+               class="admin-book-copy-create-back-link">
+                بازگشت به فهرست نسخه‌ها
+            </a>
+        }
     </div>
 
     <div class="admin-book-copy-create-card">
 
         <div class="admin-book-copy-create-card-header">
             <h2>مشخصات نسخه جدید</h2>
-            <p>اطلاعات کتاب انتخاب‌شده را بررسی و شماره اموال را وارد کنید.</p>
+            <p>اطلاعات کتاب را مشخص و شماره اموال را وارد کنید.</p>
         </div>
 
         <div class="admin-book-copy-create-card-body">
@@ -42,7 +54,47 @@
 
                 @Html.AntiForgeryToken()
 
-                <input asp-for="BookId" type="hidden" />
+                <input asp-for="IsBookPreselected" type="hidden" />
+
+                @if (Model.IsBookPreselected)
+                {
+                    <input asp-for="BookId" type="hidden" />
+
+                    <div class="admin-book-copy-create-form-grid">
+
+                        <div class="admin-book-copy-create-field">
+                            <label asp-for="Title"></label>
+
+                            <input asp-for="Title"
+                                   class="form-control"
+                                   readonly />
+                        </div>
+
+                        <div class="admin-book-copy-create-field">
+                            <label asp-for="Author"></label>
+
+                            <input asp-for="Author"
+                                   class="form-control"
+                                   readonly />
+                        </div>
+
+                    </div>
+                }
+                else
+                {
+                    <div class="admin-book-copy-create-field">
+                        <label asp-for="BookId"></label>
+
+                        <select asp-for="BookId"
+                                asp-items="Model.Books"
+                                class="form-control">
+                            <option value="">انتخاب کتاب</option>
+                        </select>
+
+                        <span asp-validation-for="BookId"
+                              class="text-danger"></span>
+                    </div>
+                }
 
                 <div asp-validation-summary="ModelOnly"
                      class="admin-book-copy-create-validation"
@@ -50,30 +102,6 @@
                 </div>
 
                 <div class="admin-book-copy-create-form-grid">
-
-                    <div class="admin-book-copy-create-field">
-                        <label asp-for="Title"></label>
-
-                        <input asp-for="Title"
-                               class="form-control"
-                               readonly />
-
-                        <span class="admin-book-copy-create-field-note">
-                            عنوان کتاب قابل تغییر نیست.
-                        </span>
-                    </div>
-
-                    <div class="admin-book-copy-create-field">
-                        <label asp-for="Author"></label>
-
-                        <input asp-for="Author"
-                               class="form-control"
-                               readonly />
-
-                        <span class="admin-book-copy-create-field-note">
-                            نویسنده کتاب قابل تغییر نیست.
-                        </span>
-                    </div>
 
                     <div class="admin-book-copy-create-field admin-book-copy-create-inventory-field">
                         <label asp-for="InventoryNumber"></label>
@@ -92,13 +120,25 @@
 
                 <div class="admin-book-copy-create-actions">
 
-                    <a asp-area="Admin"
-                       asp-controller="Book"
-                       asp-action="Details"
-                       asp-route-bookId="@Model.BookId"
-                       class="admin-book-copy-create-cancel">
-                        انصراف
-                    </a>
+                    @if (Model.IsBookPreselected)
+                    {
+                        <a asp-area="Admin"
+                           asp-controller="Book"
+                           asp-action="Details"
+                           asp-route-bookId="@Model.BookId"
+                           class="admin-book-copy-create-cancel">
+                            انصراف
+                        </a>
+                    }
+                    else
+                    {
+                        <a asp-area="Admin"
+                           asp-controller="BookCopy"
+                           asp-action="Index"
+                           class="admin-book-copy-create-cancel">
+                            انصراف
+                        </a>
+                    }
 
                     <button type="submit"
                             class="admin-book-copy-create-submit">
@@ -113,14 +153,12 @@
     </div>
 </div>
 
-@section Styles
-{
+@section Styles {
     <link rel="stylesheet"
           href="~/css/pages/admin/bookCopy/Create.css"
           asp-append-version="true" />
 }
 
-@section Scripts
-{
+@section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
