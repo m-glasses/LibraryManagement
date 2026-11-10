@@ -1,4 +1,6 @@
 ﻿using LibraryManagement.Data;
+using LibraryManagement.DTO.Book;
+using LibraryManagement.DTO.Loans;
 using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +11,7 @@ namespace LibraryManagement.Services
     {
         private readonly LibraryDbContext _context;
         private readonly IWalletService _walletService;
-        public LoanService(LibraryDbContext context , IWalletService wallet) : base(context)
+        public LoanService(LibraryDbContext context, IWalletService wallet) : base(context)
         {
             _context = context;
             _walletService = wallet;
@@ -31,7 +33,7 @@ namespace LibraryManagement.Services
             return bookCopy;
         }
 
-        private Reservation? ValidateReservationPriority( int userId , int bookId)
+        private Reservation? ValidateReservationPriority(int userId, int bookId)
         {
             var firstActiveReservation = _context.Reservations
                 .Where(reservation =>
@@ -65,11 +67,11 @@ namespace LibraryManagement.Services
             {
                 throw new InvalidOperationException("Wallet not found.");
             }
-            if (wallet.Balance < 0 )
+            if (wallet.Balance < 0)
             {
                 throw new InvalidOperationException("User cannot borrow while wallet balance is negative.");
             }
-            
+
             if (!_context.Books.Any(book => book.Id == bookId))
             {
                 throw new InvalidOperationException("Book not found");
@@ -263,16 +265,76 @@ namespace LibraryManagement.Services
         }
 
 
-        //Admin services
-        public List<Loan> GetAllLoans()
+
+
+        public AdminLoanListResult AdminGetLoansList(LoanFilterDto input)
         {
-            return _context.Loans
-                .AsNoTracking()
-                .Include(loan => loan.User)
-                .Include(loan => loan.BookCopy)
-                    .ThenInclude(BookCopy => BookCopy.Book)
+            ArgumentNullException.ThrowIfNull(input);
+
+            if (input.Page < 1)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.Page),
+                    "Page must be greater than zero.");
+            }
+
+            if (input.PageSize < 1 || input.PageSize > 50)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.PageSize),
+                    "PageSize must be between 1 and 50.");
+            }
+
+            IQueryable<Loan> loansQuery = _context.Loans
+                .AsNoTracking();
+
+            // 1. Apply filters.
+            loansQuery = ApplyLoanFilters(loansQuery, input, isAdmin: true);
+
+            // 2. Count filtered loans before pagination.
+            var totalCount = loansQuery.Count();
+
+            // 3. Apply sorting.
+            loansQuery = ApplyLoanSorting(
+                loansQuery,
+                input.SortBy,
+                input.SortDescending,
+                isAdmin: true);
+
+            // 4. Apply pagination and project to DTO.
+            var skip = (int)Math.Min(
+                ((long)input.Page - 1) * input.PageSize,
+                int.MaxValue);
+
+            var loans = loansQuery
+                .Skip(skip)
+                .Take(input.PageSize)
+                .Select(loan => new AdminLoanListDto
+                {
+                    LoanId = loan.Id,
+                    UserFullName = loan.User.Name + " " + loan.User.Family,
+                    Email = loan.User.Email!,
+                    BookTitle = loan.BookCopy.Book.Title,
+                    Author = loan.BookCopy.Book.Author,
+                    InventoryNumber = loan.BookCopy.InventoryNumber,
+                    StartDate = loan.StartDate,
+                    DueDate = loan.DueDate,
+                    ReturnDate = loan.ReturnDate,
+                    Status = loan.LoanStatus,
+                    FinalAmount = loan.FinalAmount
+                })
                 .ToList();
+
+            return new AdminLoanListResult
+            {
+                Loans = loans,
+                CurrentPage = input.Page,
+                PageSize = input.PageSize,
+                TotalCount = totalCount
+            };
         }
+
+
 
         public Loan? GetAdminDetailsById(int loanId)
         {
@@ -283,6 +345,151 @@ namespace LibraryManagement.Services
                     .ThenInclude(bookCopy => bookCopy.Book)
                 .FirstOrDefault(loan => loan.Id == loanId);
         }
+
+
+
+        private IQueryable<Loan> ApplyLoanFilters(
+            IQueryable<Loan> loansQuery,
+            LoanFilterDto filter,
+            bool isAdmin)
+        {
+            ArgumentNullException.ThrowIfNull(loansQuery);
+            ArgumentNullException.ThrowIfNull(filter);
+
+            if (!string.IsNullOrWhiteSpace(filter.SearchTerm))
+            {
+                var searchTerm = filter.SearchTerm.Trim();
+
+                loansQuery = loansQuery.Where(loan =>
+                    loan.BookCopy.Book.Title.Contains(searchTerm) ||
+                    loan.BookCopy.Book.Author.Contains(searchTerm) ||
+                    loan.BookCopy.InventoryNumber.Contains(searchTerm) ||
+                    (isAdmin &&
+                        (loan.User.Name.Contains(searchTerm) ||
+                         loan.User.Family.Contains(searchTerm) ||
+                         loan.User.Email.Contains(searchTerm))));
+            }
+
+            if (filter.Status.HasValue)
+            {
+                loansQuery = loansQuery.Where(
+                    loan => loan.LoanStatus == filter.Status.Value);
+            }
+
+            if (filter.StartDateFrom.HasValue)
+            {
+                loansQuery = loansQuery.Where(
+                    loan => loan.StartDate >= filter.StartDateFrom.Value);
+            }
+
+            if (filter.StartDateTo.HasValue)
+            {
+                loansQuery = loansQuery.Where(
+                    loan => loan.StartDate < filter.StartDateTo.Value.AddDays(1));
+            }
+
+            if (filter.DueDateFrom.HasValue)
+            {
+                loansQuery = loansQuery.Where(
+                    loan => loan.DueDate >= filter.DueDateFrom.Value);
+            }
+
+            if (filter.DueDateTo.HasValue)
+            {
+                loansQuery = loansQuery.Where(
+                    loan => loan.DueDate < filter.DueDateTo.Value.AddDays(1));
+            }
+
+            if (filter.ReturnDateFrom.HasValue)
+            {
+                loansQuery = loansQuery.Where(
+                    loan => loan.ReturnDate >= filter.ReturnDateFrom.Value);
+            }
+
+            if (filter.ReturnDateTo.HasValue)
+            {
+                loansQuery = loansQuery.Where(
+                    loan => loan.ReturnDate < filter.ReturnDateTo.Value.AddDays(1));
+            }
+
+            return loansQuery;
+        }
+
+
+
+
+        private IQueryable<Loan> ApplyLoanSorting(
+            IQueryable<Loan> loansQuery,
+            string? sortBy,
+            bool sortDescending,
+            bool isAdmin)
+        {
+            ArgumentNullException.ThrowIfNull(loansQuery);
+
+            var normalizedSortBy = sortBy?.Trim().ToUpperInvariant();
+
+            return normalizedSortBy switch
+            {
+                "TITLE" => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.BookCopy.Book.Title)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.BookCopy.Book.Title)
+                        .ThenBy(loan => loan.Id),
+
+                "AUTHOR" => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.BookCopy.Book.Author)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.BookCopy.Book.Author)
+                        .ThenBy(loan => loan.Id),
+
+                "INVENTORYNUMBER" => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.BookCopy.InventoryNumber)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.BookCopy.InventoryNumber)
+                        .ThenBy(loan => loan.Id),
+
+                "STARTDATE" => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.StartDate)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.StartDate)
+                        .ThenBy(loan => loan.Id),
+
+                "DUEDATE" => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.DueDate)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.DueDate)
+                        .ThenBy(loan => loan.Id),
+
+                "RETURNDATE" => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.ReturnDate)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.ReturnDate)
+                        .ThenBy(loan => loan.Id),
+
+                "NAME" when isAdmin => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.User.Name)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.User.Name)
+                        .ThenBy(loan => loan.Id),
+
+                "FAMILY" when isAdmin => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.User.Family)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.User.Family)
+                        .ThenBy(loan => loan.Id),
+
+                "EMAIL" when isAdmin => sortDescending
+                    ? loansQuery.OrderByDescending(loan => loan.User.Email)
+                        .ThenBy(loan => loan.Id)
+                    : loansQuery.OrderBy(loan => loan.User.Email)
+                        .ThenBy(loan => loan.Id),
+
+                _ => loansQuery
+                    .OrderByDescending(loan => loan.StartDate)
+                    .ThenBy(loan => loan.Id)
+            };
+        }
+
 
     }
 }

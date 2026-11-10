@@ -1,4 +1,6 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.DTO.Book;
+using LibraryManagement.DTO.Loans;
+using LibraryManagement.Models;
 
 namespace LibraryManagement.Services.Interfaces
 {
@@ -11,7 +13,7 @@ namespace LibraryManagement.Services.Interfaces
         void Renew(int loanId, int userId);
         Loan? GetDetailsById(int loanId, int userId);
         List<Loan> GetUserLoans(int userId);
-        List<Loan> GetAllLoans();
+        AdminLoanListResult AdminGetLoansList(LoanFilterDto input);
         Loan? GetAdminDetailsById(int loanId);
     }
 }

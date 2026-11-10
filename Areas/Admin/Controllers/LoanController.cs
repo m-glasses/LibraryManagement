@@ -1,7 +1,12 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Areas.Admin.ViewModels.Book;
+using LibraryManagement.Areas.Admin.ViewModels.Loans;
+using LibraryManagement.DTO.Book;
+using LibraryManagement.DTO.Loans;
+using LibraryManagement.Helper;
+using LibraryManagement.Models;
+using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
 using LibraryManagement.ViewModels;
-using LibraryManagement.Helper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,26 +23,113 @@ namespace LibraryManagement.Areas.Admin.Controllers
             _loanService = loanService;
         }
 
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Index(AdminLoanFilterViewModel inputViewModel)
         {
-            var loans = _loanService.GetAllLoans();
+            ArgumentNullException.ThrowIfNull(inputViewModel);
 
-            List<AdminLoanListViewModel> viewModels = loans
-                .Select(loan => new AdminLoanListViewModel
+            // Validate pagination
+            if (inputViewModel.Page < 1)
+            {
+                inputViewModel.Page = 1;
+                ModelState.Remove(nameof(inputViewModel.Page));
+            }
+
+            if (inputViewModel.PageSize is not (10 or 20 or 50))
+            {
+                inputViewModel.PageSize = 20;
+                ModelState.Remove(nameof(inputViewModel.PageSize));
+            }
+
+            // Validate sorting fields
+            string[] allowedSortFields =
+            [
+                "Name",
+                "Family",
+                "Email",
+                "Title",
+                "Author",
+                "InventoryNumber",
+                "StartDate",
+                "DueDate",
+                "ReturnDate"
+            ];
+
+            if (!string.IsNullOrWhiteSpace(inputViewModel.SortBy) &&
+                !allowedSortFields.Contains(
+                    inputViewModel.SortBy,
+                    StringComparer.OrdinalIgnoreCase))
+            {
+                inputViewModel.SortBy = null;
+                ModelState.Remove(nameof(inputViewModel.SortBy));
+            }
+
+            var queryDto = new LoanFilterDto
+            {
+                SearchTerm = inputViewModel.SearchTerm?.Trim(),
+                Status = inputViewModel.Status,
+
+                StartDateFrom = inputViewModel.StartDateFrom,
+                StartDateTo = inputViewModel.StartDateTo,
+
+                DueDateFrom = inputViewModel.DueDateFrom,
+                DueDateTo = inputViewModel.DueDateTo,
+
+                ReturnDateFrom = inputViewModel.ReturnDateFrom,
+                ReturnDateTo = inputViewModel.ReturnDateTo,
+
+                SortBy = inputViewModel.SortBy,
+                SortDescending = inputViewModel.SortDescending,
+
+                Page = inputViewModel.Page,
+                PageSize = inputViewModel.PageSize
+            };
+
+            try
+            {
+                var result = _loanService.AdminGetLoansList(queryDto);
+
+                var viewModel = new AdminLoanIndexViewModel
                 {
-                    Id = loan.Id,
-                    UserFullName = $"{loan.User.Name} {loan.User.Family}",
-                    BookTitle = loan.BookCopy.Book.Title,
-                    InventoryNumber = loan.BookCopy.InventoryNumber,
-                    LoanDate = loan.StartDate,
-                    DueDate = loan.DueDate,
-                    ReturnDate = loan.ReturnDate,
-                    LoanStatus = loan.LoanStatus,
-                    FinalAmount = loan.FinalAmount
-                })
-                .ToList();
+                    Loans = result.Loans.Select(loan => new AdminLoanListViewModel
+                    {
+                        LoanId = loan.LoanId,
+                        UserFullName = loan.UserFullName,
+                        UserEmail = loan.Email,
+                        BookTitle = loan.BookTitle,
+                        Author = loan.Author,
+                        
+                        InventoryNumber = loan.InventoryNumber,
+                        StartDate = loan.StartDate,
+                        DueDate = loan.DueDate,
+                        ReturnDate = loan.ReturnDate,
+                        Status = loan.Status,
+                        FinalAmount = loan.FinalAmount
+                    }).ToList(),
 
-            return View(viewModels);
+                    Filter = inputViewModel,
+                    TotalCount = result.TotalCount,
+                    TotalPages = result.TotalPages
+                };
+
+                return View(viewModel);
+            }
+            catch (ArgumentException ex)
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+            }
+
+            return View(new AdminLoanIndexViewModel
+            {
+                Loans = [],
+                Filter = inputViewModel,
+                TotalCount = 0,
+                TotalPages = 0
+            });
         }
 
         public IActionResult Details(int loanId)
@@ -98,12 +190,12 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 TempData["ErrorMessage"] = ErrorMessageHelper.Translate("Invalid return date");
 
-                return RedirectToAction(nameof(Details),new { loanId = model.LoanId });
+                return RedirectToAction(nameof(Details), new { loanId = model.LoanId });
             }
 
             try
             {
-                _loanService.ConfirmReturn(model.LoanId,model.ReturnDate);
+                _loanService.ConfirmReturn(model.LoanId, model.ReturnDate);
 
                 TempData["SuccessMessage"] = "بازگشت امانت با موفقیت ثبت شد.";
 
@@ -113,7 +205,7 @@ namespace LibraryManagement.Areas.Admin.Controllers
             {
                 TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
 
-                return RedirectToAction( nameof(Details), new { loanId = model.LoanId });
+                return RedirectToAction(nameof(Details), new { loanId = model.LoanId });
             }
         }
     }
