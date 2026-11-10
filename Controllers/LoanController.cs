@@ -1,7 +1,10 @@
-﻿using LibraryManagement.Models;
+﻿using LibraryManagement.Areas.Admin.ViewModels.Loans;
+using LibraryManagement.DTO.Loans;
+using LibraryManagement.Helper;
+using LibraryManagement.Models;
 using LibraryManagement.Services.Interfaces;
 using LibraryManagement.ViewModels;
-using LibraryManagement.Helper;
+using LibraryManagement.ViewModels.Loan;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -110,32 +113,122 @@ namespace LibraryManagement.Controllers
             }
         }
 
+
         [Authorize]
-        public async Task<IActionResult> MyLoans()
+        [HttpGet]
+        public async Task<IActionResult> MyLoans(LoanFilterViewModel inputViewModel)
         {
+            ArgumentNullException.ThrowIfNull(inputViewModel);
+
             var user = await _userManager.GetUserAsync(User);
 
-            if (user == null)
+            if (user is null)
             {
                 return Unauthorized();
             }
 
-            var userLoans = _loanService.GetUserLoans(user.Id);
+            // 1. Validate pagination.
+            if (inputViewModel.Page < 1)
+            {
+                inputViewModel.Page = 1;
+                ModelState.Remove(nameof(inputViewModel.Page));
+            }
 
-            var viewModels = userLoans
-                .Select(loan => new LoanListViewModel
+            if (inputViewModel.PageSize is not (10 or 20 or 50))
+            {
+                inputViewModel.PageSize = 20;
+                ModelState.Remove(nameof(inputViewModel.PageSize));
+            }
+
+            // 2. Validate sorting fields.
+            string[] allowedSortFields =
+            [
+                "Title",
+                "Author",
+                "InventoryNumber",
+                "StartDate",
+                "DueDate",
+                "ReturnDate"
+            ];
+
+            if (!string.IsNullOrWhiteSpace(inputViewModel.SortBy) &&
+                !allowedSortFields.Contains(
+                    inputViewModel.SortBy,
+                    StringComparer.OrdinalIgnoreCase))
+            {
+                inputViewModel.SortBy = null;
+                ModelState.Remove(nameof(inputViewModel.SortBy));
+            }
+
+            // 3. Map ViewModel to DTO.
+            var queryDto = new LoanFilterDto
+            {
+                SearchTerm = inputViewModel.SearchTerm?.Trim(),
+                Status = inputViewModel.Status,
+
+                StartDateFrom = inputViewModel.StartDateFrom,
+                StartDateTo = inputViewModel.StartDateTo,
+
+                DueDateFrom = inputViewModel.DueDateFrom,
+                DueDateTo = inputViewModel.DueDateTo,
+
+                ReturnDateFrom = inputViewModel.ReturnDateFrom,
+                ReturnDateTo = inputViewModel.ReturnDateTo,
+
+                SortBy = inputViewModel.SortBy,
+                SortDescending = inputViewModel.SortDescending,
+
+                Page = inputViewModel.Page,
+                PageSize = inputViewModel.PageSize
+            };
+
+            try
+            {
+                // 4. Get current user's loans.
+                var result = _loanService.UserGetLoansList(user.Id, queryDto);
+
+                // 5. Map DTO result to ViewModel.
+                var viewModel = new LoanIndexViewModel
                 {
-                    Id = loan.Id,
-                    BookTitle = loan.BookCopy.Book.Title,
-                    Author = loan.BookCopy.Book.Author,
-                    StartDate = loan.StartDate,
-                    DueDate = loan.DueDate,
-                    LoanStatus = loan.LoanStatus
-                })
-                .ToList();
+                    Loans = result.Loans.Select(loan => new LoanListViewModel
+                    {
+                        LoanId = loan.LoanId,
+                        BookTitle = loan.BookTitle,
+                        Author = loan.Author,
+                        InventoryNumber = loan.InventoryNumber,
+                        StartDate = loan.StartDate,
+                        DueDate = loan.DueDate,
+                        ReturnDate = loan.ReturnDate,
+                        Status = loan.Status,
+                        FinalAmount = loan.FinalAmount
+                    }).ToList(),
 
-            return View(viewModels);
+                    Filter = inputViewModel,
+                    TotalCount = result.TotalCount,
+                    TotalPages = result.TotalPages
+                };
+
+                return View(viewModel);
+            }
+            catch (ArgumentException ex)
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+            }
+            catch (InvalidOperationException ex)
+            {
+                TempData["ErrorMessage"] = ErrorMessageHelper.Translate(ex.Message);
+            }
+
+            // 6. Return an empty result when a handled error occurs.
+            return View(new LoanIndexViewModel
+            {
+                Loans = [],
+                Filter = inputViewModel,
+                TotalCount = 0,
+                TotalPages = 0
+            });
         }
+
 
 
 

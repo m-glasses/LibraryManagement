@@ -1,4 +1,4 @@
-﻿namespace LibraryManagement.ViewModels
+﻿namespace LibraryManagement.ViewModels.Loan
 {
     public class BorrowViewModel
     {

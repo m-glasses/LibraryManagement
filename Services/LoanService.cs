@@ -254,17 +254,78 @@ namespace LibraryManagement.Services
                 .FirstOrDefault(l => l.Id == loanId && l.UserId == userId);
         }
 
-        public List<Loan> GetUserLoans(int userId)
+
+        public UserLoanListResult UserGetLoansList(int userId, LoanFilterDto input)
         {
-            return _context.Loans
+            ArgumentNullException.ThrowIfNull(input);
+
+            if (userId <= 0)
+            {
+                throw new ArgumentOutOfRangeException(nameof(userId));
+            }
+
+            if (input.Page < 1)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.Page),
+                    "Page must be greater than zero.");
+            }
+
+            if (input.PageSize < 1 || input.PageSize > 50)
+            {
+                throw new ArgumentOutOfRangeException(
+                    nameof(input.PageSize),
+                    "PageSize must be between 1 and 50.");
+            }
+
+            IQueryable<Loan> loansQuery = _context.Loans
                 .AsNoTracking()
-                .Where(loan => loan.UserId == userId)
-                .Include(loan => loan.BookCopy)
-                    .ThenInclude(bookCopy => bookCopy.Book)
+                .Where(loan => loan.UserId == userId);
+
+            // 1. Apply filters.
+            loansQuery = ApplyLoanFilters(loansQuery, input, isAdmin: false);
+
+            // 2. Count filtered loans before pagination.
+            var totalCount = loansQuery.Count();
+
+            // 3. Apply sorting.
+            loansQuery = ApplyLoanSorting(
+                loansQuery,
+                input.SortBy,
+                input.SortDescending,
+                isAdmin: false);
+
+            // 4. Calculate pagination.
+            var skip = (int)Math.Min(
+                ((long)input.Page - 1) * input.PageSize,
+                int.MaxValue);
+
+            // 5. Project to DTO and execute query.
+            var loans = loansQuery
+                .Skip(skip)
+                .Take(input.PageSize)
+                .Select(loan => new UserLoanListDto
+                {
+                    LoanId = loan.Id,
+                    BookTitle = loan.BookCopy.Book.Title,
+                    Author = loan.BookCopy.Book.Author,
+                    InventoryNumber = loan.BookCopy.InventoryNumber,
+                    StartDate = loan.StartDate,
+                    DueDate = loan.DueDate,
+                    ReturnDate = loan.ReturnDate,
+                    Status = loan.LoanStatus,
+                    FinalAmount = loan.FinalAmount
+                })
                 .ToList();
+
+            return new UserLoanListResult
+            {
+                Loans = loans,
+                CurrentPage = input.Page,
+                PageSize = input.PageSize,
+                TotalCount = totalCount
+            };
         }
-
-
 
 
         public AdminLoanListResult AdminGetLoansList(LoanFilterDto input)

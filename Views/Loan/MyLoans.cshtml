@@ -1,169 +1,510 @@
-﻿@model List<LibraryManagement.ViewModels.LoanListViewModel>
+﻿@model LibraryManagement.ViewModels.Loan.LoanIndexViewModel
+@using LibraryManagement.Models
 
 @{
     ViewData["Title"] = "امانت‌های من";
+
+    var filter = Model.Filter;
+    var currentPage = Math.Max(1, filter.Page);
+    var totalPages = Model.TotalPages;
 }
 
 <div class="loan-list-page">
 
-    <div class="loan-page-header">
+    <header class="loan-page-header">
         <div>
-            <h1 class="loan-page-title">
-                امانت‌های من
-            </h1>
-
+            <h1 class="loan-page-title">امانت‌های من</h1>
             <p class="loan-page-subtitle">
-                فهرست کتاب‌هایی که به امانت گرفته‌اید
+                جست‌وجو و مشاهده وضعیت امانت‌های ثبت‌شده
             </p>
         </div>
-    </div>
+    </header>
 
-    @if (!Model.Any())
+    @if (TempData["ErrorMessage"] is string errorMessage)
     {
-        <div class="loan-empty-state">
-            <p>
-                شما هنوز هیچ کتابی به امانت نگرفته‌اید.
-            </p>
+        <div class="loan-error-message" role="alert">
+            @errorMessage
         </div>
     }
-    else
-    {
-        <div class="loan-list-card">
 
-            <div class="table-responsive">
+    <section class="loan-filter-card"
+             aria-labelledby="loan-filter-title">
 
+        <header class="loan-section-header">
+            <h2 id="loan-filter-title" class="loan-section-title">
+                جست‌وجو و فیلتر
+            </h2>
+
+            <p class="loan-section-description">
+                امانت‌ها را بر اساس مشخصات کتاب، وضعیت و تاریخ محدود کنید.
+            </p>
+        </header>
+
+        <form asp-controller="Loan"
+              asp-action="MyLoans"
+              method="get"
+              class="loan-filter-form">
+
+            <div class="loan-filter-group loan-search-group">
+                <label for="SearchTerm">جست‌وجو</label>
+                <input id="SearchTerm"
+                       name="SearchTerm"
+                       type="search"
+                       value="@filter.SearchTerm"
+                       class="loan-filter-input"
+                       placeholder="عنوان کتاب، نویسنده یا شماره اموال"
+                       autocomplete="off" />
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="Status">وضعیت امانت</label>
+                <select id="Status"
+                        name="Status"
+                        class="loan-filter-input">
+
+                    <option value="" selected="@(filter.Status is null)">
+                        همه وضعیت‌ها
+                    </option>
+
+                    <option value="Active"
+                            selected="@(filter.Status == LoanStatus.Active)">
+                        فعال
+                    </option>
+
+                    <option value="ReturnPending"
+                            selected="@(filter.Status == LoanStatus.ReturnPending)">
+                        در انتظار تأیید بازگشت
+                    </option>
+
+                    <option value="Completed"
+                            selected="@(filter.Status == LoanStatus.Completed)">
+                        خاتمه‌یافته
+                    </option>
+                </select>
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="SortBy">مرتب‌سازی بر اساس</label>
+                <select id="SortBy"
+                        name="SortBy"
+                        class="loan-filter-input">
+
+                    <option value=""
+                            selected="@string.IsNullOrWhiteSpace(filter.SortBy)">
+                        پیش‌فرض
+                    </option>
+
+                    <option value="Title"
+                            selected="@string.Equals(filter.SortBy, "Title", StringComparison.OrdinalIgnoreCase)">
+                        عنوان کتاب
+                    </option>
+
+                    <option value="Author"
+                            selected="@string.Equals(filter.SortBy, "Author", StringComparison.OrdinalIgnoreCase)">
+                        نویسنده
+                    </option>
+
+                    <option value="InventoryNumber"
+                            selected="@string.Equals(filter.SortBy, "InventoryNumber", StringComparison.OrdinalIgnoreCase)">
+                        شماره اموال
+                    </option>
+
+                    <option value="StartDate"
+                            selected="@string.Equals(filter.SortBy, "StartDate", StringComparison.OrdinalIgnoreCase)">
+                        تاریخ شروع امانت
+                    </option>
+
+                    <option value="DueDate"
+                            selected="@string.Equals(filter.SortBy, "DueDate", StringComparison.OrdinalIgnoreCase)">
+                        تاریخ سررسید
+                    </option>
+
+                    <option value="ReturnDate"
+                            selected="@string.Equals(filter.SortBy, "ReturnDate", StringComparison.OrdinalIgnoreCase)">
+                        تاریخ بازگشت
+                    </option>
+                </select>
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="PageSize">تعداد در هر صفحه</label>
+                <select id="PageSize"
+                        name="PageSize"
+                        class="loan-filter-input">
+
+                    <option value="10" selected="@(filter.PageSize == 10)">۱۰</option>
+                    <option value="20" selected="@(filter.PageSize == 20)">۲۰</option>
+                    <option value="50" selected="@(filter.PageSize == 50)">۵۰</option>
+                </select>
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="SortDescending">جهت مرتب‌سازی</label>
+                <select id="SortDescending"
+                        name="SortDescending"
+                        class="loan-filter-input">
+
+                    <option value="false" selected="@(!filter.SortDescending)">
+                        صعودی
+                    </option>
+
+                    <option value="true" selected="@(filter.SortDescending)">
+                        نزولی
+                    </option>
+                </select>
+            </div>
+
+            <div class="loan-filter-divider">
+                <span>محدوده‌های زمانی</span>
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="StartDateFromDisplay">شروع امانت از</label>
+                <input id="StartDateFromDisplay"
+                       type="text"
+                       class="loan-filter-input loan-date-input"
+                       value="@(filter.StartDateFrom?.ToPersianDate())"
+                       data-jdp
+                       data-jdp-target-value-input="#StartDateFrom"
+                       data-jdp-target-value-type="gregorian"
+                       placeholder="انتخاب تاریخ"
+                       autocomplete="off" />
+
+                <input id="StartDateFrom"
+                       name="StartDateFrom"
+                       type="hidden"
+                       value="@(filter.StartDateFrom?.ToString("yyyy-MM-dd"))" />
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="StartDateToDisplay">شروع امانت تا</label>
+                <input id="StartDateToDisplay"
+                       type="text"
+                       class="loan-filter-input loan-date-input"
+                       value="@(filter.StartDateTo?.ToPersianDate())"
+                       data-jdp
+                       data-jdp-target-value-input="#StartDateTo"
+                       data-jdp-target-value-type="gregorian"
+                       placeholder="انتخاب تاریخ"
+                       autocomplete="off" />
+
+                <input id="StartDateTo"
+                       name="StartDateTo"
+                       type="hidden"
+                       value="@(filter.StartDateTo?.ToString("yyyy-MM-dd"))" />
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="DueDateFromDisplay">سررسید از</label>
+                <input id="DueDateFromDisplay"
+                       type="text"
+                       class="loan-filter-input loan-date-input"
+                       value="@(filter.DueDateFrom?.ToPersianDate())"
+                       data-jdp
+                       data-jdp-target-value-input="#DueDateFrom"
+                       data-jdp-target-value-type="gregorian"
+                       placeholder="انتخاب تاریخ"
+                       autocomplete="off" />
+
+                <input id="DueDateFrom"
+                       name="DueDateFrom"
+                       type="hidden"
+                       value="@(filter.DueDateFrom?.ToString("yyyy-MM-dd"))" />
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="DueDateToDisplay">سررسید تا</label>
+                <input id="DueDateToDisplay"
+                       type="text"
+                       class="loan-filter-input loan-date-input"
+                       value="@(filter.DueDateTo?.ToPersianDate())"
+                       data-jdp
+                       data-jdp-target-value-input="#DueDateTo"
+                       data-jdp-target-value-type="gregorian"
+                       placeholder="انتخاب تاریخ"
+                       autocomplete="off" />
+
+                <input id="DueDateTo"
+                       name="DueDateTo"
+                       type="hidden"
+                       value="@(filter.DueDateTo?.ToString("yyyy-MM-dd"))" />
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="ReturnDateFromDisplay">تاریخ بازگشت از</label>
+                <input id="ReturnDateFromDisplay"
+                       type="text"
+                       class="loan-filter-input loan-date-input"
+                       value="@(filter.ReturnDateFrom?.ToPersianDate())"
+                       data-jdp
+                       data-jdp-target-value-input="#ReturnDateFrom"
+                       data-jdp-target-value-type="gregorian"
+                       placeholder="انتخاب تاریخ"
+                       autocomplete="off" />
+
+                <input id="ReturnDateFrom"
+                       name="ReturnDateFrom"
+                       type="hidden"
+                       value="@(filter.ReturnDateFrom?.ToString("yyyy-MM-dd"))" />
+            </div>
+
+            <div class="loan-filter-group">
+                <label for="ReturnDateToDisplay">تاریخ بازگشت تا</label>
+                <input id="ReturnDateToDisplay"
+                       type="text"
+                       class="loan-filter-input loan-date-input"
+                       value="@(filter.ReturnDateTo?.ToPersianDate())"
+                       data-jdp
+                       data-jdp-target-value-input="#ReturnDateTo"
+                       data-jdp-target-value-type="gregorian"
+                       placeholder="انتخاب تاریخ"
+                       autocomplete="off" />
+
+                <input id="ReturnDateTo"
+                       name="ReturnDateTo"
+                       type="hidden"
+                       value="@(filter.ReturnDateTo?.ToString("yyyy-MM-dd"))" />
+            </div>
+
+            <input type="hidden" name="Page" value="1" />
+
+            <div class="loan-filter-actions">
+                <button type="submit" class="loan-filter-submit">
+                    اعمال فیلترها
+                </button>
+
+                <a asp-controller="Loan"
+                   asp-action="MyLoans"
+                   class="loan-filter-reset">
+                    پاک کردن فیلترها
+                </a>
+            </div>
+        </form>
+    </section>
+
+    <section class="loan-list-card"
+             aria-labelledby="loan-list-title">
+
+        <header class="loan-list-header">
+            <div>
+                <h2 id="loan-list-title" class="loan-section-title">
+                    فهرست امانت‌ها
+                </h2>
+
+                <p class="loan-section-description">
+                    اطلاعات کتاب‌ها و وضعیت امانت‌های شما
+                </p>
+            </div>
+
+            <span class="loan-list-count">
+                @Model.TotalCount امانت
+            </span>
+        </header>
+
+        @if (Model.Loans.Count == 0)
+        {
+            <div class="loan-empty-state">
+                <h3>امانتی پیدا نشد</h3>
+                <p>
+                    با معیارهای انتخاب‌شده امانتی پیدا نشد.
+                    فیلترها را تغییر دهید یا پاک کنید.
+                </p>
+
+                <a asp-controller="Loan"
+                   asp-action="MyLoans"
+                   class="loan-filter-reset">
+                    نمایش همه امانت‌ها
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive loan-table-wrapper">
                 <table class="loan-list-table">
-
                     <thead>
                         <tr>
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().BookTitle)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().Author)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().StartDate)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().DueDate)
-                            </th>
-
-                            <th>
-                                @Html.DisplayNameFor(model => model.First().LoanStatus)
-                            </th>
-                            <th>
-                                عملیات
-                            </th>
+                            <th scope="col">شناسه</th>
+                            <th scope="col">عنوان کتاب</th>
+                            <th scope="col">نویسنده</th>
+                            <th scope="col">شماره اموال</th>
+                            <th scope="col">شروع امانت</th>
+                            <th scope="col">سررسید</th>
+                            <th scope="col">تاریخ بازگشت</th>
+                            <th scope="col">وضعیت</th>
+                            <th scope="col">مبلغ نهایی</th>
+                            <th scope="col">عملیات</th>
                         </tr>
                     </thead>
 
                     <tbody>
-
-                        @foreach (var loan in Model)
+                        @foreach (var loan in Model.Loans)
                         {
                             <tr>
-
-                                <td>
-                                    @loan.BookTitle
+                                <td class="loan-id">@loan.LoanId</td>
+                                <td class="loan-book-title">@loan.BookTitle</td>
+                                <td>@loan.Author</td>
+                                <td>@loan.InventoryNumber</td>
+                                <td class="loan-date">@loan.StartDate.ToPersianDate()</td>
+                                <td class="loan-date">@loan.DueDate.ToPersianDate()</td>
+                                <td class="loan-date">
+                                    @if (loan.ReturnDate.HasValue)
+                                    {
+                                        @loan.ReturnDate.Value.ToPersianDate()
+                                    }
+                                    else
+                                    {
+                                        <span class="loan-not-returned">—</span>
+                                    }
                                 </td>
-
-                                <td>
-                                    @loan.Author
-                                </td>
-
-                                <td>
-                                    @loan.StartDate.ToPersianDate()
-                                </td>
-
-                                <td>
-                                    @loan.DueDate.ToPersianDate()
-                                </td>
-
                                 <td>
                                     <span class="loan-status
-                                        @(loan.LoanStatus switch
+                                        @(loan.Status switch
                                           {
-                                              LoanStatus.Active =>
-                                                  "loan-status-active",
-
-                                              LoanStatus.Completed =>
-                                                  "loan-status-completed",
-
-                                              LoanStatus.ReturnPending =>
-                                                  "loan-status-pending",
-
-                                              _ =>
-                                                  "loan-status-unknown"
+                                              LoanStatus.Active => "loan-status-active",
+                                              LoanStatus.ReturnPending => "loan-status-pending",
+                                              LoanStatus.Completed => "loan-status-completed",
+                                              _ => "loan-status-unknown"
                                           })">
 
-                                        @(loan.LoanStatus switch
+                                        @(loan.Status switch
                                         {
-                                            LoanStatus.Active =>
-                                                "فعال",
-
-                                            LoanStatus.Completed =>
-                                                "خاتمه یافته",
-
-                                            LoanStatus.ReturnPending =>
-                                                "در انتظار تأیید",
-
-                                            _ =>
-                                                "نامشخص"
+                                            LoanStatus.Active => "فعال",
+                                            LoanStatus.ReturnPending => "در انتظار تأیید",
+                                            LoanStatus.Completed => "خاتمه‌یافته",
+                                            _ => "نامشخص"
                                         })
-
                                     </span>
                                 </td>
 
-                                <td class="loan-table-actions">
-
-                                    <a asp-controller="Loan"
-                                       asp-action="Details"
-                                       asp-route-id="@loan.Id"
-                                       class="loan-details-link">
-                                        جزئیات
-                                    </a>
-
-                                    @if (loan.LoanStatus == LoanStatus.Active)
-                                    {
-                                        <form asp-controller="Loan"
-                                              asp-action="RequestReturn"
-                                              asp-route-loanId="@loan.Id"
-                                              method="post"
-                                              class="loan-return-form">
-
-                                            @Html.AntiForgeryToken()
-
-                                            <button type="submit"
-                                                    class="loan-return-button"
-                                                    data-confirm="آیا از درخواست بازگشت این کتاب مطمئن هستید؟">
-                                                درخواست بازگشت
-                                            </button>
-
-                                        </form>
-                                    }
-
+                                <td class="loan-amount">
+                                    @loan.FinalAmount.ToString("N0")
                                 </td>
 
+                                <td class="loan-table-actions">
+                                    <div class="loan-row-actions">
+                                        <a asp-controller="Loan"
+                                           asp-action="Details"
+                                           asp-route-id="@loan.LoanId"
+                                           class="loan-details-link">
+                                            جزئیات
+                                        </a>
+
+                                        @if (loan.Status == LoanStatus.Active)
+                                        {
+                                            <form asp-controller="Loan"
+                                                  asp-action="RequestReturn"
+                                                  asp-route-loanId="@loan.LoanId"
+                                                  method="post"
+                                                  class="loan-return-form">
+
+                                                @Html.AntiForgeryToken()
+
+                                                <button type="submit"
+                                                        class="loan-return-button"
+                                                        data-confirm="آیا از درخواست بازگشت این کتاب مطمئن هستید؟">
+                                                    درخواست بازگشت
+                                                </button>
+                                            </form>
+                                        }
+                                    </div>
+                                </td>
                             </tr>
                         }
-
                     </tbody>
-
                 </table>
-
             </div>
 
-        </div>
-    }
+            <footer class="loan-list-footer">
+                <span>صفحه @currentPage از @totalPages</span>
+                <span>@Model.Loans.Count مورد در این صفحه</span>
+            </footer>
 
+            @if (totalPages > 1)
+            {
+                <nav class="loan-pagination"
+                     aria-label="صفحه‌بندی امانت‌ها">
+
+                    @if (currentPage > 1)
+                    {
+                        <a asp-controller="Loan"
+                           asp-action="MyLoans"
+                           asp-route-SearchTerm="@filter.SearchTerm"
+                           asp-route-Status="@filter.Status"
+                           asp-route-StartDateFrom="@filter.StartDateFrom?.ToString("yyyy-MM-dd")"
+                           asp-route-StartDateTo="@filter.StartDateTo?.ToString("yyyy-MM-dd")"
+                           asp-route-DueDateFrom="@filter.DueDateFrom?.ToString("yyyy-MM-dd")"
+                           asp-route-DueDateTo="@filter.DueDateTo?.ToString("yyyy-MM-dd")"
+                           asp-route-ReturnDateFrom="@filter.ReturnDateFrom?.ToString("yyyy-MM-dd")"
+                           asp-route-ReturnDateTo="@filter.ReturnDateTo?.ToString("yyyy-MM-dd")"
+                           asp-route-SortBy="@filter.SortBy"
+                           asp-route-SortDescending="@filter.SortDescending"
+                           asp-route-PageSize="@filter.PageSize"
+                           asp-route-Page="@(currentPage - 1)"
+                           class="loan-pagination-link">
+                            قبلی
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="loan-pagination-link is-disabled"
+                              aria-disabled="true">
+                            قبلی
+                        </span>
+                    }
+
+                    <span class="loan-pagination-current" aria-current="page">
+                        @currentPage / @totalPages
+                    </span>
+
+                    @if (currentPage < totalPages)
+                    {
+                        <a asp-controller="Loan"
+                           asp-action="MyLoans"
+                           asp-route-SearchTerm="@filter.SearchTerm"
+                           asp-route-Status="@filter.Status"
+                           asp-route-StartDateFrom="@filter.StartDateFrom?.ToString("yyyy-MM-dd")"
+                           asp-route-StartDateTo="@filter.StartDateTo?.ToString("yyyy-MM-dd")"
+                           asp-route-DueDateFrom="@filter.DueDateFrom?.ToString("yyyy-MM-dd")"
+                           asp-route-DueDateTo="@filter.DueDateTo?.ToString("yyyy-MM-dd")"
+                           asp-route-ReturnDateFrom="@filter.ReturnDateFrom?.ToString("yyyy-MM-dd")"
+                           asp-route-ReturnDateTo="@filter.ReturnDateTo?.ToString("yyyy-MM-dd")"
+                           asp-route-SortBy="@filter.SortBy"
+                           asp-route-SortDescending="@filter.SortDescending"
+                           asp-route-PageSize="@filter.PageSize"
+                           asp-route-Page="@(currentPage + 1)"
+                           class="loan-pagination-link">
+                            بعدی
+                        </a>
+                    }
+                    else
+                    {
+                        <span class="loan-pagination-link is-disabled"
+                              aria-disabled="true">
+                            بعدی
+                        </span>
+                    }
+                </nav>
+            }
+        }
+    </section>
 </div>
 
 @section Styles {
     <link rel="stylesheet"
           href="~/css/pages/loan/Myloans.css"
           asp-append-version="true" />
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            if (window.jalaliDatepicker) {
+                jalaliDatepicker.startWatch({
+                    targetValueInput: "attr",
+                    targetValueType: "attr",
+                    zIndex: 1060
+                });
+            }
+        });
+    </script>
 }

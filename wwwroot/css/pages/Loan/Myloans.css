@@ -1,270 +1,472 @@
-﻿/* ================================
-   My Loans Page
-================================ */
+﻿
+/* Loan page */
+
 .loan-list-page {
-    padding: var(--lm-space-6) 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--lm-space-6);
 }
 
-
-/* ================================
-   Page Header
-================================ */
-
 .loan-page-header {
-    margin-bottom: var(--lm-space-5);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--lm-space-4);
 }
 
 .loan-page-title {
     margin: 0;
     color: var(--lm-text);
     font-size: var(--lm-font-size-2xl);
-    font-weight: var(--lm-font-weight-semibold);
-    line-height: 1.5;
+    font-weight: var(--lm-font-weight-bold);
 }
 
 .loan-page-subtitle {
-    margin: 0.35rem 0 0;
+    margin: var(--lm-space-2) 0 0;
     color: var(--lm-text-muted);
-    font-size: var(--lm-font-size);
+    font-size: var(--lm-font-size-sm);
 }
 
+/* Section headers */
 
-/* ================================
-   Main Card
-================================ */
+.loan-section-header,
+.loan-list-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: var(--lm-space-3);
+}
 
-.loan-list-card {
-    overflow: hidden;
-    background-color: var(--lm-surface);
+.loan-section-title {
+    margin: 0;
+    color: var(--lm-text);
+    font-size: var(--lm-font-size-lg);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+.loan-section-description {
+    margin: var(--lm-space-2) 0 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+}
+
+/* Filter card */
+
+.loan-filter-card {
+    padding: var(--lm-space-5);
+    background: var(--lm-surface);
     border: 1px solid var(--lm-border);
-    border-radius: var(--lm-radius-xl);
+    border-radius: var(--lm-radius-lg);
     box-shadow: var(--lm-shadow-sm);
 }
 
-
-/* ================================
-   Table
-================================ */
-
-.loan-list-table {
-    width: 100%;
-    margin: 0;
-    border-collapse: collapse;
-    color: var(--lm-text);
-    font-size: var(--lm-font-size);
+.loan-filter-form {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--lm-space-4);
+    margin-top: var(--lm-space-5);
 }
 
-    .loan-list-table th {
-        padding: var(--lm-space-3) var(--lm-space-4);
-        background-color: var(--lm-background);
-        border-bottom: 1px solid var(--lm-border);
-        color: var(--lm-text-muted);
-        font-size: var(--lm-font-size-sm);
-        font-weight: var(--lm-font-weight-semibold);
-        line-height: var(--lm-line-height-tight);
-        text-align: right;
-        white-space: nowrap;
-    }
+.loan-filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: var(--lm-space-2);
+    min-width: 0;
+}
 
-    .loan-list-table td {
-        padding: var(--lm-space-4);
-        border-bottom: 1px solid var(--lm-border);
+    .loan-filter-group label {
         color: var(--lm-text);
-        font-size: var(--lm-font-size);
-        font-weight: var(--lm-font-weight-normal);
-        line-height: var(--lm-line-height);
-        vertical-align: middle;
-    }
-
-    .loan-list-table tbody tr:last-child td {
-        border-bottom: 0;
-    }
-
-    .loan-list-table tbody tr {
-        transition: background-color var(--lm-transition-fast);
-    }
-
-        .loan-list-table tbody tr:hover {
-            background-color: var(--lm-background);
-        }
-
-
-    /* ================================
-   Book Title
-================================ */
-
-    .loan-list-table td:first-child {
-        font-weight: var(--lm-font-weight-semibold);
-    }
-
-
-    /* ================================
-   Loan Status
-================================ */
-
-    .loan-list-table .loan-status {
-        display: inline-flex;
-        align-items: center;
-        width: fit-content;
-        padding: var(--lm-space-1) var(--lm-space-2);
-        border-radius: var(--lm-radius-full);
         font-size: var(--lm-font-size-sm);
         font-weight: var(--lm-font-weight-medium);
-        line-height: var(--lm-line-height-tight);
     }
 
-    .loan-list-table .loan-status-active {
-        background-color: #e8f7ee;
-        color: var(--lm-success);
+.loan-filter-input {
+    width: 100%;
+    min-height: 42px;
+    padding: 0.625rem 0.75rem;
+    color: var(--lm-text);
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-input-radius);
+    font-family: inherit;
+    font-size: var(--lm-font-size-sm);
+    transition: border-color var(--lm-transition-fast), box-shadow var(--lm-transition-fast);
+}
+
+    .loan-filter-input:focus {
+        outline: none;
+        border-color: var(--lm-primary);
+        box-shadow: 0 0 0 3px var(--lm-primary-light);
     }
 
-    .loan-list-table .loan-status-completed {
-        background-color: var(--lm-background);
+    .loan-filter-input::placeholder {
         color: var(--lm-text-muted);
     }
 
-    .loan-list-table .loan-status-pending {
-        background-color: #fff3e8;
-        color: var(--lm-warning);
+.loan-search-group {
+    grid-column: span 2;
+}
+
+.loan-date-input {
+    cursor: pointer;
+}
+
+/* Date section divider */
+
+.loan-filter-divider {
+    display: flex;
+    align-items: center;
+    grid-column: 1 / -1;
+    gap: var(--lm-space-3);
+    margin-top: var(--lm-space-2);
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+    font-weight: var(--lm-font-weight-semibold);
+}
+
+    .loan-filter-divider::before,
+    .loan-filter-divider::after {
+        content: "";
+        flex: 1;
+        height: 1px;
+        background: var(--lm-border);
     }
 
-    .loan-list-table .loan-status-unknown {
-        background-color: var(--lm-background);
-        color: var(--lm-text-muted);
-    }
+/* Filter actions */
 
+.loan-filter-actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    grid-column: 1 / -1;
+    gap: var(--lm-space-3);
+    margin-top: var(--lm-space-2);
+}
 
-/* ================================
-   Details Link
-================================ */
-
-.loan-details-link {
+.loan-filter-submit,
+.loan-filter-reset {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 32px;
-    padding: var(--lm-space-1) var(--lm-space-3);
-    border: 1px solid var(--lm-border);
+    min-height: 40px;
+    padding: 0.625rem 1.25rem;
     border-radius: var(--lm-button-radius);
-    background-color: var(--lm-surface);
-    color: var(--lm-text);
+    font-family: inherit;
     font-size: var(--lm-font-size-sm);
     font-weight: var(--lm-font-weight-medium);
-    line-height: var(--lm-line-height-tight);
     text-decoration: none;
-    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast), color var(--lm-transition-fast);
+    cursor: pointer;
+    transition: background var(--lm-transition-fast), color var(--lm-transition-fast), border-color var(--lm-transition-fast);
 }
 
-    .loan-details-link:hover {
-        border-color: var(--lm-primary);
-        background-color: var(--lm-primary-light);
-        color: var(--lm-primary);
+.loan-filter-submit {
+    color: #fff;
+    background: var(--lm-primary);
+    border: 1px solid var(--lm-primary);
+}
+
+    .loan-filter-submit:hover {
+        background: var(--lm-primary-hover);
+        border-color: var(--lm-primary-hover);
     }
 
-    .loan-details-link:focus-visible {
-        outline: 2px solid var(--lm-primary);
-        outline-offset: 2px;
-    }
-
-
-/* ================================
-   Empty State
-================================ */
-
-.loan-empty-state {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    min-height: 180px;
-    padding: var(--lm-space-6);
-    background-color: var(--lm-surface);
+.loan-filter-reset {
+    color: var(--lm-text);
+    background: var(--lm-surface);
     border: 1px solid var(--lm-border);
-    border-radius: var(--lm-radius-xl);
-    box-shadow: var(--lm-shadow-sm);
-    text-align: center;
 }
 
-    .loan-empty-state p {
-        margin: 0;
-        color: var(--lm-text-muted);
-        font-size: var(--lm-font-size);
+    .loan-filter-reset:hover {
+        color: var(--lm-danger);
+        border-color: var(--lm-danger);
     }
 
+/* Error message */
 
-/* ================================
-   Responsive
-================================ */
+.loan-error-message {
+    padding: var(--lm-space-3) var(--lm-space-4);
+    color: var(--lm-danger);
+    background: var(--lm-background);
+    border: 1px solid var(--lm-danger);
+    border-radius: var(--lm-radius-lg);
+    font-size: var(--lm-font-size-sm);
+}
 
-@media (max-width: 767.98px) {
+/* List card */
 
-    .loan-list-page {
-        padding: var(--lm-space-4) 0;
-    }
+.loan-list-card {
+    overflow: hidden;
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
+    border-radius: var(--lm-radius-lg);
+    box-shadow: var(--lm-shadow-sm);
+}
 
-    .loan-page-title {
-        font-size: var(--lm-font-size-xl);
-    }
+.loan-list-header {
+    align-items: center;
+    padding: var(--lm-space-5);
+    border-bottom: 1px solid var(--lm-border);
+}
 
-    .loan-page-subtitle {
+.loan-list-count {
+    flex-shrink: 0;
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+}
+
+/* Table */
+
+.loan-table-wrapper {
+    width: 100%;
+}
+
+.loan-list-table {
+    width: 100%;
+    border-collapse: collapse;
+    white-space: nowrap;
+}
+
+    .loan-list-table th,
+    .loan-list-table td {
+        padding: var(--lm-space-4);
+        text-align: right;
+        border-bottom: 1px solid var(--lm-border);
         font-size: var(--lm-font-size-sm);
     }
 
-    .loan-list-card {
-        border-radius: var(--lm-radius-lg);
+    .loan-list-table th {
+        color: var(--lm-text-muted);
+        background: var(--lm-background);
+        font-weight: var(--lm-font-weight-semibold);
     }
 
-    .loan-list-table {
-        min-width: 680px;
+    .loan-list-table td {
+        color: var(--lm-text);
     }
 
-        .loan-list-table th,
-        .loan-list-table td {
-            padding: var(--lm-space-3);
-        }
-
-    .loan-empty-state {
-        min-height: 150px;
-        padding: var(--lm-space-5);
-        border-radius: var(--lm-radius-lg);
+    .loan-list-table tbody tr:last-child td {
+        border-bottom: none;
     }
+
+    .loan-list-table tbody tr:hover {
+        background: var(--lm-background);
+    }
+
+.loan-id,
+.loan-amount {
+    font-weight: var(--lm-font-weight-semibold);
 }
 
+.loan-book-title {
+    font-weight: var(--lm-font-weight-medium);
+}
 
-.loan-table-actions {
-    display: flex;
+.loan-not-returned {
+    color: var(--lm-text-muted);
+}
+
+/* Status */
+
+.loan-status {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    padding: 0.3rem 0.65rem;
+    border-radius: 999px;
+    font-size: var(--lm-font-size-xs);
+    font-weight: var(--lm-font-weight-medium);
+}
+
+.loan-status-active {
+    color: var(--lm-success);
+    background: color-mix(in srgb, var(--lm-success) 12%, transparent);
+}
+
+.loan-status-completed {
+    color: var(--lm-text-muted);
+    background: var(--lm-background);
+}
+
+.loan-status-pending {
+    color: var(--lm-warning);
+    background: color-mix(in srgb, var(--lm-warning) 12%, transparent);
+}
+
+.loan-status-unknown {
+    color: var(--lm-text-muted);
+    background: var(--lm-background);
+}
+
+/* Row actions */
+
+.loan-row-actions {
+    display: flex;
+    align-items: center;
     gap: var(--lm-space-2);
 }
+
+.loan-details-link,
+.loan-return-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 34px;
+    padding: 0.4rem 0.7rem;
+    border-radius: var(--lm-button-radius);
+    font-family: inherit;
+    font-size: var(--lm-font-size-xs);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.loan-details-link {
+    color: var(--lm-primary);
+    background: var(--lm-primary-light);
+}
+
+    .loan-details-link:hover {
+        color: var(--lm-primary-hover);
+    }
+
+.loan-return-button {
+    color: var(--lm-danger);
+    background: transparent;
+    border: 1px solid var(--lm-danger);
+}
+
+    .loan-return-button:hover {
+        color: #fff;
+        background: var(--lm-danger);
+    }
 
 .loan-return-form {
     margin: 0;
 }
 
-.loan-return-button {
+/* Empty state */
+
+.loan-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--lm-space-3);
+    padding: var(--lm-space-8);
+    text-align: center;
+}
+
+    .loan-empty-state h3 {
+        margin: 0;
+        color: var(--lm-text);
+        font-size: var(--lm-font-size-lg);
+    }
+
+    .loan-empty-state p {
+        margin: 0;
+        color: var(--lm-text-muted);
+        font-size: var(--lm-font-size-sm);
+    }
+
+/* List footer */
+
+.loan-list-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--lm-space-3);
+    padding: var(--lm-space-4) var(--lm-space-5);
+    border-top: 1px solid var(--lm-border);
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+}
+
+/* Pagination */
+
+.loan-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: var(--lm-space-3);
+    padding: var(--lm-space-5);
+    border-top: 1px solid var(--lm-border);
+}
+
+.loan-pagination-link {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 32px;
-    padding: var(--lm-space-1) var(--lm-space-3);
-    border: 1px solid var(--lm-primary);
+    min-height: 36px;
+    padding: 0.4rem 0.9rem;
+    color: var(--lm-primary);
+    background: var(--lm-surface);
+    border: 1px solid var(--lm-border);
     border-radius: var(--lm-button-radius);
-    background-color: var(--lm-primary);
-    color: #ffffff;
-    font-family: inherit;
     font-size: var(--lm-font-size-sm);
-    font-weight: var(--lm-font-weight-medium);
-    line-height: var(--lm-line-height-tight);
-    cursor: pointer;
-    transition: background-color var(--lm-transition-fast), border-color var(--lm-transition-fast);
+    text-decoration: none;
 }
 
-    .loan-return-button:hover {
-        border-color: var(--lm-primary-hover);
-        background-color: var(--lm-primary-hover);
+    .loan-pagination-link:hover:not(.is-disabled) {
+        background: var(--lm-primary-light);
     }
 
-    .loan-return-button:focus-visible {
-        outline: 2px solid var(--lm-primary);
-        outline-offset: 2px;
+    .loan-pagination-link.is-disabled {
+        color: var(--lm-text-muted);
+        opacity: 0.55;
+        cursor: not-allowed;
     }
+
+.loan-pagination-current {
+    color: var(--lm-text-muted);
+    font-size: var(--lm-font-size-sm);
+}
+
+/* Responsive */
+
+@media (max-width: 992px) {
+    .loan-filter-form {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .loan-search-group {
+        grid-column: 1 / -1;
+    }
+}
+
+@media (max-width: 576px) {
+    .loan-filter-card {
+        padding: var(--lm-space-4);
+    }
+
+    .loan-filter-form {
+        grid-template-columns: 1fr;
+    }
+
+    .loan-search-group {
+        grid-column: auto;
+    }
+
+    .loan-filter-divider,
+    .loan-filter-actions {
+        grid-column: auto;
+    }
+
+    .loan-filter-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .loan-filter-submit,
+    .loan-filter-reset {
+        width: 100%;
+    }
+
+    .loan-list-header,
+    .loan-list-footer {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .loan-pagination {
+        gap: var(--lm-space-2);
+    }
+}

@@ -12,7 +12,7 @@ namespace LibraryManagement.Services.Interfaces
         void ConfirmReturn(int loanId, DateTime returnDate);
         void Renew(int loanId, int userId);
         Loan? GetDetailsById(int loanId, int userId);
-        List<Loan> GetUserLoans(int userId);
+        UserLoanListResult UserGetLoansList(int userId, LoanFilterDto input);
         AdminLoanListResult AdminGetLoansList(LoanFilterDto input);
         Loan? GetAdminDetailsById(int loanId);
     }

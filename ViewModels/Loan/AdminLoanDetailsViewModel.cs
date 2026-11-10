@@ -1,7 +1,7 @@
 ﻿using LibraryManagement.Models;
 using System.ComponentModel.DataAnnotations;
 
-namespace LibraryManagement.ViewModels
+namespace LibraryManagement.ViewModels.Loan
 {
     public class AdminLoanDetailsViewModel
     {

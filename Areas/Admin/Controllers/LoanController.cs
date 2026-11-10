@@ -6,7 +6,7 @@ using LibraryManagement.Helper;
 using LibraryManagement.Models;
 using LibraryManagement.Services;
 using LibraryManagement.Services.Interfaces;
-using LibraryManagement.ViewModels;
+using LibraryManagement.ViewModels.Loan;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
